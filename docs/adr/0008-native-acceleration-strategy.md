@@ -1,4 +1,4 @@
-# ADR 008: Strategy for Native / Accelerated Code
+# ADR 0008: Strategy for Native / Accelerated Code
 
 Date: 2026-03-08
 

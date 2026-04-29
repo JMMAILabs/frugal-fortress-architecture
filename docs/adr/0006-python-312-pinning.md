@@ -1,4 +1,4 @@
-# 5. Pinning Runtime to Python 3.12 (LTS)
+# ADR 0006. Pinning Runtime to Python 3.12 (LTS)
 
 **Date:** 2026-01-31
 **Status:** Accepted

@@ -1,4 +1,4 @@
-# 2. Coverage Strategy for Asyncio Artifacts
+# ADR 0003: Coverage Strategy for Asyncio Artifacts
 
 Date: 2026-01-19
 

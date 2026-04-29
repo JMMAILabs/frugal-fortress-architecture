@@ -1,4 +1,4 @@
-# 1. Use pgvector for Vector Search
+# ADR 0002: Use pgvector for Vector Search
 
 Date: 2025-01-05
 

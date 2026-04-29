@@ -1,4 +1,4 @@
-# Data Loss Prevention (DLP) via Local SLM
+# ADR 0010: Data Loss Prevention (DLP) via Local SLM
 
 **Date:** 2026-04-06
 **Status:** Accepted

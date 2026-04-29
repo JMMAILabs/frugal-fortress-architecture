@@ -1,4 +1,5 @@
-# 6. Prompt Manager Refactor (Validation & Resilience)
+# ADR 0007. Prompt Manager Refactor (Validation & Resilience)
+
 **Date:** 2026-02-09
 **Status:** Accepted
 ## Context

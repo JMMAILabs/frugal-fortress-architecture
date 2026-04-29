@@ -1,4 +1,4 @@
-Vector Search Strategy: Postgres (pgvector) & LanceDB vs. Pinecone
+# ADR 0009: Vector Search Strategy: Postgres (pgvector) & LanceDB vs. Pinecone
 
 **Date:** 2026-04-06
 **Status:** Accepted
