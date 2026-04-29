@@ -25,3 +25,4 @@ flowchart TD
 
     Commit -.->|Releases unused reserved funds<br/>and applies exact actual cost| Worker["Publish to EventBus"]
     Worker --> DB[("PostgreSQL<br/>Persist Cost")]
+```

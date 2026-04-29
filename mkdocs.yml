@@ -42,7 +42,7 @@ nav:
     - Hexagonal Decoupling: architecture/HEXAGONAL_DECOUPLING.md
     - Nested Learning Loop (RAG): architecture/NESTED_LEARNING_GUIDE.md
     - Multi-Tenancy & Isolation: architecture/MULTI_TENANCY_AND_ISOLATION.md
-    - Security & SOC2: architecture/SECURITY_AND_COMPLIANCE_SOC2.md
+    - Security & SOC2: architecture/security_compliance_soc2.md
     - Performance & Caching: architecture/PERFORMANCE_ARCHITECTURE.md
     - Billing & Tiers: architecture/BILLING_AND_TIERS.md
     - Core Invariants: architecture/CORE_INVARIANTS.md

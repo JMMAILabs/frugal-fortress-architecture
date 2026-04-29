@@ -25,3 +25,4 @@ flowchart TD
     Export --> GenXLSX[Generate XLSX in Memory]
     GenXLSX --> SendDoc[Send Document via Telegram API]
     SendDoc --> Wait
+```

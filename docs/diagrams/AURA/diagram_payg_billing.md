@@ -33,3 +33,4 @@ sequenceDiagram
         API->>Budget: commit_budget(tenant_id, reserved=$0.20, actual=$0.18)
         API-->>User: Send Summary + "Cost: $0.18 | Remaining: $9.82"
     end
+```

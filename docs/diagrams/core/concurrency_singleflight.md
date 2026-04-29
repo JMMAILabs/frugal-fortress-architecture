@@ -38,3 +38,4 @@ sequenceDiagram
     Router-->>User1: Response (Cost: $0.02)
     Router-->>User2: Response (Cost: $0.00, model: cache-coalesced)
     Router-->>User3: Response (Cost: $0.00, model: cache-coalesced)
+```

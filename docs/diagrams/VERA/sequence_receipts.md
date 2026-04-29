@@ -52,3 +52,4 @@ sequenceDiagram
         API-->>Edge: HTTP 200 OK { status: "saved" }
     end
     deactivate API
+```

@@ -51,3 +51,4 @@ sequenceDiagram
     API->>Cache: Invalidate User Glossary Cache
     API-->>User: "Correction learned! I will remember this."
     deactivate API
+```

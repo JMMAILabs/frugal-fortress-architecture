@@ -20,3 +20,4 @@ flowchart TD
   
   %% Domain Context
   C -.-> I["Data decrypted on-the-fly\nvia backend AES/ALE.\nZero plaintext on disk."]
+```

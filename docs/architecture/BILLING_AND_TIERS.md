@@ -11,21 +11,21 @@ The system enforces a strict separation between Free and Paid compute stacks to 
 
 ## 2. Module-Specific Limits & Margins
 
-### A. Receipt Parser
+### A. VERA (Receipt Parser)
 *   **Free:** 30 receipts/month. Max 100 stored. (Stack: LlamaParse + Groq).
 *   **Premium ($2.99/mo):** 500 receipts/month. Max 2,000 stored. (Stack: Vertex Flash-Lite).
     *   *FinOps:* Max cost per receipt (with 3 retries) = $0.0009. Max monthly cost = $0.46. **Margin: 84%**.
 *   **Pro ($9.99/mo):** 2,000 receipts/month. Max 5,000 stored. (Stack: Vertex Flash).
     *   *FinOps:* Max cost per receipt (with 3 retries) = $0.0047. Max monthly cost = $9.51. **Margin: ~5%** (Loss-leader / High-volume tier).
 
-### B. PDF to Anki
+### B. KERA (PDF to Anki)
 *   **Free:** 50 pages/month. Max 10 pages/PDF. Max 100 flashcards.
 *   **Premium ($2.99/mo):** 1,000 pages/month. Max 100 pages/PDF. Max 5,000 flashcards.
     *   *FinOps:* Max cost per 100-page PDF = $0.07. Max monthly cost (10 PDFs) = $0.70. **Margin: 76%**.
 *   **Pro ($4.99/mo):** 2,000 pages/month. Max 500 pages/PDF. Max 20,000 flashcards.
     *   *FinOps:* Max cost per 500-page PDF = $0.36. Max monthly cost (4 PDFs) = $1.47. **Margin: 70%**.
 
-### C. AURA
+### C. AURA (Audio Notes)
 *   **Free:** 150 mins/month. Max 5 mins/audio. (Stack: Groq Whisper + Llama-3.3).
 *   **Premium ($4.99/mo):** 3,000 mins/month. Max 20 mins/audio. (Stack: Vertex Flash-Lite Multimodal).
 *   **Pro ($9.99/mo):** 9,000 mins/month. Max 45 mins/audio. (Stack: Vertex Flash-Lite Multimodal).

@@ -30,3 +30,4 @@ stateDiagram-v2
         Triggers Fallback Models
         (e.g., GPT-4o -> Llama-3)
     end note
+```

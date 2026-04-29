@@ -4,7 +4,7 @@ This document describes the **performance strategies** implemented and planned f
 
 ---
  
-## 1. Project 3: PDF to Anki — The Async Knowledge Beast
+## 1. KERA: PDF to Anki — The Async Knowledge Beast
 
 **Evolution:** From "Upload a PDF" to **Resilient Mass Ingest System**.
 
@@ -48,7 +48,7 @@ This document describes the **performance strategies** implemented and planned f
 
 ---
 
-## 2. Project 5: Receipt Parser — The Cost-Efficient Fortress
+## 2. VERA: Receipt Parser — The Cost-Efficient Fortress
 
 **Architecture:** Hybrid — Edge (OCR) + Cloud (orchestration).
 
@@ -91,7 +91,7 @@ This document describes the **performance strategies** implemented and planned f
 
 ---
 
-## 3. Project 2: Audio Notes — The Smart Listener
+## 3. AURA: Audio Notes — The Smart Listener
 
 **Evolution:** From "Transcribe audio" to **Corporate Memory**.
 

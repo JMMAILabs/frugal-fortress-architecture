@@ -9,19 +9,19 @@ We engineered a **Modular Monolith** in Python (FastAPI) and Next.js, specifical
 ### Core Pillars
 
 1. **FinOps & Cost Predictability:**
-   * **Edge Compute Offloading:** Image compression and basic validations are pushed to the browser (WASM/Canvas), reducing backend bandwidth and VLM token consumption by up to 95%.
-   * **Multi-Tier Semantic Caching:** Reduces LLM costs by up to 80%. If a document or concept has been processed before, the system serves it from a Redis/LanceDB cache in <50ms, bypassing the LLM entirely.
-   * **Dynamic Routing:** Intelligently routes simple tasks to fast, free-tier models (e.g., Groq Llama-3.3) and complex tasks to premium models (e.g., Vertex AI Gemini), maximizing ROI.
+    * **Edge Compute Offloading:** Image compression and basic validations are pushed to the browser (WASM/Canvas), reducing backend bandwidth and VLM token consumption by up to 95%.
+    * **Multi-Tier Semantic Caching:** Reduces LLM costs by up to 80%. If a document or concept has been processed before, the system serves it from a Redis/LanceDB cache in <50ms, bypassing the LLM entirely.
+    * **Dynamic Routing:** Intelligently routes simple tasks to fast, free-tier models (e.g., Groq Llama-3.3) and complex tasks to premium models (e.g., Vertex AI Gemini), maximizing ROI.
 
 2. **Enterprise-Grade Security (SOC2 Ready):**
-   * **Zero Data Retention:** Paid tiers utilize Google Vertex AI under strict enterprise agreements ensuring customer data is *never* used to train foundational models.
-   * **Fail-Secure DLP Proxy:** A local, CPU-bound Small Language Model (Llama 3.2 3B) and Microsoft Presidio intercept and redact all PII/PHI *before* it leaves the Virtual Private Cloud (VPC).
-   * **Application-Level Encryption (ALE):** All sensitive data at rest is secured via AES-128-CBC (Fernet) before hitting the database.
+    * **Zero Data Retention:** Paid tiers utilize Google Vertex AI under strict enterprise agreements ensuring customer data is *never* used to train foundational models.
+    * **Fail-Secure DLP Proxy:** A local, CPU-bound Small Language Model (Llama 3.2 3B) and Microsoft Presidio intercept and redact all PII/PHI *before* it leaves the Virtual Private Cloud (VPC).
+    * **Application-Level Encryption (ALE):** All sensitive data at rest is secured via AES-128-CBC (Fernet) before hitting the database.
 
 3. **Site Reliability Engineering (SRE):**
-   * **Distributed Circuit Breakers:** Redis-backed circuit breakers detect LLM provider outages and automatically trigger "Graceful Degradation" (e.g., falling back from Gemini Pro to Flash-Lite) during provider outages.
-   * **Async SingleFlight:** Prevents cache stampedes during viral traffic spikes by coalescing identical concurrent requests into a single LLM execution.
-   * **Asynchronous UX:** Heavy parsing is offloaded to idempotent background workers (Arq), ensuring the main Event Loop is never blocked.
+    * **Distributed Circuit Breakers:** Redis-backed circuit breakers detect LLM provider outages and automatically trigger "Graceful Degradation" (e.g., falling back from Gemini Pro to Flash-Lite) during provider outages.
+    * **Async SingleFlight:** Prevents cache stampedes during viral traffic spikes by coalescing identical concurrent requests into a single LLM execution.
+    * **Asynchronous UX:** Heavy parsing is offloaded to idempotent background workers (Arq), ensuring the main Event Loop is never blocked.
 
 ## The Bounded Contexts (Flagship Modules)
 
