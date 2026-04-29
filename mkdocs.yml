@@ -2,6 +2,7 @@ site_name: Frugal Fortress Architecture
 site_description: Enterprise AI Backend Architecture Documentation
 site_author: Javier Martinez
 repo_url: https://github.com/JMMAILabs/frugal-fortress-architecture
+site_url: https://JMMAILabs.github.io/frugal-fortress-architecture/
 
 theme:
   name: material

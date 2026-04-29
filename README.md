@@ -7,7 +7,7 @@
 
 Welcome to the documentation repository for **The Frugal Fortress**, an enterprise-grade AI backend architecture designed to serve multiple AI products from a single, secure, and highly optimized Modular Monolith.
 
-🌐 **[Read the Full Documentation (MkDocs) Here](https://tu-usuario.github.io/frugal-fortress-architecture/)** *(Reemplaza con tu link de GitHub Pages)*
+🌐 **[Read the Full Documentation (MkDocs) Here](https://tu-usuario.github.io/frugal-fortress-architecture/)**
 
 ---
 
@@ -74,7 +74,7 @@ This repository uses [MkDocs](https://www.mkdocs.org/) with the Material theme t
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/frugal-fortress-architecture.git
+git clone https://github.com/JMMAILabs/frugal-fortress-architecture.git
 cd frugal-fortress-architecture
 
 # 2. Install MkDocs and the Material theme
