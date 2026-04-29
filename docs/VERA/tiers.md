@@ -1,151 +1,75 @@
-Estrategia de tiers
+# docs/VERA/tiers.md
 
-## Campos Stripe
-receipt_parser_user_id
-language_code
-tier
+# Tiering Strategy & FinOps Capacity Planning
 
+This document defines the operational limits, model routing, and break-even pricing analysis for the Receipt Parser (VERA) module.
 
-## Free
+## 1. Stripe Metadata Contract
+Payment links must inject the following custom fields into the Stripe Checkout Session:
+*   `receipt_parser_user_id`
+*   `language_code`
+*   `tier`
 
-Flujo:
-- Imagen/PDF -> LlamaParse -> markdown -> tokenización PII -> Groq `llama-3.3-70b-versatile` -> JSON -> cifrado -> Supabase.
+## 2. Free Tier (Third-Party Stack)
+*   **Pipeline Flow:** Image/PDF -> LlamaParse -> Markdown -> PII Tokenization (Presidio) -> Groq `llama-3.3-70b-versatile` -> JSON -> ALE Encryption -> Supabase.
+*   **Limits:**
+    *   30 receipts / month.
+    *   5 receipts / day.
+    *   Maximum Storage Capacity: 100 receipts.
+    *   Max 3 versions per `image_hash`.
+*   **Data Retention:** 3 months.
+*   **Disclaimer:** The Free tier utilizes third-party OCR/LLM APIs. It is not recommended for highly sensitive financial documents (e.g., PHI/PII heavy invoices).
 
-Límites:
-- 30 recibos al mes.
-- 5 al día.
-- Retención de 3 meses.
-- Capacidad máxima almacenada: 100 recibos.
-- Máximo 3 versiones por `image_hash`.
+## 3. Paid Tiers (Vertex AI Exclusive)
+To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI. No Anthropic or OpenAI models are used.
 
-Disclaimer:
-- el tier gratuito usa OCR/LLM de terceros.
-- no debe usarse para documentos especialmente sensibles.
+*   **Premium:** Includes `gemini-2.5-flash-lite`.
+*   **Pro:** Includes `gemini-2.5-flash`.
+*   **PAYG:** Selectable models (`gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-pro`).
 
-## Tiers de pago: solo Vertex
+### Operational Limits
 
-Premium:
-- modelo incluido: `gemini/gemini-2.5-flash-lite`
+| Metric | Premium | Pro | Ultra | PAYG |
+| :--- | :--- | :--- | :--- | :--- |
+| **Monthly Limit** | 500 receipts | 2,000 receipts | N/A | N/A |
+| **Daily Limit** | 50 receipts | 200 receipts | 200 receipts | 1,000 receipts |
+| **Max Storage Capacity** | 2,000 receipts | 5,000 receipts | 10,000 receipts | N/A |
+| **Max Versions per Hash** | 10 | 50 | 100 | 40 |
+| **Data Retention** | 1 year | 5 years | 5 years | Inherits base tier |
 
-Pro:
-- modelo incluido: `gemini/gemini-2.5-flash`
+*Note on Versioning:* Each persistence event counts as a row (the initial parse, and every human correction saved via `POST /receipts/history`). The internal LLM self-correction loop does *not* create new database rows.
 
+## 4. FinOps & Break-Even Pricing Analysis
 
-PAYG:
-- solo modelos Vertex seleccionables:
-  - `gemini/gemini-2.5-flash-lite`
-  - `gemini/gemini-2.5-flash`
-  - `gemini/gemini-2.5-pro`
+*Source of Truth:[Google Cloud Vertex AI Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)*
 
-No se usa ningún modelo de Anthropic ni OpenAI en ningún tier de pago.
+**Conservative Baseline Assumptions:**
+*   1 Input Image ≈ `1,120` tokens (Standard Gemini Flash Image proxy).
+*   JSON Output ≈ `500` tokens.
+*   **Self-Correction Loop:** Up to `3` paid attempts per receipt (`MAX_RETRIES = 3`).
 
-## Límites por tier
+### Premium Tier Analysis
+*   **Cost per Receipt (Single Attempt):**
+    *   `(1,120 * $0.10 / 1M) + (500 * $0.40 / 1M) = $0.000312`
+*   **Worst-Case Scenario (3 Retries):** `$0.000936`
+*   **Worst-Case Monthly Cost:** `500 * $0.000936 = $0.468`
+*   **Recommended Break-Even Price:** `$0.99 / month`
+*   **Final Retail Price:** **$2.99 / month**
 
-Premium:
-- 500 recibos al mes.
-- 50 al día.
-- Retención de 1 año.
-- Capacidad máxima almacenada: 2.000 recibos.
-- Máximo 10 versiones por `image_hash`.
+### Pro Tier Analysis (Model Migration Impact)
+The Pro tier was recently migrated from `anthropic/claude-haiku-4.5` to `gemini/gemini-2.5-flash`.
 
-Pro:
-- 2.000 recibos al mes.
-- 200 al día.
-- Retención de 5 años.
-- Capacidad máxima almacenada: 5.000 recibos.
-- Máximo 50 versiones por `image_hash`.
+*   **Previous Cost (Claude Haiku 4.5):**
+    *   Worst-Case (3 Retries): `$0.010860` per receipt.
+    *   Worst-Case Monthly Cost (2,000 receipts): `$21.72`
+    *   *Previous Break-Even Price: ~$24.99 / month*
+*   **Current Cost (Gemini 2.5 Flash):**
+    *   Single Attempt: `(1,120 * $0.30 / 1M) + (500 * $2.50 / 1M) = $0.001586`
+    *   Worst-Case (3 Retries): **$0.004758**
+*   **Worst-Case Monthly Cost:** `2,000 * $0.004758 = $9.516`
+*   **Recommended Break-Even Price:** `$9.99 / month`
+*   **Final Retail Price:** **$9.99 / month**
+*   **Rationale:** The migration to Gemini 2.5 Flash reduced the cost per receipt by 56%. This allowed us to aggressively drop the retail price from `$24.99` to `$9.99` while maintaining profitability, even when accounting for the high volume (2,000 receipts) and the 3-retry self-correction loop.
 
-Ultra:
-- 200 al día.
-- capacidad máxima almacenada: 10.000 recibos.
-- máximo 100 versiones por `image_hash`.
-
-PAYG:
-- 1.000 recibos al día.
-- sin límite mensual fijo.
-- la retención depende del tier base.
-- máximo 40 versiones por `image_hash`.
-
-## Versionado y correcciones
-
-Cada persistencia en `receipts` cuenta como una fila:
-- el parseo inicial.
-- cada corrección humana guardada en `POST /receipts/history`.
-
-El bucle interno de auto-corrección del modelo no crea filas nuevas.
-
-## FinOps y precio mínimo sin pérdidas
-
-Fuente oficial de pricing Vertex:
-- https://cloud.google.com/vertex-ai/generative-ai/pricing
-
-Precios usados (por millón de tokens):
-- Gemini 2.5 Flash Lite: input `$0.10 / 1M`, output `$0.40 / 1M`.
-- Gemini 2.5 Flash: input `$0.30 / 1M`, output `$2.50 / 1M`.
-
-Supuesto conservador para un recibo de una sola imagen:
-- 1 imagen de entrada equivalente a `1.120` tokens (proxy publicado para Gemini Flash Image).
-- `500` tokens de salida JSON.
-- hasta `3` intentos pagados por recibo (Self-Correction Loop con `MAX_RETRIES = 3`).
-
-### Premium
-
-Coste máximo por recibo:
-- un intento: `(1.120 * 0.10 / 1.000.000) + (500 * 0.40 / 1.000.000) = $0.000312`
-- peor caso con 3 intentos: `$0.000936`
-
-Coste máximo mensual:
-- `500 * $0.000936 = $0.468`
-
-Precio mínimo recomendado sin pérdidas:
-- **$0.99 / mes**
-
-PRECIO FINAL:
-- **$2.99 / mes**
-
-Justificación:
-- `$0.99` cubre el techo de inferencia incluso contando tres intentos y deja margen operativo.
-- Flash-Lite es el modelo más barato del catálogo Vertex, lo que hace Premium el tier de mayor margen relativo.
-
-### Pro
-
-#### Modelo anterior vs modelo nuevo
-
-El tier Pro cambió de `anthropic/claude-haiku-4.5` a `gemini/gemini-2.5-flash`.
-Este es el tier que más se ve afectado en el cambio de precio.
-
-Coste máximo por recibo con Claude Haiku 4.5 (modelo anterior):
-- Precios Claude Haiku 4.5: input `$1.00 / 1M`, output `$5.00 / 1M`.
-- un intento: `(1.120 * 1.00 / 1.000.000) + (500 * 5.00 / 1.000.000) = $0.003620`
-- peor caso con 3 intentos: `$0.010860`
-- coste máximo mensual (2.000 recibos): `2.000 * $0.010860 = $21.72`
-- **Precio mínimo anterior: ~$24.99 / mes**
-
-Coste máximo por recibo con Gemini 2.5 Flash (modelo actual):
-- un intento: `(1.120 * 0.30 / 1.000.000) + (500 * 2.50 / 1.000.000) = $0.001586`
-- peor caso con 3 intentos: `$0.004758`
-
-Coste máximo mensual:
-- `2.000 * $0.004758 = $9.516`
-
-Precio mínimo recomendado sin pérdidas:
-- **$9.99 / mes**
-
-Justificación:
-- El cambio de Claude Haiku a Gemini 2.5 Flash reduce el coste por recibo de `$0.010860` a `$0.004758` (mejora del 56%).
-- El coste máximo mensual cae de `$21.72` a `$9.516`, permitiendo bajar el precio de `$24.99` a `$9.99`.
-- Aun así, el precio no puede bajar agresivamente porque el límite mensual es alto (2.000 recibos) y se permiten hasta 3 intentos por recibo.
-- `$9.99` es el primer precio comercial simple que cubre el techo `$9.516` sin dejar el plan en pérdidas.
-- Si se quisiera bajar Pro por debajo de `$9.99`, habría que reducir el límite mensual de recibos o el número máximo de intentos del flujo de corrección.
-
-Conclusión sobre el cambio de modelo en Pro:
-- Gemini 2.5 Flash tiene un coste por token mucho más bajo que Claude Haiku 4.5.
-- El gran número de recibos permitidos en Pro (2.000/mes) y los 3 reintentos son los factores dominantes en el precio final.
-- La reducción de precio de `$24.99` a `$9.99` es directamente atribuible al cambio de modelo.
-
-## Data lifecycle
-
-Tras cancelar:
-- se mantiene la ventana de gracia de 90 días.
-- durante ese periodo el usuario baja a límites de cómputo Free, pero conserva acceso y exportación de su histórico.
-- al día 91 se aplica poda FIFO hasta el límite del tier Free.
+## 5. Data Lifecycle
+Upon subscription cancellation, the standard 90-day grace period applies. The user is downgraded to Free tier compute limits but retains full access to export their historical data. On Day 91, a FIFO pruning job truncates their storage to the Free tier limit (100 receipts).

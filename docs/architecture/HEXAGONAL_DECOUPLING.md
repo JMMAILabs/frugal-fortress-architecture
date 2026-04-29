@@ -131,6 +131,5 @@ Cross-module application-to-application imports are avoided; shared behaviour li
 
 ## 9. References
 
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — High-level vision and module list.
-- [docs/diagrams/hexagonal_module.md](diagrams/hexagonal_module.md) — Diagram of a single module.
-- [docs/project_structure.md](project_structure.md) — Directory layout.
+- [SYSTEM_TOPOLOGY.md](SYSTEM_TOPOLOGY.md) — High-level vision and module list.
+-[docs/diagrams/hexagonal_module_template.md](../diagrams/core/hexagonal_module_template.md) — Diagram of a single module.

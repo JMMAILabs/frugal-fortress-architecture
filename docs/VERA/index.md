@@ -16,6 +16,6 @@ By leveraging Edge computing to reduce payload sizes and Cloud orchestration for
 
 Explore the specific architectural implementations for this module:
 
-*   [FinOps & Capacity Planning](finops_capacity_planning.md)
-*   [Tiers, Limits & Stripe Integration](tiers.md)
+* [FinOps & Capacity Planning](finops_capacity_planning.md)
+* [Tiers, Limits & Stripe Integration](tiers.md)
 *[Troubleshooting & LlamaParse DNS](troubleshooting.md)

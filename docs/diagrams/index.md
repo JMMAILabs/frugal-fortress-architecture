@@ -51,5 +51,5 @@ Specific business logic, frontend interactions, and data flows for each independ
 | **[Sequence: Edge & HITL](VERA/sequence_receipts.md)** | Self-correction loop: Edge compression, PII redaction, math validation, retries. |
 | **[Response Contract](VERA/diagram_response_contract.md)** | HTTP 200 vs HTTP 206 (Human-in-the-Loop) decision tree. |
 | **[History & Decryption Flow](VERA/diagram_history_flow.md)** | Application-Level Encryption (ALE) decryption on the fly. |
-| **[Export CSV Flow](VERA/diagram_export_csv.md)** | In-memory CSV generation from decrypted database records. |
+| **[Export CSV/XLSX Flow](VERA/diagram_export.md)** | In-memory CSV/XLSX generation from decrypted database records. |
 | **[Frontend Offline Sync](VERA/diagram_frontend_offline_sync.md)** | PWA IndexedDB queueing and state recovery during network drops. |

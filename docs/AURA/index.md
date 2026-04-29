@@ -33,8 +33,8 @@ This module heavily leverages the Frugal Fortress core patterns. For detailed te
 * 📊 **[Tiers & Limits](tiers.md):** Business rules for Free, Premium, Pro, and PAYG users.
 
 ## 5. Diagrams
-*[C4 Model (Context, Container, Component)](../diagrams/AURA/c4_model.md)
-*[Audio Processing & Learning Flow](../diagrams/AURA/diagram_flow.md)
+* [C4 Model (Context, Container, Component)](../diagrams/AURA/c4_model.md)
+* [Audio Processing & Learning Flow](../diagrams/AURA/diagram_flow.md)
 * [PAYG Billing Lifecycle](../diagrams/AURA/diagram_payg_billing.md)
 * [Support Tickets & Debouncing](../diagrams/AURA/diagram_support_tickets.md)
 * [Glossary Management](../diagrams/AURA/diagram_glossary_management.md)

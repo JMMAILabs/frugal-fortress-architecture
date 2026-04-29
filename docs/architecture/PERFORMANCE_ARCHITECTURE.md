@@ -136,7 +136,6 @@ When **pure Python** is the bottleneck (e.g. heavy math, image ops, embedding lo
 
 ## 5. References
 
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — High-level architecture.
-- [docs/HEXAGONAL_DECOUPLING.md](HEXAGONAL_DECOUPLING.md) — Layer boundaries.
-- [docs/DESGLOSE_IMPLEMENTACION_BEST_PRACTICES.md](DESGLOSE_IMPLEMENTACION_BEST_PRACTICES.md) — Arq, DeepEval, resilience.
-- [docs/adr/007-native-acceleration-strategy.md](adr/007-native-acceleration-strategy.md) — When to use ONNX, Rust, CUDA, etc.
+- [SYSTEM_TOPOLOGY.md](SYSTEM_TOPOLOGY.md) — High-level architecture.
+-[docs/HEXAGONAL_DECOUPLING.md](HEXAGONAL_DECOUPLING.md) — Layer boundaries.
+- [docs/adr/0008-native-acceleration-strategy.md](../adr/0008-native-acceleration-strategy.md) — When to use ONNX, Rust, CUDA, etc.

@@ -28,3 +28,13 @@ We do not run DSPy optimizers in production. The workflow is strictly offline:
    PYTHONPATH=src python scripts/export_adaptive_router_dspy_dataset.py \
      --source db --since-days 30 \
      --output config/dspy/examples/adaptive_router_real_export.jsonl
+   ```
+
+2. **Compile Policy (Offline):**
+   Run the DSPy optimizer (e.g., `MIPROv2` or `BootstrapFewShot`) against the exported dataset to generate the optimized JSON artifact.
+   ```bash
+   PYTHONPATH=src python scripts/compile_dspy_adaptive_router.py
+   ```
+
+3. **Deploy Artifact:**
+   Commit the resulting `config/dspy/adaptive_router.json` to the repository. The backend will load this compiled policy into memory at startup, ensuring zero overhead during runtime inference.
