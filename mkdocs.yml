@@ -1,0 +1,130 @@
+site_name: Frugal Fortress Architecture
+site_description: Enterprise AI Backend Architecture Documentation
+site_author: Javier Martinez
+repo_url: https://github.com/JMMAILabs/frugal-fortress-architecture
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: black
+      accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Executive Summary: EXECUTIVE_SUMMARY.md
+  - Core Architecture:
+    - Architecture Whitepaper: architecture/WHITEPAPER.md
+    - System Topology: architecture/SYSTEM_TOPOLOGY.md
+    - Hexagonal Decoupling: architecture/HEXAGONAL_DECOUPLING.md
+    - Nested Learning Loop (RAG): architecture/NESTED_LEARNING_GUIDE.md
+    - Multi-Tenancy & Isolation: architecture/MULTI_TENANCY_AND_ISOLATION.md
+    - Security & SOC2: architecture/SECURITY_AND_COMPLIANCE_SOC2.md
+    - Performance & Caching: architecture/PERFORMANCE_ARCHITECTURE.md
+    - Billing & Tiers: architecture/BILLING_AND_TIERS.md
+    - Core Invariants: architecture/CORE_INVARIANTS.md
+    - API Versioning: architecture/API_VERSIONING_STRATEGY.md
+    - DSPy Pilots: architecture/dspy_pilots.md
+    - RFC - Core Implementation: architecture/rfc_core_implementation.md
+  - Bounded Contexts (Modules):
+    - Module AURA (Audio Notes):
+      - Overview: AURA/index.md
+      - FinOps & PAYG Wallet: AURA/PAYG_WALLET_AND_BILLING.md
+      - Support Tickets: AURA/SUPPORT_TICKETS_ARCHITECTURE.md
+      - Capacity Planning: AURA/finops_capacity_planning.md
+      - Tiers & Limits: AURA/tiers.md
+    - Module KERA (PDF to Anki):
+      - Overview: KERA/index.md
+      - FinOps & PAYG Wallet: KERA/PAYG_WALLET_AND_BILLING.md
+      - Support Tickets: KERA/SUPPORT_TICKETS_ARCHITECTURE.md
+      - Capacity Planning: KERA/finops_capacity_planning.md
+      - Tiers & Limits: KERA/tiers.md
+    - Module VERA (Receipt Parser):
+      - Overview: VERA/index.md
+      - FinOps & Capacity Planning: VERA/finops_capacity_planning.md
+      - Tiers & Limits: VERA/tiers.md
+      - Troubleshooting: VERA/troubleshooting.md
+  - Architecture Diagrams:
+    - Index: diagrams/index.md
+    - Core System:
+      - C4 System Context: diagrams/core/c4_system_context.md
+      - Backend Monolith Context: diagrams/core/backend_monolith_context.md
+      - Backend Dependencies: diagrams/core/backend_monolith_dependencies.md
+      - Infrastructure View: diagrams/core/infrastructure_view.md
+      - Database Schema: diagrams/core/database_schema.md
+      - FinOps Lifecycle: diagrams/core/finops_lifecycle.md
+      - Concurrency SingleFlight: diagrams/core/concurrency_singleflight.md
+      - Circuit Breaker State: diagrams/core/circuit_breaker_state.md
+      - Resilient Learning Loop: diagrams/core/resilient_learning_loop.md
+      - RAG Pipeline: diagrams/core/rag_pipeline.md
+      - Hexagonal Template: diagrams/core/hexagonal_module_template.md
+    - AURA Diagrams:
+      - C4 Model: diagrams/AURA/c4_model.md
+      - Flow & Idempotency: diagrams/AURA/diagram_flow.md
+      - PAYG Billing: diagrams/AURA/diagram_payg_billing.md
+      - Support Tickets: diagrams/AURA/diagram_support_tickets.md
+      - Glossary Management: diagrams/AURA/diagram_glossary_management.md
+    - KERA Diagrams:
+      - C4 Model: diagrams/KERA/c4_model.md
+      - Async RAG Flow: diagrams/KERA/diagram_pdf_anki.md
+      - Frontend Polling: diagrams/KERA/diagram_frontend_polling.md
+    - VERA Diagrams:
+      - C4 Model: diagrams/VERA/c4_model.md
+      - Hexagonal Module: diagrams/VERA/diagram_hexagonal_module.md
+      - Sequence Flow: diagrams/VERA/sequence_receipts.md
+      - Response Contract: diagrams/VERA/diagram_response_contract.md
+      - History Flow: diagrams/VERA/diagram_history_flow.md
+      - Export Flow: diagrams/VERA/diagram_export.md
+      - Offline Sync: diagrams/VERA/diagram_frontend_offline_sync.md
+  - Operations & SRE:
+    - CI/CD Strategy: operations/CI_CD_DEPLOYMENT_STRATEGY.md
+    - Local Development: operations/LOCAL_DEVELOPMENT.md
+    - DB Migrations: operations/DATABASE_MIGRATIONS_GUIDE.md
+    - Load Testing: operations/LOAD_TESTING_AND_BENCHMARKING.md
+    - Observability: operations/observability_and_logs.md
+    - Incident Response: operations/INCIDENT_RESPONSE_AND_DR.md
+    - API Integration: operations/API_INTEGRATION_GUIDE.md
+    - Authentication & OAuth: operations/AUTHENTICATION_AND_OAUTH.md
+  - QA & Testing:
+    - Coverage Decisions: testing/COVERAGE_DECISIONS.md
+    - Uncovered Exceptions: testing/COVERAGE_UNCOVERED.md
+    - Mutation Pragmas: testing/MUTATION_PRAGMAS.md
+    - Verification Guide: testing/VERIFICATION_GUIDE.md
+    - Future Coverage Fix (PEP 669): testing/FUTURE_COVERAGE_FIX.md
+  - Architecture Decision Records:
+    - ADR-0001 (Record Decisions): adr/0001-record-architecture-decisions.md
+    - ADR-0002 (Use pgvector): adr/0002-use-pgvector.md
+    - ADR-0003 (Coverage Strategy): adr/0003-coverage-strategy-asyncio.md
+    - ADR-0004 (Coverage Threshold): adr/0004-coverage-threshold-acceptance.md
+    - ADR-0005 (Async Test Scope): adr/0005-async-test-scope.md
+    - ADR-0006 (Python 3.12 Pinning): adr/0006-python-312-pinning.md
+    - ADR-0007 (Prompt Manager): adr/0007-prompt-manager-refactor.md
+    - ADR-0008 (Native Acceleration): adr/0008-native-acceleration-strategy.md
+    - ADR-0009 (Postgres vs Pinecone): adr/0009-postgres-pgvector-vs-pinecone.md
+    - ADR-0010 (Local SLM DLP): adr/0010-local-slm-dlp-proxy.md
+    - ADR-0011 (Redis Debouncing): adr/0011-redis-media-group-debouncing.md
+    - ADR-0012 (Two-Phase Commit): adr/0012-two-phase-commit-payg.md
+    - ADR-0013 (Idempotency Guard): adr/0013-sha256-idempotency-guard.md
+    - ADR-0014 (Nested Learning Loop): adr/0014-dynamic-rag-injection.md
