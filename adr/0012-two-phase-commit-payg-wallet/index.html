@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0012-two-phase-commit-payg-wallet/">
       
       
+        <link rel="prev" href="../0011-redis-media-group-debouncing/">
+      
+      
+        <link rel="next" href="../0013-sha256-idempotency-guard/">
       
       
         
@@ -25,7 +29,7 @@
     
     
       
-        <title>ADR 0012: Two-Phase Commit for PAYG Wallet Deductions - Frugal Fortress Architecture</title>
+        <title>ADR-0012 (Two-Phase Commit) - Frugal Fortress Architecture</title>
       
     
     
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR 0012: Two-Phase Commit for PAYG Wallet Deductions
+              ADR-0012 (Two-Phase Commit)
             
           </span>
         </div>
@@ -355,10 +359,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../0001-record-architecture-decisions/" class="md-tabs__link">
           
   
@@ -3037,26 +3043,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   
@@ -3074,7 +3085,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
@@ -3204,7 +3215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0005-async-test-scope.md" class="md-nav__link">
+      <a href="../0005-async-test-scope-strategy/" class="md-nav__link">
         
   
   
@@ -3397,10 +3408,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../0012-two-phase-commit-payg.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0012 (Two-Phase Commit)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -3416,6 +3454,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consequences
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3456,7 +3547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0014-dynamic-rag-injection.md" class="md-nav__link">
+      <a href="../0014-dynamic-rag-injection-nested-learning/" class="md-nav__link">
         
   
   

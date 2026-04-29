@@ -18,7 +18,7 @@
         <link rel="prev" href="../0003-coverage-strategy-asyncio/">
       
       
-        <link rel="next" href="../0006-python-312-pinning/">
+        <link rel="next" href="../0005-async-test-scope-strategy/">
       
       
         
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#acceptance-of-95-coverage-baseline-the-technical-vanity-threshold" class="md-skip">
+        <a href="#adr-0004-acceptance-of-90-coverage-baseline" class="md-skip">
           Skip to content
         </a>
       
@@ -3306,7 +3306,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0005-async-test-scope.md" class="md-nav__link">
+      <a href="../0005-async-test-scope-strategy/" class="md-nav__link">
         
   
   
@@ -3502,7 +3502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0012-two-phase-commit-payg.md" class="md-nav__link">
+      <a href="../0012-two-phase-commit-payg-wallet/" class="md-nav__link">
         
   
   
@@ -3558,7 +3558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../0014-dynamic-rag-injection.md" class="md-nav__link">
+      <a href="../0014-dynamic-rag-injection-nested-learning/" class="md-nav__link">
         
   
   
@@ -3676,11 +3676,11 @@
   
 
 
-<h1 id="acceptance-of-95-coverage-baseline-the-technical-vanity-threshold">Acceptance of 95% Coverage Baseline (The "Technical Vanity" Threshold)</h1>
+<h1 id="adr-0004-acceptance-of-90-coverage-baseline">ADR 0004: Acceptance of 90% Coverage Baseline</h1>
 <p><strong>Date:</strong> 2026-01-31
 <strong>Status:</strong> Accepted</p>
 <h2 id="context">Context</h2>
-<p>The project has achieved a <strong>95% code coverage</strong> across the entire codebase. The remaining 5% of uncovered lines have been audited and identified as:</p>
+<p>The project has achieved a <strong>90% code coverage</strong> across the entire codebase. The remaining 10% of uncovered lines have been audited and identified as:</p>
 <ol>
 <li>
 <p><strong>Infrastructure Resilience (Defensive Coding):</strong></p>
@@ -3703,7 +3703,7 @@
 </li>
 </ol>
 <h2 id="decision">Decision</h2>
-<p>We accept the <strong>95% baseline</strong> as the "Gold Standard". We explicitly reject writing fragile, mock-heavy tests solely to satisfy the coverage metric (Vanity Metrics) for the scenarios listed above.</p>
+<p>We accept the <strong>90% baseline</strong> as the "Gold Standard". We explicitly reject writing fragile, mock-heavy tests solely to satisfy the coverage metric (Vanity Metrics) for the scenarios listed above.</p>
 <h2 id="consequences">Consequences</h2>
 <ul>
 <li><strong>Positive:</strong> Engineering effort is directed towards Observability (Metrics/Logs) and Feature development rather than maintaining brittle tests for theoretical edge cases.</li>
