@@ -3728,12 +3728,24 @@
 <h2 id="3-offline-compilation-workflow">3. Offline Compilation Workflow</h2>
 <p>We do not run DSPy optimizers in production. The workflow is strictly offline:</p>
 <ol>
-<li><strong>Export Real Datasets:</strong>
+<li>
+<p><strong>Export Real Datasets:</strong>
    Extract real user interactions from the PostgreSQL <code>feedback_log</code> or Arize Phoenix traces.
-   ```bash
-   PYTHONPATH=src python scripts/export_adaptive_router_dspy_dataset.py \
-     --source db --since-days 30 \
-     --output config/dspy/examples/adaptive_router_real_export.jsonl</li>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>scripts/export_adaptive_router_dspy_dataset.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>--source<span class="w"> </span>db<span class="w"> </span>--since-days<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>--output<span class="w"> </span>config/dspy/examples/adaptive_router_real_export.jsonl
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Compile Policy (Offline):</strong>
+   Run the DSPy optimizer (e.g., <code>MIPROv2</code> or <code>BootstrapFewShot</code>) against the exported dataset to generate the optimized JSON artifact.
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>scripts/compile_dspy_adaptive_router.py
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Deploy Artifact:</strong>
+   Commit the resulting <code>config/dspy/adaptive_router.json</code> to the repository. The backend will load this compiled policy into memory at startup, ensuring zero overhead during runtime inference.</p>
+</li>
 </ol>
 
 

@@ -3694,152 +3694,152 @@
 <p>This document details the internal architecture of the Receipt Parser module, mapping the strict boundaries between the Domain, Application, and Infrastructure layers, followed by the sequence diagrams for its core operations.</p>
 <h2 id="1-hexagonal-module-wiring">1. Hexagonal Module Wiring</h2>
 <pre class="mermaid"><code>flowchart LR
-  %% -----------------------------
-  %% Receipt Parser (hexagonal)
-  %% -----------------------------
+    %% -----------------------------
+    %% Receipt Parser (hexagonal)
+    %% -----------------------------
 
-  %% Ports
-  subgraph P[Ports Domain/Application]
-    DS["Domain Schemas + Entities"]
-    MV["Math Validator (dates + totals)"]
-    SCL["Self-Correction Loop (206/OK)"]
-    APP["Receipt Processor (tier routing)"]
-  end
+    %% Ports
+    subgraph P[Ports Domain/Application]
+        DS["Domain Schemas + Entities"]
+        MV["Math Validator (dates + totals)"]
+        SCL["Self-Correction Loop (206/OK)"]
+        APP["Receipt Processor (tier routing)"]
+    end
 
-  %% Adapters Inbound
-  subgraph IN[Inbound Adapters]
-    RT["FastAPI Router /receipts/process"]
-    AUTH["Auth Adapter /auth/login/google + callback"]
-  end
+    %% Adapters Inbound
+    subgraph IN[Inbound Adapters]
+        RT["FastAPI Router /receipts/process"]
+        AUTH["Auth Adapter /auth/login/google + callback"]
+    end
 
-  %% Adapters Outbound
-  subgraph OUT[Outbound Adapters]
-    REPO[("ReceiptRepository (ALE encrypted/decrypted)")]
-    USERREPO[("ReceiptParserUserRepository")]
-    LPARSE["LlamaParseAdapter (free tier)"]
-    VLMVLM["VLM / LLM (LiteLLMProvider)"]
-    EMB["Embedding (llm.embed / FastEmbed local)"]
-    TOK["TokenManagerPort (count_tokens)"]
-    COST["CostCalculatorPort"]
-  end
+    %% Adapters Outbound
+    subgraph OUT[Outbound Adapters]
+        REPO[("ReceiptRepository (ALE encrypted/decrypted)")]
+        USERREPO[("ReceiptParserUserRepository")]
+        LPARSE["LlamaParseAdapter (free tier)"]
+        VLMVLM["VLM / LLM (LiteLLMProvider)"]
+        EMB["Embedding (llm.embed / FastEmbed local)"]
+        TOK["TokenManagerPort (count_tokens)"]
+        COST["CostCalculatorPort"]
+    end
 
-  %% Shared services
-  subgraph SEC[Security / Privacy]
-    TOKR["PII Tokenizer Service (Presidio + regex)"]
-  end
+    %% Shared services
+    subgraph SEC[Security / Privacy]
+        TOKR["PII Tokenizer Service (Presidio + regex)"]
+    end
 
-  %% Wiring / Direction
-  RT --&gt;|Receives image_base64, user_role, image_hash| APP
-  AUTH --&gt;|Generates JWT + user_id| RT
+    %% Wiring / Direction
+    RT --&gt;|Receives image_base64, user_role, image_hash| APP
+    AUTH --&gt;|Generates JWT + user_id| RT
 
-  APP --&gt; DS
-  APP --&gt; MV
-  APP --&gt; SCL
+    APP --&gt; DS
+    APP --&gt; MV
+    APP --&gt; SCL
 
-  %% LLM routing
-  APP --&gt;|Free tier| LPARSE
-  APP --&gt;|Paid tiers| VLMVLM
-  APP --&gt; TOK
-  APP --&gt; COST
+    %% LLM routing
+    APP --&gt;|Free tier| LPARSE
+    APP --&gt;|Paid tiers| VLMVLM
+    APP --&gt; TOK
+    APP --&gt; COST
 
-  %% Few-shot via repo
-  APP --&gt;|get_by_issuer_name| REPO
-  REPO --&gt;|SQLite: exact issuer_name| REPO
-  REPO --&gt;|Postgres: cosine_distance on issuer_embedding| REPO
+    %% Few-shot via repo
+    APP --&gt;|get_by_issuer_name| REPO
+    REPO --&gt;|SQLite: exact issuer_name| REPO
+    REPO --&gt;|Postgres: cosine_distance on issuer_embedding| REPO
 
-  %% Tokenization before LLM (free tier)
-  APP --&gt;|free| TOKR
-  TOKR --&gt; VLMVLM
+    %% Tokenization before LLM (free tier)
+    APP --&gt;|free| TOKR
+    TOKR --&gt; VLMVLM
 
-  %% Persistence
-  APP --&gt;|save verified receipt| REPO
-  REPO --&gt; USERREPO
+    %% Persistence
+    APP --&gt;|save verified receipt| REPO
+    REPO --&gt; USERREPO
 
-  %% Embedding computation happens via llm.embed in router
-  RT --&gt;|llm.embed to issuer_embedding| REPO</code></pre>
+    %% Embedding computation happens via llm.embed in router
+    RT --&gt;|llm.embed to issuer_embedding| REPO</code></pre>
 <h2 id="2-processing-sequence-self-correction-loop">2. Processing Sequence (Self-Correction Loop)</h2>
 <pre class="mermaid"><code>sequenceDiagram
-  autonumber
-  actor F as Frontend (Edge/PWA)
-  participant API as FastAPI `/receipts/process`
-  participant PROC as process_receipt_image
-  participant LPARSE as LlamaParseAdapter
-  participant PIITOK as PIITokenizerService (Presidio/regex)
-  participant LLM as LLMProvider (Groq / VLM)
-  participant MATH as validate_receipt_math
-  participant SCLOOP as SelfCorrectionLoop (hasta 3)
-  participant REPO as ReceiptRepository (ALE cifrado)
+    autonumber
+    actor F as Frontend (Edge/PWA)
+    participant API as FastAPI `/receipts/process`
+    participant PROC as process_receipt_image
+    participant LPARSE as LlamaParseAdapter
+    participant PIITOK as PIITokenizerService (Presidio/regex)
+    participant LLM as LLMProvider (Groq / VLM)
+    participant MATH as validate_receipt_math
+    participant SCLOOP as SelfCorrectionLoop (Max 3)
+    participant REPO as ReceiptRepository (ALE Encrypted)
 
-  F-&gt;&gt;API: POST /api/v1/receipts/process\nimage_base64, user_role, image_hash\nHeader: X-User-Id
-  API-&gt;&gt;API: Carga tier (ReceiptParserUserRepository)\nEnforce límites (429)
-  API-&gt;&gt;API: Duplicados (409) por image_hash
-  API-&gt;&gt;PROC: process_receipt_image(tier, image_base64, user_stated_role)
+    F-&gt;&gt;API: POST /api/v1/receipts/process\nimage_base64, user_role, image_hash\nHeader: X-User-Id
+    API-&gt;&gt;API: Load tier (ReceiptParserUserRepository)\nEnforce limits (429)
+    API-&gt;&gt;API: Check duplicates (409) via image_hash
+    API-&gt;&gt;PROC: process_receipt_image(tier, image_base64, user_stated_role)
 
-  alt Tier usa stack free (Free/Admin)
-    PROC-&gt;&gt;LPARSE: extract_markdown(image_bytes)
-    PROC-&gt;&gt;PIITOK: tokenize(OCR markdown)
-    PROC-&gt;&gt;SCLOOP: self-correction loop (MAX_RETRIES=3)\nLLM JSON + validate schema + validate math
-    SCLOOP-&gt;&gt;LLM: LlamaParse text -&gt; Groq JSON
-    SCLOOP-&gt;&gt;MATH: validate_receipt_math(receipt)
-  else Tier pago (Premium/Pro/Ultra)
-    PROC-&gt;&gt;SCLOOP: self-correction loop (MAX_RETRIES=3)\nLLM JSON + validate schema + validate math
-    SCLOOP-&gt;&gt;LLM: Direct VLM (imagen en data URL) -&gt; JSON
-    SCLOOP-&gt;&gt;MATH: validate_receipt_math(receipt)
-  end
+    alt Tier uses Free Stack (Free/Admin)
+        PROC-&gt;&gt;LPARSE: extract_markdown(image_bytes)
+        PROC-&gt;&gt;PIITOK: tokenize(OCR markdown)
+        PROC-&gt;&gt;SCLOOP: self-correction loop (MAX_RETRIES=3)\nLLM JSON + validate schema + validate math
+        SCLOOP-&gt;&gt;LLM: LlamaParse text -&gt; Groq JSON
+        SCLOOP-&gt;&gt;MATH: validate_receipt_math(receipt)
+    else Paid Tier (Premium/Pro/PAYG)
+        PROC-&gt;&gt;SCLOOP: self-correction loop (MAX_RETRIES=3)\nLLM JSON + validate schema + validate math
+        SCLOOP-&gt;&gt;LLM: Direct VLM (Image Data URL) -&gt; JSON
+        SCLOOP-&gt;&gt;MATH: validate_receipt_math(receipt)
+    end
 
-  alt Math OK (antes de agotar reintentos)
-    SCLOOP--&gt;&gt;PROC: receipt verificado
-    PROC-&gt;&gt;REPO: save(receipt) (encrypt payload + issuer_name claro)\n(issuer_embedding opcional)
-    REPO--&gt;&gt;PROC: receipt_id
-    PROC--&gt;&gt;API: ReceiptProcessResponse {status: "verified"}
-    API--&gt;&gt;F: HTTP 200 + `receipt`
-  else Math falla tras 3 reintentos
-    SCLOOP--&gt;&gt;PROC: best_effort_receipt (JSON último)
-    PROC--&gt;&gt;API: ReceiptProcessResponse {status: requires_human_correction}
-    API--&gt;&gt;F: HTTP 206 + `best_effort_receipt` editable
-  end</code></pre>
+    alt Math OK (Before retries exhausted)
+        SCLOOP--&gt;&gt;PROC: Verified Receipt
+        PROC-&gt;&gt;REPO: save(receipt) (encrypt payload + plaintext issuer_name)\n(issuer_embedding optional)
+        REPO--&gt;&gt;PROC: receipt_id
+        PROC--&gt;&gt;API: ReceiptProcessResponse {status: "verified"}
+        API--&gt;&gt;F: HTTP 200 + `receipt`
+    else Math Fails (After 3 retries)
+        SCLOOP--&gt;&gt;PROC: best_effort_receipt (Last JSON attempt)
+        PROC--&gt;&gt;API: ReceiptProcessResponse {status: requires_human_correction}
+        API--&gt;&gt;F: HTTP 206 + `best_effort_receipt` (Editable)
+    end</code></pre>
 <h2 id="3-few-shot-vendor-matching-rag">3. Few-Shot Vendor Matching (RAG)</h2>
 <pre class="mermaid"><code>sequenceDiagram
-  autonumber
-  actor API as Router `/receipts/process`
-  participant RT as process_receipt_image
-  participant REPO as ReceiptRepository.get_by_issuer_name
-  participant EMB as llm.embed(issuer_name)
-  participant BUILD as _build_system_with_examples
-  participant LLM as LLMProvider
+    autonumber
+    actor API as Router `/receipts/process`
+    participant RT as process_receipt_image
+    participant REPO as ReceiptRepository.get_by_issuer_name
+    participant EMB as llm.embed(issuer_name)
+    participant BUILD as _build_system_with_examples
+    participant LLM as LLMProvider
 
-  API-&gt;&gt;EMB: llm.embed(issuer_name) -&gt; issuer_embedding (router)
-  API-&gt;&gt;REPO: get_by_issuer_name(user_id, issuer_name, limit=2, issuer_embedding)
+    API-&gt;&gt;EMB: llm.embed(issuer_name) -&gt; issuer_embedding (router)
+    API-&gt;&gt;REPO: get_by_issuer_name(user_id, issuer_name, limit=2, issuer_embedding)
 
-  alt Postgres disponible
-    REPO-&gt;&gt;REPO: cosine_distance(issuer_embedding)\nORDER BY para similitud + fill exact match
-  else SQLite (tests)
-    REPO-&gt;&gt;REPO: coincidencia exacta issuer_name
-  end
+    alt Postgres Available
+        REPO-&gt;&gt;REPO: cosine_distance(issuer_embedding)\nORDER BY similarity + fill exact match
+    else SQLite (Test Environment)
+        REPO-&gt;&gt;REPO: Exact match on issuer_name
+    end
 
-  REPO--&gt;&gt;API: receipts list (max 2) ya descifradas
-  API-&gt;&gt;RT: process_receipt_image(..., get_examples=_get_examples)
-  RT-&gt;&gt;BUILD: build system prompt + `&lt;example&gt;` blocks\n(inyecta hasta 2 recibos)
-  RT-&gt;&gt;LLM: completa con JSON coherente con el proveedor</code></pre>
+    REPO--&gt;&gt;API: Decrypted receipts list (max 2)
+    API-&gt;&gt;RT: process_receipt_image(..., get_examples=_get_examples)
+    RT-&gt;&gt;BUILD: Build system prompt + `&lt;example&gt;` blocks\n(Injects up to 2 receipts)
+    RT-&gt;&gt;LLM: Generate JSON consistent with provider format</code></pre>
 <h2 id="4-authentication-flow-google-oauth">4. Authentication Flow (Google OAuth)</h2>
 <pre class="mermaid"><code>sequenceDiagram
-  autonumber
-  actor F as Frontend
-  participant AUTH as FastAPI `/auth/login/google` y `/auth/callback/google`
-  participant G as Google OAuth
-  participant DB as Supabase/Postgres `receipt_parser_users`
+    autonumber
+    actor F as Frontend
+    participant AUTH as FastAPI `/auth/login/google` &amp; `/auth/callback/google`
+    participant G as Google OAuth
+    participant DB as Supabase/Postgres `receipt_parser_users`
 
-  F-&gt;&gt;AUTH: GET /api/v1/auth/login/google
-  AUTH--&gt;&gt;G: Redirect a consent screen (302) con redirect_uri + state
-  G--&gt;&gt;AUTH: GET /api/v1/auth/callback/google?code=...&amp;state=...
-  AUTH-&gt;&gt;AUTH: Exchange code -&gt; access_token (HTTP POST)
-  AUTH-&gt;&gt;AUTH: GET userinfo (openid email profile)
-  AUTH-&gt;&gt;DB: upsert_google_oauth_user\nuser_id = google sub\nemail/display_name/auth_provider
-  DB--&gt;&gt;AUTH: row (tier, balance_usd, ...)
-  AUTH--&gt;&gt;F: JWT Bearer + user_id (sub)
-  F-&gt;&gt;F: Persist JWT + user_id
-  F-&gt;&gt;AUTH: GET /api/v1/auth/me (opcional)
-  F-&gt;&gt;AUTH: usar X-User-Id=user_id en POST /receipts/process</code></pre>
+    F-&gt;&gt;AUTH: GET /api/v1/auth/login/google
+    AUTH--&gt;&gt;G: Redirect to consent screen (302) with redirect_uri + state
+    G--&gt;&gt;AUTH: GET /api/v1/auth/callback/google?code=...&amp;state=...
+    AUTH-&gt;&gt;AUTH: Exchange code -&gt; access_token (HTTP POST)
+    AUTH-&gt;&gt;AUTH: GET userinfo (openid email profile)
+    AUTH-&gt;&gt;DB: upsert_google_oauth_user\nuser_id = google sub\nemail/display_name/auth_provider
+    DB--&gt;&gt;AUTH: row (tier, balance_usd, ...)
+    AUTH--&gt;&gt;F: JWT Bearer + user_id (sub)
+    F-&gt;&gt;F: Persist JWT + user_id
+    F-&gt;&gt;AUTH: GET /api/v1/auth/me (Optional)
+    F-&gt;&gt;AUTH: Use X-User-Id=user_id in POST /receipts/process</code></pre>
 
 
 
