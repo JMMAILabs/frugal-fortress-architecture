@@ -4,10 +4,9 @@ name: Deploy MkDocs to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change to 'master' if your default branch is named master
-  workflow_dispatch: # Allows manual triggering from the GitHub UI
+      - main
+  workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to gh-pages branch
 permissions:
   contents: write
 
@@ -18,19 +17,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all history for accurate git-revision-date
+          fetch-depth: 0
 
       - name: Setup Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
+          cache: "pip" # Now this will work because requirements.txt exists
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # Install MkDocs Material and any required plugins
-          pip install mkdocs-material
+          pip install -r requirements.txt
 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
