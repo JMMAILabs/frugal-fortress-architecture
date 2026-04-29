@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,37 +3559,36 @@
 
 <h1 id="payg-wallet-dynamic-billing-two-phase-commit-2pc">PAYG Wallet — Dynamic Billing &amp; Two-Phase Commit (2PC)</h1>
 <p>This sequence diagram shows the FinOps lifecycle for a Pay-As-You-Go user, highlighting the atomic Two-Phase Commit (ADR-0012) that prevents Denial of Wallet (DoW) attacks.</p>
-<p>```mermaid
-%%{init: {'theme': 'default', 'themeVariables': { 'noteBkgColor': '#e1f5fe', 'noteTextColor': '#01579b'}}}%%
+<pre class="mermaid"><code>%%{init: {'theme': 'default', 'themeVariables': { 'noteBkgColor': '#e1f5fe', 'noteTextColor': '#01579b'}}}%%
 sequenceDiagram
     autonumber
     participant User as Telegram User
     participant API as FastAPI
     participant Budget as BudgetManager (Redis Lua)
     participant LLM as Vertex AI (Gemini 2.5 Pro)
-    participant DB as PostgreSQL (Wallet)</p>
-<div class="highlight"><pre><span></span><code>Note over User, DB: Phase 1: Pre-flight Reservation (Reserve)
-User-&gt;&gt;API: Send 15-minute Audio Note
-API-&gt;&gt;API: Calculate Estimated Cost (e.g., $0.20)
-API-&gt;&gt;Budget: reserve_budget(tenant_id, $0.20)
+    participant DB as PostgreSQL (Wallet)
 
-alt Insufficient Funds
-    Budget--&gt;&gt;API: Return -1 (Rejected)
-    API--&gt;&gt;User: &quot;Insufficient balance for Gemini 2.5 Pro. Falling back to base tier.&quot;
-else Funds Available
-    Budget--&gt;&gt;API: Return 1 (Reserved)
+    Note over User, DB: Phase 1: Pre-flight Reservation (Reserve)
+    User-&gt;&gt;API: Send 15-minute Audio Note
+    API-&gt;&gt;API: Calculate Estimated Cost (e.g., $0.20)
+    API-&gt;&gt;Budget: reserve_budget(tenant_id, $0.20)
 
-    Note over API, LLM: Phase 2: Inference
-    API-&gt;&gt;LLM: Process Multimodal Audio
-    LLM--&gt;&gt;API: JSON Summary + Exact Token Usage
+    alt Insufficient Funds
+        Budget--&gt;&gt;API: Return -1 (Rejected)
+        API--&gt;&gt;User: "Insufficient balance for Gemini 2.5 Pro. Falling back to base tier."
+    else Funds Available
+        Budget--&gt;&gt;API: Return 1 (Reserved)
 
-    Note over API, DB: Phase 3: Exact Deduction (Commit)
-    API-&gt;&gt;API: Calculate Exact Cost + 40% Markup (e.g., $0.18)
-    API-&gt;&gt;DB: SELECT FOR UPDATE -&gt; Deduct $0.18 -&gt; Insert DEBIT Tx
-    API-&gt;&gt;Budget: commit_budget(tenant_id, reserved=$0.20, actual=$0.18)
-    API--&gt;&gt;User: Send Summary + &quot;Cost: $0.18 | Remaining: $9.82&quot;
-end
-</code></pre></div>
+        Note over API, LLM: Phase 2: Inference
+        API-&gt;&gt;LLM: Process Multimodal Audio
+        LLM--&gt;&gt;API: JSON Summary + Exact Token Usage
+
+        Note over API, DB: Phase 3: Exact Deduction (Commit)
+        API-&gt;&gt;API: Calculate Exact Cost + 40% Markup (e.g., $0.18)
+        API-&gt;&gt;DB: SELECT FOR UPDATE -&gt; Deduct $0.18 -&gt; Insert DEBIT Tx
+        API-&gt;&gt;Budget: commit_budget(tenant_id, reserved=$0.20, actual=$0.18)
+        API--&gt;&gt;User: Send Summary + "Cost: $0.18 | Remaining: $9.82"
+    end</code></pre>
 
 
 

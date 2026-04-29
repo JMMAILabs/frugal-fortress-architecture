@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,35 +3559,34 @@
 
 <h1 id="circuit-breaker-state-machine">Circuit Breaker State Machine</h1>
 <p>This state diagram shows the distributed Circuit Breaker logic. It highlights the "Fail Open" design: if the distributed cache (Redis) fails, the breaker falls back to local memory state to ensure the application doesn't crash.</p>
-<p>```mermaid
-stateDiagram-v2
-    [*] --&gt; CLOSED</p>
-<div class="highlight"><pre><span></span><code>state CLOSED {
-    [*] --&gt; Distributed_Closed
-    Distributed_Closed --&gt; Local_Closed : Redis Timeout/Error
-}
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; CLOSED
 
-state OPEN {
-    [*] --&gt; Distributed_Open
-    Distributed_Open --&gt; Local_Open : Redis Timeout/Error
-}
+    state CLOSED {
+        [*] --&gt; Distributed_Closed
+        Distributed_Closed --&gt; Local_Closed : Redis Timeout/Error
+    }
 
-state HALF_OPEN {
-    [*] --&gt; Probe_Lock_Acquired
-}
+    state OPEN {
+        [*] --&gt; Distributed_Open
+        Distributed_Open --&gt; Local_Open : Redis Timeout/Error
+    }
 
-CLOSED --&gt; OPEN : Failures &gt;= Threshold (e.g., 5)
-OPEN --&gt; HALF_OPEN : Recovery Timeout Expired (e.g., 30s)
+    state HALF_OPEN {
+        [*] --&gt; Probe_Lock_Acquired
+    }
 
-HALF_OPEN --&gt; CLOSED : Probe Request Success
-HALF_OPEN --&gt; OPEN : Probe Request Failed
+    CLOSED --&gt; OPEN : Failures &gt;= Threshold (e.g., 5)
+    OPEN --&gt; HALF_OPEN : Recovery Timeout Expired (e.g., 30s)
 
-Note right of OPEN
-    Fast-fails requests.
-    Triggers Fallback Models
-    (e.g., GPT-4o -&gt; Llama-3)
-end note
-</code></pre></div>
+    HALF_OPEN --&gt; CLOSED : Probe Request Success
+    HALF_OPEN --&gt; OPEN : Probe Request Failed
+
+    Note right of OPEN
+        Fast-fails requests.
+        Triggers Fallback Models
+        (e.g., GPT-4o -&gt; Llama-3)
+    end note</code></pre>
 
 
 

@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,29 +3559,28 @@
 
 <h1 id="finops-token-economy-lifecycle">FinOps &amp; Token Economy Lifecycle</h1>
 <p>This flowchart details the two-phase commit process for budget management and rate limiting using atomic Lua scripts in Redis.</p>
-<p>```mermaid
-flowchart TD
-    Start([Incoming Request]) --&gt; RL{"RateLimitMiddleware<br/>(Lua Token Bucket)"}</p>
-<div class="highlight"><pre><span></span><code>RL --&gt;|Exceeds RPM/TPM| Err429[&quot;HTTP 429 Too Many Requests&quot;]
-RL --&gt;|Allowed| Router[&quot;AdaptiveRouter&quot;]
+<pre class="mermaid"><code>flowchart TD
+    Start([Incoming Request]) --&gt; RL{"RateLimitMiddleware&lt;br/&gt;(Lua Token Bucket)"}
 
-Router --&gt; Reserve{&quot;BudgetManager.reserve_budget()&lt;br/&gt;(Lua Script)&quot;}
-Reserve --&gt;|Insufficient Funds| Err503[&quot;HTTP 503 Daily Budget Exceeded&quot;]
-Reserve --&gt;|Funds Reserved| Inference[&quot;LLM Inference / Streaming&quot;]
+    RL --&gt;|Exceeds RPM/TPM| Err429["HTTP 429 Too Many Requests"]
+    RL --&gt;|Allowed| Router["AdaptiveRouter"]
 
-Inference --&gt; StreamMgr[&quot;StreamFinOpsManager&quot;]
+    Router --&gt; Reserve{"BudgetManager.reserve_budget()&lt;br/&gt;(Lua Script)"}
+    Reserve --&gt;|Insufficient Funds| Err503["HTTP 503 Daily Budget Exceeded"]
+    Reserve --&gt;|Funds Reserved| Inference["LLM Inference / Streaming"]
 
-subgraph Streaming Phase
-    StreamMgr --&gt;|Chunk 1| Client
-    StreamMgr --&gt;|Chunk N| Client
-    StreamMgr --&gt;|Final Chunk + Usage| Calc[&quot;Calculate Exact Cost&quot;]
-end
+    Inference --&gt; StreamMgr["StreamFinOpsManager"]
 
-Calc --&gt; Commit[&quot;BudgetManager.commit_budget()&lt;br/&gt;(Lua Script)&quot;]
+    subgraph Streaming Phase
+        StreamMgr --&gt;|Chunk 1| Client
+        StreamMgr --&gt;|Chunk N| Client
+        StreamMgr --&gt;|Final Chunk + Usage| Calc["Calculate Exact Cost"]
+    end
 
-Commit -.-&gt;|Releases unused reserved funds&lt;br/&gt;and applies exact actual cost| Worker[&quot;Publish to EventBus&quot;]
-Worker --&gt; DB[(&quot;PostgreSQL&lt;br/&gt;Persist Cost&quot;)]
-</code></pre></div>
+    Calc --&gt; Commit["BudgetManager.commit_budget()&lt;br/&gt;(Lua Script)"]
+
+    Commit -.-&gt;|Releases unused reserved funds&lt;br/&gt;and applies exact actual cost| Worker["Publish to EventBus"]
+    Worker --&gt; DB[("PostgreSQL&lt;br/&gt;Persist Cost")]</code></pre>
 
 
 

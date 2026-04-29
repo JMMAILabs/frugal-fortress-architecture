@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,43 +3559,42 @@
 
 <h1 id="concurrency-async-singleflight-pattern">Concurrency: Async SingleFlight Pattern</h1>
 <p>This sequence diagram illustrates how the <code>AsyncSingleFlight</code> pattern prevents "Cache Stampedes". When multiple concurrent requests ask the exact same question, only the first request (Owner) executes the heavy LLM/Retrieval logic. The others (Waiters) suspend execution and share the final result.</p>
-<p>```mermaid
-sequenceDiagram
+<pre class="mermaid"><code>sequenceDiagram
     autonumber
     actor User1 as User A (Prompt X)
     actor User2 as User B (Prompt X)
     actor User3 as User C (Prompt X)
     participant Router as AdaptiveRouter
     participant SF as AsyncSingleFlight
-    participant LLM as LLM / VectorDB</p>
-<div class="highlight"><pre><span></span><code>User1-&gt;&gt;Router: route_request(&quot;Prompt X&quot;)
-Router-&gt;&gt;SF: do_with_owner(hash(&quot;Prompt X&quot;))
-SF--&gt;&gt;Router: Lock Acquired (Is Owner = True)
-Router-&gt;&gt;LLM: Execute RAG &amp; Inference
+    participant LLM as LLM / VectorDB
 
-Note over User2, SF: 10ms later...
-User2-&gt;&gt;Router: route_request(&quot;Prompt X&quot;)
-Router-&gt;&gt;SF: do_with_owner(hash(&quot;Prompt X&quot;))
-Note right of SF: Key exists. Task suspended.
-SF--&gt;&gt;Router: Wait for Owner Task
+    User1-&gt;&gt;Router: route_request("Prompt X")
+    Router-&gt;&gt;SF: do_with_owner(hash("Prompt X"))
+    SF--&gt;&gt;Router: Lock Acquired (Is Owner = True)
+    Router-&gt;&gt;LLM: Execute RAG &amp; Inference
 
-Note over User3, SF: 20ms later...
-User3-&gt;&gt;Router: route_request(&quot;Prompt X&quot;)
-Router-&gt;&gt;SF: do_with_owner(hash(&quot;Prompt X&quot;))
-SF--&gt;&gt;Router: Wait for Owner Task
+    Note over User2, SF: 10ms later...
+    User2-&gt;&gt;Router: route_request("Prompt X")
+    Router-&gt;&gt;SF: do_with_owner(hash("Prompt X"))
+    Note right of SF: Key exists. Task suspended.
+    SF--&gt;&gt;Router: Wait for Owner Task
 
-LLM--&gt;&gt;Router: LLMResponse (Cost: $0.02)
-Router-&gt;&gt;SF: Task Completed
+    Note over User3, SF: 20ms later...
+    User3-&gt;&gt;Router: route_request("Prompt X")
+    Router-&gt;&gt;SF: do_with_owner(hash("Prompt X"))
+    SF--&gt;&gt;Router: Wait for Owner Task
 
-Note over SF, Router: SingleFlight distributes result to all waiters
-SF--&gt;&gt;Router: Return to User 1 (Owner)
-SF--&gt;&gt;Router: Return to User 2 (Waiter)
-SF--&gt;&gt;Router: Return to User 3 (Waiter)
+    LLM--&gt;&gt;Router: LLMResponse (Cost: $0.02)
+    Router-&gt;&gt;SF: Task Completed
 
-Router--&gt;&gt;User1: Response (Cost: $0.02)
-Router--&gt;&gt;User2: Response (Cost: $0.00, model: cache-coalesced)
-Router--&gt;&gt;User3: Response (Cost: $0.00, model: cache-coalesced)
-</code></pre></div>
+    Note over SF, Router: SingleFlight distributes result to all waiters
+    SF--&gt;&gt;Router: Return to User 1 (Owner)
+    SF--&gt;&gt;Router: Return to User 2 (Waiter)
+    SF--&gt;&gt;Router: Return to User 3 (Waiter)
+
+    Router--&gt;&gt;User1: Response (Cost: $0.02)
+    Router--&gt;&gt;User2: Response (Cost: $0.00, model: cache-coalesced)
+    Router--&gt;&gt;User3: Response (Cost: $0.00, model: cache-coalesced)</code></pre>
 
 
 

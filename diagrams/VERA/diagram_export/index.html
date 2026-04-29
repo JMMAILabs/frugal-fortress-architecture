@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,20 +3559,23 @@
 
 <h1 id="vera-receipt-parser-export-flow-csv-xlsx">VERA (Receipt Parser) — Export Flow (CSV &amp; XLSX)</h1>
 <p>This flowchart demonstrates the data retrieval and export process for the <code>GET /api/v1/receipts/export</code> endpoint. It highlights how Application-Level Encryption (ALE) is decrypted on-the-fly in memory before streaming the file (CSV or Excel) to the client.</p>
-<p>```mermaid
-flowchart TD
+<pre class="mermaid"><code>flowchart TD
   A([Start]) --&gt; B["GET /api/v1/receipts/export\nQuery: format (csv/xlsx), user_role?"]
   B --&gt; C["ReceiptRepository.list_by_user(...)"]
   C --&gt; D["_decrypt_payload(ALE)\nfor each ReceiptRecord"]
-  D --&gt; E{"format == 'xlsx'?"}</p>
-<p>E --&gt;|Yes| F1["Build XLSX in memory (openpyxl)\nws.append(row)"]
-  E --&gt;|No (csv)| F2["Build CSV in memory (csv.writer)\nwriter.writerow(row)"]</p>
-<p>F1 --&gt; G1["StreamingResponse\nmedia_type='application/vnd.openxmlformats...'"]
-  F2 --&gt; G2["StreamingResponse\nmedia_type='text/csv'"]</p>
-<p>G1 --&gt; H([Download in frontend])
-  G2 --&gt; H</p>
-<p>%% Domain Context
-  C -.-&gt; I["Data decrypted on-the-fly\nvia backend AES/ALE.\nZero plaintext on disk."]</p>
+  D --&gt; E{"format == 'xlsx'?"}
+
+  E --&gt;|Yes| F1["Build XLSX in memory (openpyxl)\nws.append(row)"]
+  E --&gt;|No (csv)| F2["Build CSV in memory (csv.writer)\nwriter.writerow(row)"]
+
+  F1 --&gt; G1["StreamingResponse\nmedia_type='application/vnd.openxmlformats...'"]
+  F2 --&gt; G2["StreamingResponse\nmedia_type='text/csv'"]
+
+  G1 --&gt; H([Download in frontend])
+  G2 --&gt; H
+
+  %% Domain Context
+  C -.-&gt; I["Data decrypted on-the-fly\nvia backend AES/ALE.\nZero plaintext on disk."]</code></pre>
 
 
 

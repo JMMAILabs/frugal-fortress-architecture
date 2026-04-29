@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,8 +3559,7 @@
 
 <h1 id="receipt-parser-edge-compute-self-correction-sequence">Receipt Parser — Edge Compute &amp; Self-Correction Sequence</h1>
 <p>This sequence diagram illustrates the hybrid architecture: Edge computing for image compression, Cloud orchestration for AI extraction, deterministic Math Validation, and the Human-in-the-Loop (HITL) fallback using HTTP 206.</p>
-<p>```mermaid
-%%{init: {'theme': 'default', 'themeVariables': { 'noteBkgColor': '#fff5ad', 'noteTextColor': '#333333'}}}%%
+<pre class="mermaid"><code>%%{init: {'theme': 'default', 'themeVariables': { 'noteBkgColor': '#fff5ad', 'noteTextColor': '#333333'}}}%%
 sequenceDiagram
     autonumber
     participant Edge as Next.js PWA (Browser)
@@ -3568,47 +3567,47 @@ sequenceDiagram
     participant PII as PII Scrubber (Presidio)
     participant LLM as LiteLLM (Groq / Vertex)
     participant Math as Math Validator (Python)
-    participant DB as Postgres (pgvector)</p>
-<div class="highlight"><pre><span></span><code>Note over Edge, API: Phase 1: Edge Compute &amp; Upload
-Edge-&gt;&gt;Edge: Capture Photo &amp; Compress via Canvas API (5MB -&gt; 150KB)
-Edge-&gt;&gt;API: POST /receipts/process (Base64 Image)
-activate API
+    participant DB as Postgres (pgvector)
 
-API-&gt;&gt;DB: Fetch Few-Shot Examples (pgvector similarity on Issuer)
+    Note over Edge, API: Phase 1: Edge Compute &amp; Upload
+    Edge-&gt;&gt;Edge: Capture Photo &amp; Compress via Canvas API (5MB -&gt; 150KB)
+    Edge-&gt;&gt;API: POST /receipts/process (Base64 Image)
+    activate API
 
-Note over API, Math: Phase 2: Self-Correction Loop (Max 3 Retries)
-loop Until Math is Valid or Max Retries Reached
-    alt Free Tier
-        API-&gt;&gt;PII: Scrub PII from OCR Text
-        API-&gt;&gt;LLM: Extract JSON (Groq Llama-3)
-    else Paid Tier
-        API-&gt;&gt;LLM: Extract JSON from Image (Vertex Gemini VLM)
+    API-&gt;&gt;DB: Fetch Few-Shot Examples (pgvector similarity on Issuer)
+
+    Note over API, Math: Phase 2: Self-Correction Loop (Max 3 Retries)
+    loop Until Math is Valid or Max Retries Reached
+        alt Free Tier
+            API-&gt;&gt;PII: Scrub PII from OCR Text
+            API-&gt;&gt;LLM: Extract JSON (Groq Llama-3)
+        else Paid Tier
+            API-&gt;&gt;LLM: Extract JSON from Image (Vertex Gemini VLM)
+        end
+
+        LLM--&gt;&gt;API: Structured JSON Receipt
+        API-&gt;&gt;Math: validate_receipt_math(receipt)
+
+        alt Math is Invalid
+            Math--&gt;&gt;API: Error: "Subtotal + Tax != Total"
+            API-&gt;&gt;API: Append Error to Prompt for next retry
+        end
     end
 
-    LLM--&gt;&gt;API: Structured JSON Receipt
-    API-&gt;&gt;Math: validate_receipt_math(receipt)
-
-    alt Math is Invalid
-        Math--&gt;&gt;API: Error: &quot;Subtotal + Tax != Total&quot;
-        API-&gt;&gt;API: Append Error to Prompt for next retry
+    Note over API, Edge: Phase 3: Response &amp; Human-in-the-Loop
+    alt Math is Valid
+        API-&gt;&gt;DB: Save Encrypted Receipt (ALE)
+        API--&gt;&gt;Edge: HTTP 200 OK { status: "verified", receipt: {...} }
+    else Math is Invalid (After 3 Retries)
+        API--&gt;&gt;Edge: HTTP 206 Partial Content { status: "requires_human_correction", best_effort_receipt: {...} }
+        Note left of Edge: UI renders form with AI's best effort data
+        Edge-&gt;&gt;Edge: User manually corrects the math error
+        Edge-&gt;&gt;API: POST /receipts/history (Corrected JSON)
+        API-&gt;&gt;Math: validate_receipt_math(corrected_receipt)
+        API-&gt;&gt;DB: Save Encrypted Receipt &amp; Update Vector Store
+        API--&gt;&gt;Edge: HTTP 200 OK { status: "saved" }
     end
-end
-
-Note over API, Edge: Phase 3: Response &amp; Human-in-the-Loop
-alt Math is Valid
-    API-&gt;&gt;DB: Save Encrypted Receipt (ALE)
-    API--&gt;&gt;Edge: HTTP 200 OK { status: &quot;verified&quot;, receipt: {...} }
-else Math is Invalid (After 3 Retries)
-    API--&gt;&gt;Edge: HTTP 206 Partial Content { status: &quot;requires_human_correction&quot;, best_effort_receipt: {...} }
-    Note left of Edge: UI renders form with AI&#39;s best effort data
-    Edge-&gt;&gt;Edge: User manually corrects the math error
-    Edge-&gt;&gt;API: POST /receipts/history (Corrected JSON)
-    API-&gt;&gt;Math: validate_receipt_math(corrected_receipt)
-    API-&gt;&gt;DB: Save Encrypted Receipt &amp; Update Vector Store
-    API--&gt;&gt;Edge: HTTP 200 OK { status: &quot;saved&quot; }
-end
-deactivate API
-</code></pre></div>
+    deactivate API</code></pre>
 
 
 

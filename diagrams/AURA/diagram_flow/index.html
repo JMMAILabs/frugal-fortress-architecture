@@ -675,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -3559,55 +3559,54 @@
 
 <h1 id="audio-notes-idempotency-nested-learning-loop">Audio Notes — Idempotency &amp; Nested Learning Loop</h1>
 <p>This sequence diagram illustrates the dual-path processing (Free vs Paid) and the self-correcting feedback loop (Reply-to-Correct), highlighting the strict Hexagonal Architecture boundaries and Application-Level Encryption (ALE).</p>
-<p>```mermaid
-%%{init: {'theme': 'default', 'themeVariables': { 'noteBkgColor': '#e3f2fd', 'noteTextColor': '#0d47a1', 'actorBkg': '#eceff1'}}}%%
+<pre class="mermaid"><code>%%{init: {'theme': 'default', 'themeVariables': { 'noteBkgColor': '#e3f2fd', 'noteTextColor': '#0d47a1', 'actorBkg': '#eceff1'}}}%%
 sequenceDiagram
     autonumber
     participant User as Telegram User
     participant API as FastAPI (Webhook)
     participant Cache as Redis (Idempotency)
     participant DB as Postgres (ALE Encrypted)
-    participant LLM as LiteLLM (Groq/Vertex)</p>
-<div class="highlight"><pre><span></span><code>Note over User, LLM: Phase 1: Audio Processing &amp; Idempotency Guard
-User-&gt;&gt;API: Sends Voice Note
-activate API
-API-&gt;&gt;API: Calculate SHA-256 Hash of Audio Bytes
-API-&gt;&gt;Cache: Check Hash (RedisIdempotencyGuard)
+    participant LLM as LiteLLM (Groq/Vertex)
 
-alt Cache Hit (Viral/Duplicate Audio)
-    Cache--&gt;&gt;API: Return Cached Summary
-    API--&gt;&gt;User: Send Summary (Latency &lt; 50ms, Cost $0)
-else Cache Miss (New Audio)
-    API-&gt;&gt;DB: Fetch User Glossary Rules (RAG)
+    Note over User, LLM: Phase 1: Audio Processing &amp; Idempotency Guard
+    User-&gt;&gt;API: Sends Voice Note
+    activate API
+    API-&gt;&gt;API: Calculate SHA-256 Hash of Audio Bytes
+    API-&gt;&gt;Cache: Check Hash (RedisIdempotencyGuard)
 
-    alt Tier: Free
-        API-&gt;&gt;LLM: Transcribe (WhisperGroqAdapter)
-        LLM--&gt;&gt;API: Transcript
-        API-&gt;&gt;LLM: Summarize with Glossary (LLMSummarizerAdapter)
-        LLM--&gt;&gt;API: JSON Summary
-    else Tier: Premium/Pro/PAYG
-        API-&gt;&gt;LLM: Multimodal Audio + Glossary (VertexAudioToSummaryAdapter)
-        Note right of API: Zero Data Retention Guaranteed
-        LLM--&gt;&gt;API: JSON Summary + Transcript
+    alt Cache Hit (Viral/Duplicate Audio)
+        Cache--&gt;&gt;API: Return Cached Summary
+        API--&gt;&gt;User: Send Summary (Latency &lt; 50ms, Cost $0)
+    else Cache Miss (New Audio)
+        API-&gt;&gt;DB: Fetch User Glossary Rules (RAG)
+
+        alt Tier: Free
+            API-&gt;&gt;LLM: Transcribe (WhisperGroqAdapter)
+            LLM--&gt;&gt;API: Transcript
+            API-&gt;&gt;LLM: Summarize with Glossary (LLMSummarizerAdapter)
+            LLM--&gt;&gt;API: JSON Summary
+        else Tier: Premium/Pro/PAYG
+            API-&gt;&gt;LLM: Multimodal Audio + Glossary (VertexAudioToSummaryAdapter)
+            Note right of API: Zero Data Retention Guaranteed
+            LLM--&gt;&gt;API: JSON Summary + Transcript
+        end
+
+        API-&gt;&gt;Cache: Save to Cache (TTL based on Tier)
+        API-&gt;&gt;DB: Save Transcription Log (AES-128-CBC Encrypted)
+        API--&gt;&gt;User: Send Markdown Summary
     end
+    deactivate API
 
-    API-&gt;&gt;Cache: Save to Cache (TTL based on Tier)
-    API-&gt;&gt;DB: Save Transcription Log (AES-128-CBC Encrypted)
-    API--&gt;&gt;User: Send Markdown Summary
-end
-deactivate API
-
-Note over User, LLM: Phase 2: Nested Learning Loop (Self-Correction)
-User-&gt;&gt;API: Reply to Summary: &quot;It&#39;s FastAPI, not Fast Happy&quot;
-activate API
-API-&gt;&gt;DB: Fetch Original Transcript Log (Decrypt ALE)
-API-&gt;&gt;LLM: LLMCorrectionJudgeAdapter: Evaluate Correction vs Original
-LLM--&gt;&gt;API: {&quot;valid&quot;: true, &quot;misheard&quot;: &quot;Fast Happy&quot;, &quot;correction&quot;: &quot;FastAPI&quot;}
-API-&gt;&gt;DB: Save to Glossary Rules (AES-128-CBC Encrypted)
-API-&gt;&gt;Cache: Invalidate User Glossary Cache
-API--&gt;&gt;User: &quot;Correction learned! I will remember this.&quot;
-deactivate API
-</code></pre></div>
+    Note over User, LLM: Phase 2: Nested Learning Loop (Self-Correction)
+    User-&gt;&gt;API: Reply to Summary: "It's FastAPI, not Fast Happy"
+    activate API
+    API-&gt;&gt;DB: Fetch Original Transcript Log (Decrypt ALE)
+    API-&gt;&gt;LLM: LLMCorrectionJudgeAdapter: Evaluate Correction vs Original
+    LLM--&gt;&gt;API: {"valid": true, "misheard": "Fast Happy", "correction": "FastAPI"}
+    API-&gt;&gt;DB: Save to Glossary Rules (AES-128-CBC Encrypted)
+    API-&gt;&gt;Cache: Invalidate User Glossary Cache
+    API--&gt;&gt;User: "Correction learned! I will remember this."
+    deactivate API</code></pre>
 
 
 

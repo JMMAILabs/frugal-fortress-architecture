@@ -79,11 +79,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#glossary-management-pagination-export" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -675,7 +670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/SECURITY_AND_COMPLIANCE_SOC2.md" class="md-nav__link">
+      <a href="../../../architecture/security_compliance_soc2/" class="md-nav__link">
         
   
   
@@ -2140,8 +2135,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -3536,8 +3529,6 @@
   
   
   
-    
-  
   
 </nav>
                   </div>
@@ -3557,30 +3548,34 @@
   
 
 
-<p>```md</p>
-<h1 id="glossary-management-pagination-export">Glossary Management — Pagination &amp; Export</h1>
-<p>This state/sequence diagram illustrates how users manage their "Nested Learning Loop" rules directly from Telegram using inline keyboards.</p>
-<p>```mermaid
-flowchart TD
-    Start([User types /rules]) --&gt; Fetch[Fetch Page 1 from DB]
-    Fetch --&gt; Render[Render Inline Keyboard]</p>
-<div class="highlight"><pre><span></span><code>Render --&gt; Wait([Wait for Callback Query])
+  <h1>Glossary Management</h1>
 
-Wait --&gt;|Click &#39;Next Page&#39;| Nav[Callback: nav:2]
-Nav --&gt; CheckRL{Rate Limit Check&lt;br/&gt;(Redis)}
-CheckRL --&gt;|Exceeded| 429[Show Alert: &#39;Too many requests&#39;]
-CheckRL --&gt;|OK| Fetch2[Fetch Page 2 from DB]
-Fetch2 --&gt; Render
-
-Wait --&gt;|Click &#39;Toggle Rule&#39;| Toggle[Callback: toggle:rule_id]
-Toggle --&gt; DBUpdate[Update DB: is_active = false]
-DBUpdate --&gt; CacheInv[Invalidate Redis Glossary Cache]
-CacheInv --&gt; Fetch2
-
-Wait --&gt;|Click &#39;Export&#39;| Export[Callback: export_glossary]
-Export --&gt; GenXLSX[Generate XLSX in Memory]
-GenXLSX --&gt; SendDoc[Send Document via Telegram API]
-SendDoc --&gt; Wait
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gh"># Glossary Management — Pagination &amp; Export</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>This state/sequence diagram illustrates how users manage their &quot;Nested Learning Loop&quot; rules directly from Telegram using inline keyboards.
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>```mermaid
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>flowchart TD
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    Start([User types /rules]) --&gt; Fetch[Fetch Page 1 from DB]
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    Fetch --&gt; Render[Render Inline Keyboard]
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    Render --&gt; Wait([Wait for Callback Query])
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    Wait --&gt;|Click &#39;Next Page&#39;| Nav[Callback: nav:2]
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    Nav --&gt; CheckRL{Rate Limit Check&lt;br/&gt;(Redis)}
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    CheckRL --&gt;|Exceeded| 429[Show Alert: &#39;Too many requests&#39;]
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    CheckRL --&gt;|OK| Fetch2[Fetch Page 2 from DB]
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    Fetch2 --&gt; Render
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    Wait --&gt;|Click &#39;Toggle Rule&#39;| Toggle[Callback: toggle:rule_id]
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    Toggle --&gt; DBUpdate[Update DB: is_active = false]
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    DBUpdate --&gt; CacheInv[Invalidate Redis Glossary Cache]
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    CacheInv --&gt; Fetch2
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    Wait --&gt;|Click &#39;Export&#39;| Export[Callback: export_glossary]
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    Export --&gt; GenXLSX[Generate XLSX in Memory]
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    GenXLSX --&gt; SendDoc[Send Document via Telegram API]
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    SendDoc --&gt; Wait
 </code></pre></div>
 
 
