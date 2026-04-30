@@ -132,4 +132,4 @@ Cross-module application-to-application imports are avoided; shared behaviour li
 ## 9. References
 
 - [SYSTEM_TOPOLOGY.md](SYSTEM_TOPOLOGY.md) — High-level vision and module list.
--[docs/diagrams/hexagonal_module_template.md](../diagrams/core/hexagonal_module_template.md) — Diagram of a single module.
+- [Hexagonal Module Template (diagram)](../diagrams/core/hexagonal_module_template.md) — Diagram of a single module.

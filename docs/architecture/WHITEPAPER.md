@@ -11,7 +11,7 @@ Building a heavy document processing system (e.g., PDFs to AI-generated study fl
 ## 2. The Architecture: Modular Monolith over Microservices
 We deliberately chose a **Modular Monolith** (Python/FastAPI) over premature microservices. This eliminates network latency between domains, simplifies deployments, and maximizes resource sharing (Database connection pools, Redis multiplexing).
 
-We enforce a strict **Hexagonal Architecture**. The core domain (e.g., `process_pdf_use_case`) is completely agnostic to the underlying infrastructure. Whether the LLM provider is Groq, OpenAI, or Vertex AI, the business logic remains pure and untouched.
+We enforce a strict **Hexagonal Architecture**. The core domain (e.g., `process_pdf_use_case`) is completely agnostic to the underlying infrastructure. Whether the LLM provider is Groq (free tier) or Google Vertex AI (paid tiers), the business logic remains pure and untouched.
 
 ## 3. Resilience Patterns (SRE)
 In AI, third-party providers *will* fail. A naive application collapses; a resilient system adapts.

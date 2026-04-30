@@ -91,11 +91,11 @@ uv run pytest tests -n 6 --cov=src --cov-report=term-missing --cov-report=html:r
 
 ## 4. Policy
 
-- **Target:** Maintain or improve overall coverage (e.g. ~90%+) without chasing 100% on every file.
+- **Target:** **90%+ Gold Standard** (current line coverage: 91%). Maintain or improve overall coverage without chasing 100% on every file. Canonical threshold: see [ADR-0004](../adr/0004-coverage-threshold-acceptance.md).
 - **Prioritise:** Domain logic, security (guardrails, PII, auth), resilience (circuit breakers, retries), and FinOps/token logging.
 - **Accept:** Lower or no unit coverage on thin external adapters (LlamaParse, Whisper, LanceDB S3, etc.) when integration or E2E coverage exists or is planned.
 - **Document:** Any new “by design” uncovered area should be added to this file.
 
 ---
 
-*Last updated: 2026-03-15 (coverage boost: config, telemetry 100%, vector_store, prompts, process_feedback, idempotency). Total ~88%.*
+*Last updated: 2026-04. Current line coverage: **91%** (Gold Standard target: 90%+).*

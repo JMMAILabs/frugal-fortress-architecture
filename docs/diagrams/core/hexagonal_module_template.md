@@ -6,7 +6,7 @@ Internal structure of a module: Primary Adapters (REST, Worker), Application Lay
 graph TD
     subgraph Primary_Adapters ["Primary Adapters (Driving)"]
         Router[FastAPI Router\nHTTP Endpoints]
-        Worker[Arq/Celery Worker\nBackground Tasks]
+        Worker[Arq Worker\nBackground Tasks]
     end
 
     subgraph Application_Layer["Application Layer (Use Cases)"]
@@ -27,7 +27,7 @@ graph TD
 
     subgraph Secondary_Adapters ["Secondary Adapters (Driven Implementations)"]
         Supabase[Supabase Adapter\nSQLAlchemy/pgvector]
-        LiteLLM[LiteLLM Adapter\nGroq/OpenAI]
+        LiteLLM[LiteLLM Adapter\nGroq / Vertex AI]
         Redis[Redis Adapter\nSemantic Cache]
     end
 

@@ -4,7 +4,7 @@
 **Status:** Accepted
 
 ## Context
-To comply with SOC2, GDPR, and HIPAA, we must ensure that Personally Identifiable Information (PII) and Protected Health Information (PHI) never leak to external LLM providers (e.g., Groq, OpenAI). 
+To comply with SOC2, GDPR, and HIPAA, we must ensure that Personally Identifiable Information (PII) and Protected Health Information (PHI) never leak to external LLM providers (e.g., Groq for free-tier traffic, Google Vertex AI for paid traffic). 
 While we use Microsoft Presidio with SpaCy for regex/NER-based scrubbing, complex contextual PII (e.g., "My boss, John, told me his password is...") requires semantic understanding.
 
 ## Decision
@@ -14,7 +14,7 @@ We implemented a **Local DLP Proxy** using a quantized Small Language Model (SLM
 *   **Execution:** Offloaded to a `CpuBoundExecutor` (ProcessPool) to prevent blocking the FastAPI `asyncio` event loop.
 
 ## Rationale
-1. **Fail-Secure Mandate:** Relying on an external API (like OpenAI) to scrub data before sending it to *another* external API introduces unacceptable latency and a circular security dependency. If the local SLM fails, the system throws a `SecurityPolicyViolation` (HTTP 403) and blocks the request. It fails closed.
+1. **Fail-Secure Mandate:** Relying on a remote API to scrub data before sending it to *another* remote API introduces unacceptable latency and a circular security dependency. If the local SLM fails, the system throws a `SecurityPolicyViolation` (HTTP 403) and blocks the request. It fails closed.
 2. **FinOps:** Running a 3B parameter model locally on CPU costs $0 in API fees.
 3. **Edge AI in the Backend:** The 4-bit quantized model requires <3GB of RAM, fitting comfortably within our Railway/Docker resource constraints.
 

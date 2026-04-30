@@ -16,7 +16,7 @@ Whether you are a CTO evaluating our security posture, or an SRE investigating o
 
 ### 🏛️ Core Architecture
 *   **[Hexagonal Decoupling](architecture/HEXAGONAL_DECOUPLING.md):** Our strict adherence to Ports & Adapters.
-*   **[Security & SOC2](architecture/SECURITY_AND_COMPLIANCE_SOC2.md):** Application-Level Encryption (ALE) and Zero Data Retention policies.
+*   **[Security & SOC2](architecture/security_compliance_soc2.md):** Application-Level Encryption (ALE) and Zero Data Retention policies.
 *   **[Multi-Tenancy](architecture/MULTI_TENANCY_AND_ISOLATION.md):** How we guarantee B2B data isolation at the query level.
 
 ### 📦 Bounded Contexts (The Modules)

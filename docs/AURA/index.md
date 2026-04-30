@@ -3,7 +3,7 @@
 ## 1. Architectural Overview
 **AURA** is the Corporate Memory Engine of the Frugal Fortress. It transforms unstructured voice messages into structured, actionable corporate memory via a direct Telegram Webhook integration.
 
-Unlike naive wrappers around OpenAI, AURA processes audio asynchronously while maintaining strict idempotency, FinOps controls, and SOC2 compliance.
+Unlike naive LLM wrappers, AURA processes audio asynchronously while maintaining strict idempotency, FinOps controls, and SOC2 compliance.
 
 **Core Flow:**
 1. **Ingestion:** Telegram Webhook receives the audio file.
@@ -17,9 +17,9 @@ Unlike naive wrappers around OpenAI, AURA processes audio asynchronously while m
 This module heavily leverages the Frugal Fortress core patterns. For detailed technical decisions, refer to the following Architecture Decision Records (ADRs):
 
 * **[ADR-0011: Redis-backed Media Group Debouncing](../adr/0011-redis-media-group-debouncing.md):** How we handle concurrent Telegram image uploads for Support Tickets without race conditions.
-* **[ADR-0012: Two-Phase Commit for PAYG Wallet](../adr/0012-two-phase-commit-payg.md):** How we prevent Denial of Wallet (DoW) attacks using atomic Lua scripts in Redis.
+* **[ADR-0012: Two-Phase Commit for PAYG Wallet](../adr/0012-two-phase-commit-payg-wallet.md):** How we prevent Denial of Wallet (DoW) attacks using atomic Lua scripts in Redis.
 * **[ADR-0013: SHA-256 Idempotency Guard](../adr/0013-sha256-idempotency-guard.md):** How we achieve 100% cost savings on viral/duplicate audio messages.
-* **[ADR-0014: Dynamic RAG Injection (Nested Learning Loop) ](../adr/0014-dynamic-rag-injection.md):** How the system learns user-specific jargon in real-time without expensive model fine-tuning.
+* **[ADR-0014: Dynamic RAG Injection (Nested Learning Loop)](../adr/0014-dynamic-rag-injection-nested-learning.md):** How the system learns user-specific jargon in real-time without expensive model fine-tuning.
 
 ## 3. Security & Privacy (SOC2)
 * **Zero Data Retention:** Paid tiers utilize Vertex AI under enterprise agreements; audio data is never used for model training.

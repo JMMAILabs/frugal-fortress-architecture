@@ -1,8 +1,8 @@
-# docs/ReceiptParser/finops_capacity_planning.md
-
-# FinOps & Capacity Planning: Receipt Parser
+# FinOps & Capacity Planning: Receipt Parser (VERA)
 
 This document projects the infrastructure and LLM costs for the `receipt_parser` module.
+
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
  
 ## 1. Baseline Assumptions
 *   **1 Receipt Image** ≈ 1,120 tokens (Standard VLM image encoding).

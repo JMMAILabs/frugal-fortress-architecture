@@ -5,11 +5,16 @@ This document provides the standard HTTP contracts for integrating with the Frug
 ## 1. Authentication
 The API uses JWT Bearer authentication. Tokens are issued via the Google OAuth2 flow (`/api/v1/auth/login/google`).
 
-**Header Format:**
+**Standard header (all modules):**
 ```http
 Authorization: Bearer <YOUR_JWT_TOKEN>
+```
+
+**Module-specific header — Receipt Parser only:**
+```http
 X-User-Id: <USER_UUID>
 ```
+> The `X-User-Id` header is **only consumed by the `/api/v1/receipts/*` endpoints** for legacy compatibility with the PWA. It is ignored by `/pdf`, `/audio`, `/genui`, `/dlp`, and `/auth`. Do not send it on those routes.
 
 ## 2. Core Endpoints
 

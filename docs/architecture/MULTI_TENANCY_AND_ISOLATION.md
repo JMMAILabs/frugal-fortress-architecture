@@ -17,6 +17,7 @@ While Application-Level Encryption (ALE) protects data at rest, we enforce logic
 
 *   **Strict Repository Pattern:** All database access goes through Repository classes (e.g., `ReceiptRepository`). Every `SELECT`, `UPDATE`, and `DELETE` statement is hardcoded to include a `WHERE tenant_id = :tenant_id` clause.
 *   **Vector Search Isolation:** When performing semantic searches in `pgvector` or `LanceDB` (e.g., finding Few-Shot examples for the Receipt Parser), the `tenant_id` is applied as a pre-filter. The LLM will *never* see another company's data as context.
+*   **Idempotency Cache Caveat (Out of Scope):** Content-addressable Redis caches keyed by `SHA-256` of the raw input (`audio_processed:{hash}`, `pdf:deck:{file_hash}:{sig}`) are deliberately **not** tenant-scoped — they are a platform-wide deduplication layer for viral/duplicate content (see [ADR-0013](../adr/0013-sha256-idempotency-guard.md)). They do not store any tenant-specific RAG/glossary context, so they fall outside the tenant-isolation invariant.
 
 ## 4. FinOps Isolation (Token Buckets)
 Tenant isolation extends to infrastructure costs.

@@ -1,8 +1,8 @@
-# docs/VERA/tiers.md
-
 # Tiering Strategy & FinOps Capacity Planning
 
 This document defines the operational limits, model routing, and break-even pricing analysis for the Receipt Parser (VERA) module.
+
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Stripe Metadata Contract
 Payment links must inject the following custom fields into the Stripe Checkout Session:
@@ -18,30 +18,30 @@ Payment links must inject the following custom fields into the Stripe Checkout S
     *   Maximum Storage Capacity: 100 receipts.
     *   Max 3 versions per `image_hash`.
 *   **Data Retention:** 3 months.
-*   **Disclaimer:** The Free tier utilizes third-party OCR/LLM APIs. It is not recommended for highly sensitive financial documents (e.g., PHI/PII heavy invoices).
+*   **Disclaimer:** The Free tier utilizes third-party OCR/LLM APIs (LlamaParse + Groq). It is not recommended for highly sensitive financial documents (e.g., PHI/PII heavy invoices).
 
 ## 3. Paid Tiers (Vertex AI Exclusive)
-To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI. No Anthropic or OpenAI models are used.
+To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI under enterprise terms. The platform does not route any traffic through other LLM vendors.
 
-*   **Premium:** Includes `gemini-2.5-flash-lite`.
-*   **Pro:** Includes `gemini-2.5-flash`.
+*   **Premium:** `gemini-2.5-flash-lite`.
+*   **Pro:** `gemini-2.5-flash`.
 *   **PAYG:** Selectable models (`gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-pro`).
 
 ### Operational Limits
 
-| Metric | Premium | Pro | Ultra | PAYG |
-| :--- | :--- | :--- | :--- | :--- |
-| **Monthly Limit** | 500 receipts | 2,000 receipts | N/A | N/A |
-| **Daily Limit** | 50 receipts | 200 receipts | 200 receipts | 1,000 receipts |
-| **Max Storage Capacity** | 2,000 receipts | 5,000 receipts | 10,000 receipts | N/A |
-| **Max Versions per Hash** | 10 | 50 | 100 | 40 |
-| **Data Retention** | 1 year | 5 years | 5 years | Inherits base tier |
+| Metric | Premium | Pro | PAYG |
+| :--- | :--- | :--- | :--- |
+| **Monthly Limit** | 500 receipts | 2,000 receipts | N/A |
+| **Daily Limit** | 50 receipts | 200 receipts | 1,000 receipts |
+| **Max Storage Capacity** | 2,000 receipts | 5,000 receipts | N/A |
+| **Max Versions per Hash** | 10 | 50 | 40 |
+| **Data Retention** | 1 year | 5 years | Inherits base tier |
 
 *Note on Versioning:* Each persistence event counts as a row (the initial parse, and every human correction saved via `POST /receipts/history`). The internal LLM self-correction loop does *not* create new database rows.
 
 ## 4. FinOps & Break-Even Pricing Analysis
 
-*Source of Truth:[Google Cloud Vertex AI Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)*
+*Source of Truth: [Google Cloud Vertex AI Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)*
 
 **Conservative Baseline Assumptions:**
 *   1 Input Image ≈ `1,120` tokens (Standard Gemini Flash Image proxy).
@@ -56,20 +56,15 @@ To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex A
 *   **Recommended Break-Even Price:** `$0.99 / month`
 *   **Final Retail Price:** **$2.99 / month**
 
-### Pro Tier Analysis (Model Migration Impact)
-The Pro tier was recently migrated from `anthropic/claude-haiku-4.5` to `gemini/gemini-2.5-flash`.
+### Pro Tier Analysis
 
-*   **Previous Cost (Claude Haiku 4.5):**
-    *   Worst-Case (3 Retries): `$0.010860` per receipt.
-    *   Worst-Case Monthly Cost (2,000 receipts): `$21.72`
-    *   *Previous Break-Even Price: ~$24.99 / month*
-*   **Current Cost (Gemini 2.5 Flash):**
+*   **Cost (Gemini 2.5 Flash):**
     *   Single Attempt: `(1,120 * $0.30 / 1M) + (500 * $2.50 / 1M) = $0.001586`
     *   Worst-Case (3 Retries): **$0.004758**
 *   **Worst-Case Monthly Cost:** `2,000 * $0.004758 = $9.516`
 *   **Recommended Break-Even Price:** `$9.99 / month`
 *   **Final Retail Price:** **$9.99 / month**
-*   **Rationale:** The migration to Gemini 2.5 Flash reduced the cost per receipt by 56%. This allowed us to aggressively drop the retail price from `$24.99` to `$9.99` while maintaining profitability, even when accounting for the high volume (2,000 receipts) and the 3-retry self-correction loop.
+*   **Rationale:** Gemini 2.5 Flash provides multimodal accuracy at a price that lets us hold `$9.99 / month` retail with comfortable margins, even when the worst-case 2,000-receipt monthly ceiling is hit and every receipt exhausts the 3-retry self-correction loop.
 
 ## 5. Data Lifecycle
 Upon subscription cancellation, the standard 90-day grace period applies. The user is downgraded to Free tier compute limits but retains full access to export their historical data. On Day 91, a FIFO pruning job truncates their storage to the Free tier limit (100 receipts).

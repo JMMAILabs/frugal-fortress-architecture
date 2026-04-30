@@ -13,14 +13,14 @@ This document describes the **performance strategies** implemented and planned f
 | Pain | Solution |
 |------|----------|
 | "If I upload the BOE (500 pages), your API blows up." | Decoupled architecture: **Arq + Redis**. Upload returns 202; processing runs in a background worker. No long HTTP timeout. |
-| Same PDF uploaded twice (e.g. same textbook) | **Exact hash cache**: `file_hash = SHA-256(pdf_bytes)`. If `pdf:deck:{file_hash}` exists in Redis, the worker returns the cached deck in ~50 ms and does not call LlamaParse/LLM. |
+| Same PDF uploaded twice (e.g. same textbook) | **Exact hash cache**: `file_hash = SHA-256(pdf_bytes)`. The actual Redis key is `pdf:deck:{file_hash}:{sig}`, where `sig` is a 12-char SHA-256 of the runtime tunable signature (chunk size, max cards, tier caps). Cache hits return the cached deck in ~50 ms and do not call LlamaParse/LLM. |
 
 **Stack (actual):** FastAPI + **Arq** (not Celery) + Redis. Router: LiteLLM. Vector store: LanceDB (S3/R2).
 
 ### 1.2 Implemented Behaviour
 
-- **Async flow:** Upload → store **encrypted** raw bytes in Redis (TTL 1h) → enqueue `process_pdf_task` → worker: load PDF from Redis → decrypt → LlamaParse → chunk → embed → LanceDB → flashcard generation → store **encrypted** deck in Redis (`pdf:deck:{file_hash}`, TTL 7 days).
-- **Cache hit L1 (exact hash):** Before parsing, worker calls `cache_get(file_hash)`. If a deck exists for that hash, state is set to COMPLETED and the cached deck is returned; no LlamaParse nor LLM.
+- **Async flow:** Upload → store **encrypted** raw bytes in Redis (TTL 1h) → enqueue `process_pdf_task` → worker: load PDF from Redis → decrypt → LlamaParse → chunk → embed → LanceDB → flashcard generation → store **encrypted** deck in Redis under `pdf:deck:{file_hash}:{sig}` (TTL 7 days).
+- **Cache hit L1 (exact hash):** Before parsing, the worker computes the deck key via `pdf_deck_redis_key(file_hash)` (which appends the runtime config signature) and calls `cache_get`. If a deck exists for that hash+sig, state is set to COMPLETED and the cached deck is returned; no LlamaParse nor LLM.
 - **Semantic dedup L2:** Each new chunk embedding is searched in LanceDB; if a highly similar concept already exists (≥95% similarity), LLM generation for that chunk is skipped (FinOps optimisation).
 - **Idempotency:** Duplicate uploads (same hash) are detected in the router via `get_by_file_hash`; client gets the same `task_id` or "already queued".
 
@@ -58,18 +58,19 @@ This document describes the **performance strategies** implemented and planned f
 
 ### 2.2 Current Implementation (Cloud Orchestration)
 
-- **Input:** Raw OCR text (from Edge or external OCR). We do **not** process images in the backend today; the "compute" layer is at the edge.
-- **FinOps — LLM router:**
-  - **Level 1 (cheap):** Groq Llama-3.1-8B. Prompt: extract JSON (items, subtotal, tax, total, currency). Cost ~$0.0001 per receipt.
+- **Input — Free Tier:** Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on **Groq** (`llama-3.3-70b-versatile`) via LiteLLM.
+- **Input — Paid Tiers (Premium / Pro / PAYG):** Image is sent directly to **Google Vertex AI** (`gemini-2.5-flash-lite` / `gemini-2.5-flash` / `gemini-2.5-pro`) for single-pass multimodal extraction. No external OCR is required.
+- **FinOps — Self-Correction Loop:**
   - **Validation (pure Python):** `validate_receipt_math`: items sum = subtotal, subtotal + tax = total. No framework.
-  - **Escalation:** If validation fails after retries (e.g. 2× Llama, then 1× GPT-4o), we call **GPT-4o** with an error-correcting prompt. Only ~5–10% of receipts escalate; cost remains low overall.
+  - **Retries:** Up to 3 paid attempts (`MAX_RETRIES = 3`). If math validation fails, the validator error is fed back into the LLM prompt for a corrective retry, all within the same provider (Groq for Free, Vertex AI for Paid). There is no cross-provider escalation: only Groq and Google Vertex AI are wired into the receipt pipeline.
+  - **HITL Fallback:** If 3 retries cannot balance the math, the API returns `HTTP 206 Partial Content` so the user can correct the JSON in the UI (see [VERA response contract](../diagrams/VERA/diagram_response_contract.md)).
 
 ### 2.3 Edge / Compute Performance (Roadmap)
 
-- **Goal:** Remove dependency on GPT-4 Vision; keep images on-prem or on Edge.
+- **Goal:** Eliminate any dependency on third-party Vision APIs for paid OCR; keep images on-prem or on Edge.
 - **Techniques (when we add image input):**
   - **Preprocessing (OpenCV/NumPy):** Perspective correction (homography), adaptive thresholding (Otsu), noise reduction (morphological ops). Pure math on CPU; improves OCR accuracy.
-  - **Local OCR:** PaddleOCR or Tesseract exported to **ONNX**, optionally **quantized (int8)** for 3–4× speed and lower RAM.
+  - **Local OCR:** PaddleOCR exported to **ONNX**, optionally **quantized (int8)** for 3–4× speed and lower RAM.
   - **Singleton model:** Load ONNX model once at FastAPI startup; reuse for every request.
 
 ### 2.4 Railway / Low-Memory Rules (when doing image processing)
@@ -99,7 +100,7 @@ This document describes the **performance strategies** implemented and planned f
 
 | Pain | Solution |
 |------|----------|
-| Five employees upload the same Zoom recording; you pay 5× for transcription and summary. | **Content hash (SHA-256)** of the audio. Key: `audio:{hash}`. If cache hit → return stored summary in ~50 ms; cost $0. |
+| Five employees upload the same Zoom recording; you pay 5× for transcription and summary. | **Content hash (SHA-256)** of the audio. Redis key: `audio_processed:{hash}` (content-addressable; see [ADR-0013](../adr/0013-sha256-idempotency-guard.md) and the tenant-isolation caveat in [CORE_INVARIANTS §2.2](CORE_INVARIANTS.md)). If cache hit → return stored summary in ~50 ms; cost $0. |
 
 ### 3.2 Implemented Behaviour
 
@@ -137,5 +138,5 @@ When **pure Python** is the bottleneck (e.g. heavy math, image ops, embedding lo
 ## 5. References
 
 - [SYSTEM_TOPOLOGY.md](SYSTEM_TOPOLOGY.md) — High-level architecture.
--[docs/HEXAGONAL_DECOUPLING.md](HEXAGONAL_DECOUPLING.md) — Layer boundaries.
-- [docs/adr/0008-native-acceleration-strategy.md](../adr/0008-native-acceleration-strategy.md) — When to use ONNX, Rust, CUDA, etc.
+- [HEXAGONAL_DECOUPLING.md](HEXAGONAL_DECOUPLING.md) — Layer boundaries.
+- [ADR-0008: Native Acceleration Strategy](../adr/0008-native-acceleration-strategy.md) — When to use ONNX, Rust, CUDA, etc.

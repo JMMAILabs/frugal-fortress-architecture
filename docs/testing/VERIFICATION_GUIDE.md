@@ -34,7 +34,8 @@ curl http://localhost:8000/api/v1/
 ```
 
 ### B. AI Inference (The "Smart" Path)
-Forces the system to use the LLM (Groq/OpenAI).
+Forces the system to use the LLM (Groq for Free, Vertex AI for Paid).
+> **Staging / development only.** `/api/v1/test-router` is a diagnostic endpoint. Do not expose it on production hostnames; restrict it via gateway ACLs / network policy in any non-dev environment.
 ```bash
 curl -X POST "http://localhost:8000/api/v1/test-router" \
      -H "Content-Type: application/json" \

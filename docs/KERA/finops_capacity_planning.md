@@ -1,6 +1,8 @@
-# FinOps & Capacity Planning: PDF to Anki
+# FinOps & Capacity Planning: PDF to Anki (KERA)
 
 This document projects the infrastructure and LLM costs for the `pdf_anki` module, demonstrating the economic viability of the "Frugal Fortress" architecture.
+
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Baseline Assumptions
 *   **1 Page** ≈ 500 words ≈ 666 tokens.

@@ -11,7 +11,7 @@ flowchart TD
     Guard -->|Unsafe| Block(["🚫 Block Request"])
 
     subgraph "Retrieval Layer (Parallel)"
-        Router -->|1. Generate Embedding| Embed["FastEmbed / OpenAI"]
+        Router -->|1. Generate Embedding| Embed["FastEmbed (local ONNX)"]
 
         Embed -->|Vector Search| PG_Vec[("Postgres<br/>pgvector")]
         Router -->|Keyword Search| PG_Text[("Postgres<br/>TSVECTOR")]
@@ -22,11 +22,11 @@ flowchart TD
 
     subgraph "Refinement Layer"
         Merger["🔄 RRF Fusion<br/>Normalize Scores"]
-        Merger --> Rerank["🧠 Cross-Encoder Reranker<br/>(HuggingFace/ONNX)"]
+        Merger --> Rerank["🧠 Cross-Encoder Reranker<br/>(local ONNX, no Cohere)"]
         Rerank --> Context["📝 Context Window Builder<br/>(Token Trimming)"]
     end
 
-    Context --> LLM["🤖 LLM Inference<br/>(GPT-4o / Llama-3)"]
+    Context --> LLM["🤖 LLM Inference<br/>(Vertex AI Gemini / Groq Llama-3.3)"]
     LLM --> Stream(["⚡ Stream Response"])
 
     %% Styling

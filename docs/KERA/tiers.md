@@ -2,6 +2,8 @@
 
 This document defines the operational limits, model routing, and break-even pricing analysis for the PDF to Anki (KERA) module.
 
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+
 ## 1. Stripe Metadata Contract
 Payment links must inject the following custom fields into the Stripe Checkout Session:
 *   `pdf_anki_user_id`
@@ -54,14 +56,9 @@ Calculations utilize the hard limits enforced by `estimate_unified_pdf_token_bud
 *   **Final Retail Price:** **$2.99 / month**
 *   **Rationale:** Flash-Lite provides exceptional multimodal capabilities at a fraction of the cost, making Premium the tier with the highest relative profit margin.
 
-### Pro Tier Analysis (Model Migration Impact)
-The Pro tier was recently migrated from `anthropic/claude-haiku-4.5` to `gemini/gemini-2.5-flash`.
+### Pro Tier Analysis
 
-*   **Previous Cost (Claude Haiku 4.5):**
-    *   Total per PDF: `$0.9795`
-    *   Worst-Case Monthly Cost (4 PDFs): `$3.918`
-    *   *Previous Break-Even Price: ~$4.99 / month*
-*   **Current Cost (Gemini 2.5 Flash):**
+*   **Cost (Gemini 2.5 Flash):**
     *   Input: `602,000 * ($0.30 / 1M) = $0.1806`
     *   Output: `75,500 * ($2.50 / 1M) = $0.18875`
     *   Total per PDF: **$0.36935**
@@ -69,8 +66,8 @@ The Pro tier was recently migrated from `anthropic/claude-haiku-4.5` to `gemini/
     *   `4 * $0.36935 = $1.4774`
 *   **Recommended Break-Even Price:** `$1.99 / month`
 *   **Final Retail Price:** **$4.99 / month**
-*   **Rationale:** Migrating to Gemini 2.5 Flash reduced the worst-case monthly cost by 62% (from `$3.918` to `$1.4774`). This allows us to maintain the `$4.99` price point while significantly increasing our profit margins, without sacrificing multimodal accuracy.
+*   **Rationale:** Gemini 2.5 Flash delivers strong multimodal accuracy at a price point that lets us hold `$4.99 / month` retail with healthy margins, even at the worst-case 4-PDF monthly ceiling.
 
 ## 5. PAYG Formula & Privacy
 *   **Formula:** `(Exact LLM Provider Cost) * 1.40` (40% Markup).
-*   **Privacy Guarantee:** Paid tiers utilize the unified multimodal flow exclusively on Vertex AI. No data is routed through Anthropic or OpenAI, ensuring Zero Data Retention compliance.
+*   **Privacy Guarantee:** Paid tiers utilize the unified multimodal flow exclusively on Google Vertex AI under enterprise terms (Zero Data Retention). The platform does not route any traffic through other LLM vendors.

@@ -1,6 +1,8 @@
 # Business Rules, Tiering & Enterprise Quotas
 
-This document outlines the operational limits, FinOps constraints, and the architectural roadmap for the B2B Enterprise tier within the Audio Notes module.
+This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design lives in a separate roadmap document — see [AURA Enterprise Roadmap (B2B Shared Quota)](roadmap_enterprise_b2b.md).
+
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Standard Subscription Tiers
 
@@ -60,24 +62,6 @@ Retaining data for 90 days post-cancellation is the SaaS industry "Gold Standard
 
 ---
 
-## 5. Architectural Implementation Plan: Enterprise Tier (B2B Shared Quota)
+## 5. Roadmap
 
-To support B2B Enterprise clients, we will implement a "Shared Quota" architecture. This allows an Enterprise Admin to share their subscription limits and custom AI models with their employees.
-
-### Phase 1: Domain Evolution (Self-Referential Accounts)
-Instead of creating complex `Team` tables, we will utilize a self-referential relationship on the `User` entity.
-*   **Database Schema:** Add `parent_account_id` (String, nullable, indexed, ForeignKey to `users.telegram_id`).
-    *   Admin: `parent_account_id` is `NULL`.
-    *   Employee: `parent_account_id` points to the Admin's `telegram_id`.
-*   **Domain Logic (`User` Entity):**
-    *   `get_effective_tier()`: Returns the parent's tier if linked, otherwise its own.
-    *   `get_effective_tenant_id()`: Returns `parent_account_id` if linked, otherwise `telegram_id`. **Critical for Redis FinOps tracking.**
-
-### Phase 2: Consumption Routing & FinOps
-*   **Token Buckets:** When interacting with the `BudgetManager` or `RateLimitMiddleware`, the system MUST use the `effective_tenant_id`. This mathematically guarantees that all employees draw from the Admin's single Redis token bucket. No race conditions.
-*   **Shared Corporate Memory:** The `get_glossary_context` use case must fetch rules using the `effective_tenant_id`. If the Admin corrects a technical term, the AI learns it for all employees instantly.
-
-### Phase 3: Stripe Adapter & Dynamic Quoting
-*   **Entity Overrides:** Add `custom_model`, `custom_max_duration_min`, and `custom_monthly_minutes` to the `User` entity to support negotiated Enterprise contracts without hardcoding `if/else` logic.
-*   **Payment Gateway Port:** Implement `create_dynamic_checkout` using the Stripe SDK.
-*   **Stateless Provisioning:** Inject a `metadata` dictionary into the Stripe Checkout Session containing the custom limits. The `POST /stripe/webhook` endpoint will extract this metadata upon `checkout.session.completed` and provision the Enterprise limits transactionally.
+The forward-looking B2B Enterprise (Shared Quota) design has been moved to its own document so this file only describes shipped behaviour. See [AURA Enterprise Roadmap (B2B Shared Quota)](roadmap_enterprise_b2b.md).

@@ -1,0 +1,153 @@
+# Documentation health checks (link integrity + provider/cache invariants).
+#
+# This workflow runs only against the documentation repository. It does NOT
+# require access to the backend codebase: every check is a static scan of the
+# Markdown sources here. Cross-repo checks that need backend access (real
+# pricing extraction from src/app/core/pricing_registry.py, real Redis cache
+# keys, real coverage %) are intentionally out of scope and are listed in
+# docs/testing/VERIFICATION_GUIDE.md.
+
+name: Docs Health Checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - ".github/workflows/docs-checks.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - ".github/workflows/docs-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  link-integrity:
+    name: MkDocs strict build (broken-link gate)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install MkDocs
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build site in strict mode
+        # `--strict` fails the build on broken cross-references and orphan pages.
+        run: mkdocs build --strict --site-dir _site
+
+  forbidden-providers:
+    name: Forbidden LLM provider mentions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan docs/ for forbidden provider references
+        # The codebase only uses Groq + Google Vertex AI for inference and
+        # LlamaParse for OCR. Documentation MUST NOT introduce references to
+        # OpenAI / GPT-* / Anthropic / Claude / Cohere / Tesseract / Auth0,
+        # since those services are not part of the system. Allowed contexts
+        # (e.g. "no Anthropic models are used") explicitly state the absence
+        # and use the lowercase phrasing "no <vendor>".
+        shell: bash
+        run: |
+          set -euo pipefail
+          violations=0
+          patterns=(
+            "OpenAI"
+            "GPT-4"
+            "GPT4"
+            "gpt-4"
+            "Anthropic"
+            "claude-haiku"
+            "Cohere"
+            "Tesseract"
+            "Auth0"
+          )
+          for pat in "${patterns[@]}"; do
+            # Skip lines that explicitly disclaim the provider.
+            hits=$(grep -RIn --include='*.md' -E "$pat" docs/ \
+              | grep -viE "no (anthropic|openai|gpt|cohere|claude|tesseract)" || true)
+            if [[ -n "$hits" ]]; then
+              echo "::error title=Forbidden provider reference ($pat)::$hits"
+              violations=$((violations + 1))
+            fi
+          done
+          if [[ "$violations" -gt 0 ]]; then
+            echo "❌ Found $violations forbidden provider mention(s)."
+            exit 1
+          fi
+          echo "✅ No forbidden provider references found."
+
+  cache-key-consistency:
+    name: Idempotency cache key consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject docs that use the legacy/short cache keys
+        # The audio idempotency key in code is `audio_processed:{hash}` and the
+        # PDF deck cache key is `pdf:deck:{file_hash}:{sig}`. Older docs used
+        # `audio:{hash}` and `pdf:deck:{file_hash}` (without the runtime
+        # signature). This guard prevents the documentation from drifting back.
+        shell: bash
+        run: |
+          set -euo pipefail
+          bad=0
+          if grep -RIn --include='*.md' -E '`audio:\{hash\}`' docs/ ; then
+            echo "::error::Found legacy audio cache key 'audio:{hash}'. Use 'audio_processed:{hash}'."
+            bad=1
+          fi
+          if grep -RIn --include='*.md' -E '`pdf:deck:\{file_hash\}`(?!:\{sig\})' docs/ ; then
+            echo "::error::Found legacy PDF deck cache key 'pdf:deck:{file_hash}'. Use 'pdf:deck:{file_hash}:{sig}'."
+            bad=1
+          fi
+          if [[ "$bad" -ne 0 ]]; then exit 1; fi
+          echo "✅ Cache key references are aligned with code."
+
+  pricing-banner:
+    name: Pricing banner presence in FinOps docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify pricing source-of-truth banner in FinOps docs
+        # Every FinOps / tiers / billing document MUST display the pricing
+        # banner so reviewers know that src/app/core/pricing_registry.py is
+        # the canonical source of truth and cannot drift silently.
+        shell: bash
+        run: |
+          set -euo pipefail
+          required_files=(
+            "docs/architecture/BILLING_AND_TIERS.md"
+            "docs/AURA/finops_capacity_planning.md"
+            "docs/AURA/tiers.md"
+            "docs/KERA/finops_capacity_planning.md"
+            "docs/KERA/tiers.md"
+            "docs/VERA/finops_capacity_planning.md"
+            "docs/VERA/tiers.md"
+          )
+          missing=0
+          for f in "${required_files[@]}"; do
+            if ! grep -q "Pricing source-of-truth" "$f" ; then
+              echo "::error file=$f::Missing 'Pricing source-of-truth' banner."
+              missing=$((missing + 1))
+            fi
+          done
+          if [[ "$missing" -gt 0 ]]; then
+            echo "❌ $missing FinOps document(s) missing the pricing banner."
+            exit 1
+          fi
+          echo "✅ Pricing banner present in all FinOps documents."

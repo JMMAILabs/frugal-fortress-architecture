@@ -2,6 +2,8 @@
 
 This document outlines the SaaS tiering strategy, operational limits, and Pay-As-You-Go (PAYG) FinOps calculations across all modules of the Frugal Fortress.
 
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The figures below are mirrors of that registry; whenever the two diverge, the registry wins.
+
 ## 1. Global Tiering Philosophy
  
 The system enforces a strict separation between Free and Paid compute stacks to protect profit margins and ensure enterprise-grade privacy.
