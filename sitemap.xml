@@ -2,330 +2,330 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/EXECUTIVE_SUMMARY/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/AURA/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/AURA/PAYG_WALLET_AND_BILLING/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/AURA/SUPPORT_TICKETS_ARCHITECTURE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/AURA/finops_capacity_planning/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/AURA/tiers/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/KERA/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/KERA/PAYG_WALLET_AND_BILLING/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/KERA/SUPPORT_TICKETS_ARCHITECTURE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/KERA/finops_capacity_planning/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/KERA/tiers/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/VERA/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/VERA/finops_capacity_planning/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/VERA/tiers/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/VERA/troubleshooting/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0001-record-architecture-decisions/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0002-use-pgvector/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0003-coverage-strategy-asyncio/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0004-coverage-threshold-acceptance/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0005-async-test-scope-strategy/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0006-python-312-pinning/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0007-prompt-manager-refactor/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0008-native-acceleration-strategy/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0009-postgres-pgvector-vs-pinecone/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0010-local-slm-dlp-proxy/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0011-redis-media-group-debouncing/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0012-two-phase-commit-payg-wallet/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0013-sha256-idempotency-guard/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0014-dynamic-rag-injection-nested-learning/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/API_VERSIONING_STRATEGY/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/BILLING_AND_TIERS/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/CORE_INVARIANTS/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/HEXAGONAL_DECOUPLING/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/MULTI_TENANCY_AND_ISOLATION/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/NESTED_LEARNING_GUIDE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/PERFORMANCE_ARCHITECTURE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/SYSTEM_TOPOLOGY/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/WHITEPAPER/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/dspy_pilots/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/rfc_core_implementation/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/architecture/security_compliance_soc2/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/AURA/c4_model/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/AURA/diagram_flow/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/AURA/diagram_glossary_management/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/AURA/diagram_payg_billing/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/AURA/diagram_support_tickets/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/KERA/c4_model/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/KERA/diagram_frontend_polling/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/KERA/diagram_pdf_anki/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/c4_model/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/diagram_export/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/diagram_frontend_offline_sync/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/diagram_hexagonal_module/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/diagram_history_flow/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/diagram_response_contract/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/VERA/sequence_receipts/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/backend_monolith_context/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/backend_monolith_dependencies/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/c4_system_context/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/circuit_breaker_state/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/concurrency_singleflight/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/database_schema/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/finops_lifecycle/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/hexagonal_module_template/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/infrastructure_view/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/rag_pipeline/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/diagrams/core/resilient_learning_loop/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/API_INTEGRATION_GUIDE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/AUTHENTICATION_AND_OAUTH/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/CI_CD_DEPLOYMENT_STRATEGY/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/DATABASE_MIGRATIONS_GUIDE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/INCIDENT_RESPONSE_AND_DR/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/LOAD_TESTING_AND_BENCHMARKING/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/LOCAL_DEVELOPMENT/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/operations/observability_and_logs/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/testing/COVERAGE_DECISIONS/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/testing/COVERAGE_UNCOVERED/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/testing/FUTURE_COVERAGE_FIX/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/testing/MUTATION_PRAGMAS/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
     <url>
          <loc>https://JMMAILabs.github.io/frugal-fortress-architecture/testing/VERIFICATION_GUIDE/</loc>
-         <lastmod>2026-04-29</lastmod>
+         <lastmod>2026-04-30</lastmod>
     </url>
 </urlset>

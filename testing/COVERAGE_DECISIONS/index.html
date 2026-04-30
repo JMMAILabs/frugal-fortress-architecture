@@ -4006,13 +4006,13 @@
 <hr />
 <h2 id="4-policy">4. Policy</h2>
 <ul>
-<li><strong>Target:</strong> Maintain or improve overall coverage (e.g. ~90%+) without chasing 100% on every file.</li>
+<li><strong>Target:</strong> <strong>90%+ Gold Standard</strong> (current line coverage: 91%). Maintain or improve overall coverage without chasing 100% on every file. Canonical threshold: see <a href="../../adr/0004-coverage-threshold-acceptance/">ADR-0004</a>.</li>
 <li><strong>Prioritise:</strong> Domain logic, security (guardrails, PII, auth), resilience (circuit breakers, retries), and FinOps/token logging.</li>
 <li><strong>Accept:</strong> Lower or no unit coverage on thin external adapters (LlamaParse, Whisper, LanceDB S3, etc.) when integration or E2E coverage exists or is planned.</li>
 <li><strong>Document:</strong> Any new “by design” uncovered area should be added to this file.</li>
 </ul>
 <hr />
-<p><em>Last updated: 2026-03-15 (coverage boost: config, telemetry 100%, vector_store, prompts, process_feedback, idempotency). Total ~88%.</em></p>
+<p><em>Last updated: 2026-04. Current line coverage: </em><em>91%</em><em> (Gold Standard target: 90%+).</em></p>
 
 
 

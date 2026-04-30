@@ -3567,7 +3567,7 @@
     Guard --&gt;|Unsafe| Block(["🚫 Block Request"])
 
     subgraph "Retrieval Layer (Parallel)"
-        Router --&gt;|1. Generate Embedding| Embed["FastEmbed / OpenAI"]
+        Router --&gt;|1. Generate Embedding| Embed["FastEmbed (local ONNX)"]
 
         Embed --&gt;|Vector Search| PG_Vec[("Postgres&lt;br/&gt;pgvector")]
         Router --&gt;|Keyword Search| PG_Text[("Postgres&lt;br/&gt;TSVECTOR")]
@@ -3578,11 +3578,11 @@
 
     subgraph "Refinement Layer"
         Merger["🔄 RRF Fusion&lt;br/&gt;Normalize Scores"]
-        Merger --&gt; Rerank["🧠 Cross-Encoder Reranker&lt;br/&gt;(HuggingFace/ONNX)"]
+        Merger --&gt; Rerank["🧠 Cross-Encoder Reranker&lt;br/&gt;(local ONNX, no Cohere)"]
         Rerank --&gt; Context["📝 Context Window Builder&lt;br/&gt;(Token Trimming)"]
     end
 
-    Context --&gt; LLM["🤖 LLM Inference&lt;br/&gt;(GPT-4o / Llama-3)"]
+    Context --&gt; LLM["🤖 LLM Inference&lt;br/&gt;(Vertex AI Gemini / Groq Llama-3.3)"]
     LLM --&gt; Stream(["⚡ Stream Response"])
 
     %% Styling

@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docsaudio_notesfinops_capacity_planningmd" class="md-skip">
+        <a href="#finops-capacity-planning-audio-notes-aura" class="md-skip">
           Skip to content
         </a>
       
@@ -1087,6 +1087,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capacity Planning
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1103,6 +1121,58 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-baseline-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Baseline Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-llm-provider-cost-comparison-per-minute-of-audio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. LLM Provider Cost Comparison (Per Minute of Audio)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-architectural-savings-the-frugal-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Architectural Savings (The "Frugal" Impact)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3538,6 +3608,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-baseline-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Baseline Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-llm-provider-cost-comparison-per-minute-of-audio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. LLM Provider Cost Comparison (Per Minute of Audio)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-architectural-savings-the-frugal-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Architectural Savings (The "Frugal" Impact)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3556,8 +3667,10 @@
   
 
 
-<h1 id="docsaudio_notesfinops_capacity_planningmd">docs/audio_notes/finops_capacity_planning.md</h1>
-<h1 id="finops-capacity-planning-audio-notes">FinOps &amp; Capacity Planning: Audio Notes</h1>
+<h1 id="finops-capacity-planning-audio-notes-aura">FinOps &amp; Capacity Planning: Audio Notes (AURA)</h1>
+<blockquote>
+<p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
+</blockquote>
 <p>This document projects the infrastructure and LLM costs for the <code>audio_notes</code> module, demonstrating the economic viability of the "Frugal Fortress" architecture.</p>
 <h2 id="1-baseline-assumptions">1. Baseline Assumptions</h2>
 <ul>

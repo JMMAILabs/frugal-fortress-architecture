@@ -3241,10 +3241,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
+  <a href="#decision-historical" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision
+        Decision (Historical)
       
     </span>
   </a>
@@ -3635,10 +3635,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
+  <a href="#decision-historical" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision
+        Decision (Historical)
       
     </span>
   </a>
@@ -3679,17 +3679,17 @@
 <h1 id="adr-0003-coverage-strategy-for-asyncio-artifacts">ADR 0003: Coverage Strategy for Asyncio Artifacts</h1>
 <p>Date: 2026-01-19</p>
 <h2 id="status">Status</h2>
-<p>Accepted</p>
+<p><strong>Superseded by <a href="../0004-coverage-threshold-acceptance/">ADR-0004</a>.</strong> The original decision around acceptance of "phantom misses" in async tracing is preserved here for historical context, but the binding numerical threshold is now defined in ADR-0004.</p>
 <h2 id="context">Context</h2>
 <p>Achieving 100% code coverage in Python 3.12+ with <code>asyncio</code> and <code>coverage.py</code> presents specific challenges due to "Eager Task Execution" and async generator exception handling.
 Specifically, we observed "phantom misses" in:
 1. <code>src/app/core/router.py</code>: Exception handling inside async generators (<code>yield</code>).
 2. <code>src/app/core/prompts.py</code>: Immediate returns after <code>await</code> calls (Cache Hits).
 3. <code>src/app/core/reranker.py</code>: List comprehensions inside conditional branches.</p>
-<h2 id="decision">Decision</h2>
-<p>We accept a <strong>99% coverage baseline</strong>.
-We will NOT write fragile "sleep-based" tests just to satisfy the tracer.
+<h2 id="decision-historical">Decision (Historical)</h2>
+<p>We will NOT write fragile "sleep-based" tests just to satisfy the tracer.
 We use <code># pragma: no cover</code> sparingly where integration tests have proven the logic works, but the line tracer fails to register the hit.</p>
+<p>The numerical baseline is no longer set here. See <a href="../0004-coverage-threshold-acceptance/">ADR-0004</a> for the canonical threshold (90%+).</p>
 <h2 id="consequences">Consequences</h2>
 <ul>
 <li>Tests remain fast and deterministic.</li>

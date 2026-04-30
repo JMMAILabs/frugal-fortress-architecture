@@ -3559,6 +3559,7 @@
 <ul>
 <li><strong>Strict Repository Pattern:</strong> All database access goes through Repository classes (e.g., <code>ReceiptRepository</code>). Every <code>SELECT</code>, <code>UPDATE</code>, and <code>DELETE</code> statement is hardcoded to include a <code>WHERE tenant_id = :tenant_id</code> clause.</li>
 <li><strong>Vector Search Isolation:</strong> When performing semantic searches in <code>pgvector</code> or <code>LanceDB</code> (e.g., finding Few-Shot examples for the Receipt Parser), the <code>tenant_id</code> is applied as a pre-filter. The LLM will <em>never</em> see another company's data as context.</li>
+<li><strong>Idempotency Cache Caveat (Out of Scope):</strong> Content-addressable Redis caches keyed by <code>SHA-256</code> of the raw input (<code>audio_processed:{hash}</code>, <code>pdf:deck:{file_hash}:{sig}</code>) are deliberately <strong>not</strong> tenant-scoped — they are a platform-wide deduplication layer for viral/duplicate content (see <a href="../../adr/0013-sha256-idempotency-guard/">ADR-0013</a>). They do not store any tenant-specific RAG/glossary context, so they fall outside the tenant-isolation invariant.</li>
 </ul>
 <h2 id="4-finops-isolation-token-buckets">4. FinOps Isolation (Token Buckets)</h2>
 <p>Tenant isolation extends to infrastructure costs.

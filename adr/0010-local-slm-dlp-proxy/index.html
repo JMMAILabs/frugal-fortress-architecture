@@ -3680,7 +3680,7 @@
 <p><strong>Date:</strong> 2026-04-06
 <strong>Status:</strong> Accepted</p>
 <h2 id="context">Context</h2>
-<p>To comply with SOC2, GDPR, and HIPAA, we must ensure that Personally Identifiable Information (PII) and Protected Health Information (PHI) never leak to external LLM providers (e.g., Groq, OpenAI). 
+<p>To comply with SOC2, GDPR, and HIPAA, we must ensure that Personally Identifiable Information (PII) and Protected Health Information (PHI) never leak to external LLM providers (e.g., Groq for free-tier traffic, Google Vertex AI for paid traffic). 
 While we use Microsoft Presidio with SpaCy for regex/NER-based scrubbing, complex contextual PII (e.g., "My boss, John, told me his password is...") requires semantic understanding.</p>
 <h2 id="decision">Decision</h2>
 <p>We implemented a <strong>Local DLP Proxy</strong> using a quantized Small Language Model (SLM) running directly on our backend infrastructure.
@@ -3689,7 +3689,7 @@ While we use Microsoft Presidio with SpaCy for regex/NER-based scrubbing, comple
 *   <strong>Execution:</strong> Offloaded to a <code>CpuBoundExecutor</code> (ProcessPool) to prevent blocking the FastAPI <code>asyncio</code> event loop.</p>
 <h2 id="rationale">Rationale</h2>
 <ol>
-<li><strong>Fail-Secure Mandate:</strong> Relying on an external API (like OpenAI) to scrub data before sending it to <em>another</em> external API introduces unacceptable latency and a circular security dependency. If the local SLM fails, the system throws a <code>SecurityPolicyViolation</code> (HTTP 403) and blocks the request. It fails closed.</li>
+<li><strong>Fail-Secure Mandate:</strong> Relying on a remote API to scrub data before sending it to <em>another</em> remote API introduces unacceptable latency and a circular security dependency. If the local SLM fails, the system throws a <code>SecurityPolicyViolation</code> (HTTP 403) and blocks the request. It fails closed.</li>
 <li><strong>FinOps:</strong> Running a 3B parameter model locally on CPU costs $0 in API fees.</li>
 <li><strong>Edge AI in the Backend:</strong> The 4-bit quantized model requires &lt;3GB of RAM, fitting comfortably within our Railway/Docker resource constraints.</li>
 </ol>

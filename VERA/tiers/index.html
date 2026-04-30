@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docsveratiersmd" class="md-skip">
+        <a href="#tiering-strategy-finops-capacity-planning" class="md-skip">
           Skip to content
         </a>
       
@@ -1465,6 +1465,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiers & Limits
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1481,6 +1499,125 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-stripe-metadata-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Stripe Metadata Contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-free-tier-third-party-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Free Tier (Third-Party Stack)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-paid-tiers-vertex-ai-exclusive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Paid Tiers (Vertex AI Exclusive)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Paid Tiers (Vertex AI Exclusive)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-finops-break-even-pricing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. FinOps &amp; Break-Even Pricing Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. FinOps &amp; Break-Even Pricing Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#premium-tier-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premium Tier Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tier-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tier Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-data-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Data Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3538,6 +3675,114 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-stripe-metadata-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Stripe Metadata Contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-free-tier-third-party-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Free Tier (Third-Party Stack)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-paid-tiers-vertex-ai-exclusive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Paid Tiers (Vertex AI Exclusive)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Paid Tiers (Vertex AI Exclusive)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-finops-break-even-pricing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. FinOps &amp; Break-Even Pricing Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. FinOps &amp; Break-Even Pricing Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#premium-tier-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premium Tier Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tier-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tier Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-data-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Data Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3556,9 +3801,11 @@
   
 
 
-<h1 id="docsveratiersmd">docs/VERA/tiers.md</h1>
 <h1 id="tiering-strategy-finops-capacity-planning">Tiering Strategy &amp; FinOps Capacity Planning</h1>
 <p>This document defines the operational limits, model routing, and break-even pricing analysis for the Receipt Parser (VERA) module.</p>
+<blockquote>
+<p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
+</blockquote>
 <h2 id="1-stripe-metadata-contract">1. Stripe Metadata Contract</h2>
 <p>Payment links must inject the following custom fields into the Stripe Checkout Session:
 *   <code>receipt_parser_user_id</code>
@@ -3575,13 +3822,13 @@
 </ul>
 </li>
 <li><strong>Data Retention:</strong> 3 months.</li>
-<li><strong>Disclaimer:</strong> The Free tier utilizes third-party OCR/LLM APIs. It is not recommended for highly sensitive financial documents (e.g., PHI/PII heavy invoices).</li>
+<li><strong>Disclaimer:</strong> The Free tier utilizes third-party OCR/LLM APIs (LlamaParse + Groq). It is not recommended for highly sensitive financial documents (e.g., PHI/PII heavy invoices).</li>
 </ul>
 <h2 id="3-paid-tiers-vertex-ai-exclusive">3. Paid Tiers (Vertex AI Exclusive)</h2>
-<p>To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI. No Anthropic or OpenAI models are used.</p>
+<p>To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI under enterprise terms. The platform does not route any traffic through other LLM vendors.</p>
 <ul>
-<li><strong>Premium:</strong> Includes <code>gemini-2.5-flash-lite</code>.</li>
-<li><strong>Pro:</strong> Includes <code>gemini-2.5-flash</code>.</li>
+<li><strong>Premium:</strong> <code>gemini-2.5-flash-lite</code>.</li>
+<li><strong>Pro:</strong> <code>gemini-2.5-flash</code>.</li>
 <li><strong>PAYG:</strong> Selectable models (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>).</li>
 </ul>
 <h3 id="operational-limits">Operational Limits</h3>
@@ -3591,7 +3838,6 @@
 <th style="text-align: left;">Metric</th>
 <th style="text-align: left;">Premium</th>
 <th style="text-align: left;">Pro</th>
-<th style="text-align: left;">Ultra</th>
 <th style="text-align: left;">PAYG</th>
 </tr>
 </thead>
@@ -3601,12 +3847,10 @@
 <td style="text-align: left;">500 receipts</td>
 <td style="text-align: left;">2,000 receipts</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">N/A</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Daily Limit</strong></td>
 <td style="text-align: left;">50 receipts</td>
-<td style="text-align: left;">200 receipts</td>
 <td style="text-align: left;">200 receipts</td>
 <td style="text-align: left;">1,000 receipts</td>
 </tr>
@@ -3614,20 +3858,17 @@
 <td style="text-align: left;"><strong>Max Storage Capacity</strong></td>
 <td style="text-align: left;">2,000 receipts</td>
 <td style="text-align: left;">5,000 receipts</td>
-<td style="text-align: left;">10,000 receipts</td>
 <td style="text-align: left;">N/A</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Max Versions per Hash</strong></td>
 <td style="text-align: left;">10</td>
 <td style="text-align: left;">50</td>
-<td style="text-align: left;">100</td>
 <td style="text-align: left;">40</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Data Retention</strong></td>
 <td style="text-align: left;">1 year</td>
-<td style="text-align: left;">5 years</td>
 <td style="text-align: left;">5 years</td>
 <td style="text-align: left;">Inherits base tier</td>
 </tr>
@@ -3635,7 +3876,7 @@
 </table>
 <p><em>Note on Versioning:</em> Each persistence event counts as a row (the initial parse, and every human correction saved via <code>POST /receipts/history</code>). The internal LLM self-correction loop does <em>not</em> create new database rows.</p>
 <h2 id="4-finops-break-even-pricing-analysis">4. FinOps &amp; Break-Even Pricing Analysis</h2>
-<p><em>Source of Truth:<a href="https://cloud.google.com/vertex-ai/generative-ai/pricing">Google Cloud Vertex AI Pricing</a></em></p>
+<p><em>Source of Truth: <a href="https://cloud.google.com/vertex-ai/generative-ai/pricing">Google Cloud Vertex AI Pricing</a></em></p>
 <p><strong>Conservative Baseline Assumptions:</strong>
 *   1 Input Image ≈ <code>1,120</code> tokens (Standard Gemini Flash Image proxy).
 *   JSON Output ≈ <code>500</code> tokens.
@@ -3651,16 +3892,9 @@
 <li><strong>Recommended Break-Even Price:</strong> <code>$0.99 / month</code></li>
 <li><strong>Final Retail Price:</strong> <strong>$2.99 / month</strong></li>
 </ul>
-<h3 id="pro-tier-analysis-model-migration-impact">Pro Tier Analysis (Model Migration Impact)</h3>
-<p>The Pro tier was recently migrated from <code>anthropic/claude-haiku-4.5</code> to <code>gemini/gemini-2.5-flash</code>.</p>
+<h3 id="pro-tier-analysis">Pro Tier Analysis</h3>
 <ul>
-<li><strong>Previous Cost (Claude Haiku 4.5):</strong><ul>
-<li>Worst-Case (3 Retries): <code>$0.010860</code> per receipt.</li>
-<li>Worst-Case Monthly Cost (2,000 receipts): <code>$21.72</code></li>
-<li><em>Previous Break-Even Price: ~$24.99 / month</em></li>
-</ul>
-</li>
-<li><strong>Current Cost (Gemini 2.5 Flash):</strong><ul>
+<li><strong>Cost (Gemini 2.5 Flash):</strong><ul>
 <li>Single Attempt: <code>(1,120 * $0.30 / 1M) + (500 * $2.50 / 1M) = $0.001586</code></li>
 <li>Worst-Case (3 Retries): <strong>$0.004758</strong></li>
 </ul>
@@ -3668,7 +3902,7 @@
 <li><strong>Worst-Case Monthly Cost:</strong> <code>2,000 * $0.004758 = $9.516</code></li>
 <li><strong>Recommended Break-Even Price:</strong> <code>$9.99 / month</code></li>
 <li><strong>Final Retail Price:</strong> <strong>$9.99 / month</strong></li>
-<li><strong>Rationale:</strong> The migration to Gemini 2.5 Flash reduced the cost per receipt by 56%. This allowed us to aggressively drop the retail price from <code>$24.99</code> to <code>$9.99</code> while maintaining profitability, even when accounting for the high volume (2,000 receipts) and the 3-retry self-correction loop.</li>
+<li><strong>Rationale:</strong> Gemini 2.5 Flash provides multimodal accuracy at a price that lets us hold <code>$9.99 / month</code> retail with comfortable margins, even when the worst-case 2,000-receipt monthly ceiling is hit and every receipt exhausts the 3-retry self-correction loop.</li>
 </ul>
 <h2 id="5-data-lifecycle">5. Data Lifecycle</h2>
 <p>Upon subscription cancellation, the standard 90-day grace period applies. The user is downgraded to Free tier compute limits but retains full access to export their historical data. On Day 91, a FIFO pruning job truncates their storage to the Free tier limit (100 receipts).</p>

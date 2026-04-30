@@ -3714,7 +3714,7 @@
 <h1 id="module-aura-audio-understanding-retention-architecture">Module: AURA (Audio Understanding &amp; Retention Architecture)</h1>
 <h2 id="1-architectural-overview">1. Architectural Overview</h2>
 <p><strong>AURA</strong> is the Corporate Memory Engine of the Frugal Fortress. It transforms unstructured voice messages into structured, actionable corporate memory via a direct Telegram Webhook integration.</p>
-<p>Unlike naive wrappers around OpenAI, AURA processes audio asynchronously while maintaining strict idempotency, FinOps controls, and SOC2 compliance.</p>
+<p>Unlike naive LLM wrappers, AURA processes audio asynchronously while maintaining strict idempotency, FinOps controls, and SOC2 compliance.</p>
 <p><strong>Core Flow:</strong>
 1. <strong>Ingestion:</strong> Telegram Webhook receives the audio file.
 2. <strong>Idempotency Guard:</strong> The system calculates the <code>SHA-256</code> hash of the audio bytes. If a viral/forwarded audio is detected, it serves the summary directly from Redis (&lt;50ms), bypassing all LLM compute.
@@ -3726,9 +3726,9 @@
 <p>This module heavily leverages the Frugal Fortress core patterns. For detailed technical decisions, refer to the following Architecture Decision Records (ADRs):</p>
 <ul>
 <li><strong><a href="../adr/0011-redis-media-group-debouncing/">ADR-0011: Redis-backed Media Group Debouncing</a>:</strong> How we handle concurrent Telegram image uploads for Support Tickets without race conditions.</li>
-<li><strong><a href="../adr/0012-two-phase-commit-payg.md">ADR-0012: Two-Phase Commit for PAYG Wallet</a>:</strong> How we prevent Denial of Wallet (DoW) attacks using atomic Lua scripts in Redis.</li>
+<li><strong><a href="../adr/0012-two-phase-commit-payg-wallet/">ADR-0012: Two-Phase Commit for PAYG Wallet</a>:</strong> How we prevent Denial of Wallet (DoW) attacks using atomic Lua scripts in Redis.</li>
 <li><strong><a href="../adr/0013-sha256-idempotency-guard/">ADR-0013: SHA-256 Idempotency Guard</a>:</strong> How we achieve 100% cost savings on viral/duplicate audio messages.</li>
-<li><strong><a href="../adr/0014-dynamic-rag-injection.md">ADR-0014: Dynamic RAG Injection (Nested Learning Loop) </a>:</strong> How the system learns user-specific jargon in real-time without expensive model fine-tuning.</li>
+<li><strong><a href="../adr/0014-dynamic-rag-injection-nested-learning/">ADR-0014: Dynamic RAG Injection (Nested Learning Loop)</a>:</strong> How the system learns user-specific jargon in real-time without expensive model fine-tuning.</li>
 </ul>
 <h2 id="3-security-privacy-soc2">3. Security &amp; Privacy (SOC2)</h2>
 <ul>

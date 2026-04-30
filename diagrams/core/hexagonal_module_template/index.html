@@ -3562,7 +3562,7 @@
 <pre class="mermaid"><code>graph TD
     subgraph Primary_Adapters ["Primary Adapters (Driving)"]
         Router[FastAPI Router\nHTTP Endpoints]
-        Worker[Arq/Celery Worker\nBackground Tasks]
+        Worker[Arq Worker\nBackground Tasks]
     end
 
     subgraph Application_Layer["Application Layer (Use Cases)"]
@@ -3583,7 +3583,7 @@
 
     subgraph Secondary_Adapters ["Secondary Adapters (Driven Implementations)"]
         Supabase[Supabase Adapter\nSQLAlchemy/pgvector]
-        LiteLLM[LiteLLM Adapter\nGroq/OpenAI]
+        LiteLLM[LiteLLM Adapter\nGroq / Vertex AI]
         Redis[Redis Adapter\nSemantic Cache]
     end
 

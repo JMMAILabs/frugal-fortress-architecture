@@ -3521,6 +3521,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tenant-isolation-caveat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tenant-Isolation Caveat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3624,6 +3635,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tenant-isolation-caveat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tenant-Isolation Caveat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3661,16 +3683,22 @@
 <p>In messaging platforms like Telegram, users frequently forward "viral" or popular voice notes (e.g., a CEO's company-wide address, a popular podcast clip).
 Processing the exact same audio file multiple times through Whisper (Transcription) and Llama-3 (Summarization) wastes expensive LLM compute and introduces unnecessary latency.</p>
 <h2 id="decision">Decision</h2>
-<p>We implemented a strict, <strong>Global Idempotency Guard</strong> at the edge of the application layer, backed by Redis.
+<p>We implemented a strict, <strong>Content-Addressable Idempotency Guard</strong> at the edge of the application layer, backed by Redis.
 1. <strong>Hashing:</strong> Upon receiving an audio file, the backend immediately calculates the <code>SHA-256</code> hash of the raw audio bytes.
-2. <strong>Global Cache Lookup:</strong> It checks Redis for the key <code>audio_processed:{hash}</code>. Notice this key does <strong>not</strong> include the <code>tenant_id</code>.
+2. <strong>Cache Lookup:</strong> It checks Redis for the key <code>audio_processed:{hash}</code>. The key is intentionally <strong>content-addressable</strong> (it does <strong>not</strong> include <code>tenant_id</code>), so byte-identical viral content is deduplicated platform-wide.
 3. <strong>Short-Circuit:</strong> If a match is found, the backend instantly returns the cached <code>summary_text</code> and <code>transcript</code> to the new user. The LLM providers are never invoked.
 4. <strong>TTL:</strong> The cache Time-To-Live (TTL) is tiered (e.g., 24 hours for Free users, 7 days for Pro users).</p>
+<h2 id="tenant-isolation-caveat">Tenant-Isolation Caveat</h2>
+<p>This cache is the <strong>explicit exception</strong> to the "every cache key MUST include tenant_id" rule defined in <a href="../../architecture/CORE_INVARIANTS/">CORE_INVARIANTS §2.2</a>. The exception is bounded by two preconditions that MUST always hold for any cache that adopts this pattern:
+1. The cached value is <strong>byte-identical, tenant-agnostic LLM output</strong> — it does NOT embed any per-user RAG retrieval, glossary substitution, or other personalized context at the moment of write.
+2. The cache stores only the post-LLM summary/transcript — never raw user payloads or PII.</p>
+<p>Any future feature that needs to mix tenant-specific context into the cached output MUST either (a) include <code>tenant_id</code> in the key, or (b) cache before the personalization step. See also <a href="../../architecture/security_compliance_soc2/">security_compliance_soc2 §4</a> and <a href="../../architecture/MULTI_TENANCY_AND_ISOLATION/">MULTI_TENANCY_AND_ISOLATION §3</a>.</p>
 <h2 id="consequences">Consequences</h2>
 <ul>
 <li><strong>Positive:</strong> Reduces latency for duplicate audio from ~4 seconds to &lt;50 milliseconds.</li>
 <li><strong>Positive:</strong> Saves 100% of the LLM API costs for viral media across the entire platform.</li>
 <li><strong>Negative:</strong> Requires holding the audio bytes in memory briefly to compute the hash, which is acceptable given our 25MB file size limit.</li>
+<li><strong>Operational:</strong> Code reviews of changes to <code>process_audio</code> / <code>process_pdf_task</code> MUST verify the two preconditions above before approving any modification to the cache write path.</li>
 </ul>
 
 

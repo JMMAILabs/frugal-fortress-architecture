@@ -1425,10 +1425,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pro-tier-analysis-model-migration-impact" class="md-nav__link">
+  <a href="#pro-tier-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pro Tier Analysis (Model Migration Impact)
+        Pro Tier Analysis
       
     </span>
   </a>
@@ -3721,10 +3721,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pro-tier-analysis-model-migration-impact" class="md-nav__link">
+  <a href="#pro-tier-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pro Tier Analysis (Model Migration Impact)
+        Pro Tier Analysis
       
     </span>
   </a>
@@ -3769,6 +3769,9 @@
 
 <h1 id="tiering-strategy-finops-capacity-planning">Tiering Strategy &amp; FinOps Capacity Planning</h1>
 <p>This document defines the operational limits, model routing, and break-even pricing analysis for the PDF to Anki (KERA) module.</p>
+<blockquote>
+<p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
+</blockquote>
 <h2 id="1-stripe-metadata-contract">1. Stripe Metadata Contract</h2>
 <p>Payment links must inject the following custom fields into the Stripe Checkout Session:
 *   <code>pdf_anki_user_id</code>
@@ -3862,16 +3865,9 @@ Calculations utilize the hard limits enforced by <code>estimate_unified_pdf_toke
 <li><strong>Final Retail Price:</strong> <strong>$2.99 / month</strong></li>
 <li><strong>Rationale:</strong> Flash-Lite provides exceptional multimodal capabilities at a fraction of the cost, making Premium the tier with the highest relative profit margin.</li>
 </ul>
-<h3 id="pro-tier-analysis-model-migration-impact">Pro Tier Analysis (Model Migration Impact)</h3>
-<p>The Pro tier was recently migrated from <code>anthropic/claude-haiku-4.5</code> to <code>gemini/gemini-2.5-flash</code>.</p>
+<h3 id="pro-tier-analysis">Pro Tier Analysis</h3>
 <ul>
-<li><strong>Previous Cost (Claude Haiku 4.5):</strong><ul>
-<li>Total per PDF: <code>$0.9795</code></li>
-<li>Worst-Case Monthly Cost (4 PDFs): <code>$3.918</code></li>
-<li><em>Previous Break-Even Price: ~$4.99 / month</em></li>
-</ul>
-</li>
-<li><strong>Current Cost (Gemini 2.5 Flash):</strong><ul>
+<li><strong>Cost (Gemini 2.5 Flash):</strong><ul>
 <li>Input: <code>602,000 * ($0.30 / 1M) = $0.1806</code></li>
 <li>Output: <code>75,500 * ($2.50 / 1M) = $0.18875</code></li>
 <li>Total per PDF: <strong>$0.36935</strong></li>
@@ -3883,12 +3879,12 @@ Calculations utilize the hard limits enforced by <code>estimate_unified_pdf_toke
 </li>
 <li><strong>Recommended Break-Even Price:</strong> <code>$1.99 / month</code></li>
 <li><strong>Final Retail Price:</strong> <strong>$4.99 / month</strong></li>
-<li><strong>Rationale:</strong> Migrating to Gemini 2.5 Flash reduced the worst-case monthly cost by 62% (from <code>$3.918</code> to <code>$1.4774</code>). This allows us to maintain the <code>$4.99</code> price point while significantly increasing our profit margins, without sacrificing multimodal accuracy.</li>
+<li><strong>Rationale:</strong> Gemini 2.5 Flash delivers strong multimodal accuracy at a price point that lets us hold <code>$4.99 / month</code> retail with healthy margins, even at the worst-case 4-PDF monthly ceiling.</li>
 </ul>
 <h2 id="5-payg-formula-privacy">5. PAYG Formula &amp; Privacy</h2>
 <ul>
 <li><strong>Formula:</strong> <code>(Exact LLM Provider Cost) * 1.40</code> (40% Markup).</li>
-<li><strong>Privacy Guarantee:</strong> Paid tiers utilize the unified multimodal flow exclusively on Vertex AI. No data is routed through Anthropic or OpenAI, ensuring Zero Data Retention compliance.</li>
+<li><strong>Privacy Guarantee:</strong> Paid tiers utilize the unified multimodal flow exclusively on Google Vertex AI under enterprise terms (Zero Data Retention). The platform does not route any traffic through other LLM vendors.</li>
 </ul>
 
 

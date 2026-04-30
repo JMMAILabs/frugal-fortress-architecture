@@ -3761,7 +3761,8 @@
 <ul>
 <li><strong>Authentication:</strong> Handled via Google OAuth2 (OpenID Connect).</li>
 <li><strong>Module Isolation:</strong> JWTs are strictly scoped per module (<code>module=pdf_anki</code> vs <code>module=receipt_parser</code>) to prevent lateral movement between product contexts.</li>
-<li><strong>Tenant Isolation:</strong> The <code>ContextMiddleware</code> binds the <code>tenant_id</code> to Python <code>contextvars</code>. All database repositories and vector searches (LanceDB/pgvector) enforce a hard <code>WHERE tenant_id = :tenant_id</code> clause. Cross-tenant data leakage is mathematically impossible at the query level.</li>
+<li><strong>Tenant Isolation (Stateful Stores):</strong> The <code>ContextMiddleware</code> binds the <code>tenant_id</code> to Python <code>contextvars</code>. All database repositories and vector searches (LanceDB/pgvector) enforce a hard <code>WHERE tenant_id = :tenant_id</code> clause. Cross-tenant data leakage is mathematically impossible at the query level for stateful stores.</li>
+<li><strong>Content-Addressable Idempotency Caches:</strong> Hash-keyed deduplication caches (<code>audio_processed:{sha256}</code>, <code>pdf:deck:{file_hash}:{sig}</code>) are intentionally <strong>content-addressable, not tenant-scoped</strong>, so platform-wide viral content is processed once. These caches store <strong>only tenant-agnostic LLM output</strong> (no per-user RAG/glossary context is mixed in) and are auditable via <code>FinOpsCallback</code> logs. See <a href="../../adr/0013-sha256-idempotency-guard/">ADR-0013</a> and the explicit invariant exception in <a href="../CORE_INVARIANTS/">CORE_INVARIANTS §2.2</a>.</li>
 </ul>
 
 

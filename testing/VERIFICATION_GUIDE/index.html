@@ -3990,12 +3990,15 @@
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Expected: {&quot;status&quot;:&quot;ok&quot;, &quot;database&quot;:&quot;connected&quot;, ...}</span>
 </code></pre></div></p>
 <h3 id="b-ai-inference-the-smart-path">B. AI Inference (The "Smart" Path)</h3>
-<p>Forces the system to use the LLM (Groq/OpenAI).
+<p>Forces the system to use the LLM (Groq for Free, Vertex AI for Paid).</p>
+<blockquote>
+<p><strong>Staging / development only.</strong> <code>/api/v1/test-router</code> is a diagnostic endpoint. Do not expose it on production hostnames; restrict it via gateway ACLs / network policy in any non-dev environment.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://localhost:8000/api/v1/test-router&quot;</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;prompt&quot;: &quot;Explain the theory of relativity to a 5 year old&quot;}&#39;</span>
 </code></pre></div>
 *   <strong>Check:</strong> Response should take &gt;1s. <code>model_used</code> should be an LLM (not cache).</p>
+</blockquote>
 <h3 id="c-semantic-cache-the-fast-path">C. Semantic Cache (The "Fast" Path)</h3>
 <p>Repeat the <strong>exact same request</strong> from step B.
 *   <strong>Check:</strong> Response should take &lt;10ms. <code>model_used</code> should be <code>cache-semantic</code> or <code>cache-exact</code>.</p>

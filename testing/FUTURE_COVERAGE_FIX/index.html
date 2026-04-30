@@ -3546,7 +3546,7 @@
 <h1 id="future-coverage-fix-prompt">Future Coverage Fix Prompt</h1>
 <p><strong>Role:</strong> Senior Python QA Engineer &amp; Asyncio Specialist.</p>
 <p><strong>Context:</strong>
-This project uses Python 3.12, FastAPI, and Asyncio. We have a 99% coverage suite.
+This project uses Python 3.12, FastAPI, and Asyncio. The Gold Standard target is <strong>90%+</strong> line coverage (current: 91%; see <a href="../../adr/0004-coverage-threshold-acceptance/">ADR-0004</a>).
 There are persistent "phantom misses" in <code>coverage.py</code> reports related to:
 1. <strong>Async Generators:</strong> Exception blocks inside <code>async def ... yield</code> are executed (proven by tests) but not marked as covered.
 2. <strong>Eager Execution:</strong> Return statements immediately following an <code>await</code> in high-concurrency mocks are missed by the tracer.</p>
@@ -3558,7 +3558,7 @@ There are persistent "phantom misses" in <code>coverage.py</code> reports relate
 When <code>coverage.py</code> releases better support for Python 3.12's <code>sys.monitoring</code> (PEP 669), refactor the test suite to remove <code># pragma: no cover</code> markers.
 1. Remove pragmas.
 2. Update <code>pyproject.toml</code> coverage settings (potentially enabling <code>branch = true</code> with specific async plugins).
-3. Verify 100% coverage without modifying the business logic.</p>
+3. Verify the residual gap closes without modifying the business logic.</p>
 
 
 

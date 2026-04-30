@@ -4084,15 +4084,15 @@
 </tr>
 <tr>
 <td>Same PDF uploaded twice (e.g. same textbook)</td>
-<td><strong>Exact hash cache</strong>: <code>file_hash = SHA-256(pdf_bytes)</code>. If <code>pdf:deck:{file_hash}</code> exists in Redis, the worker returns the cached deck in ~50 ms and does not call LlamaParse/LLM.</td>
+<td><strong>Exact hash cache</strong>: <code>file_hash = SHA-256(pdf_bytes)</code>. The actual Redis key is <code>pdf:deck:{file_hash}:{sig}</code>, where <code>sig</code> is a 12-char SHA-256 of the runtime tunable signature (chunk size, max cards, tier caps). Cache hits return the cached deck in ~50 ms and do not call LlamaParse/LLM.</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Stack (actual):</strong> FastAPI + <strong>Arq</strong> (not Celery) + Redis. Router: LiteLLM. Vector store: LanceDB (S3/R2).</p>
 <h3 id="12-implemented-behaviour">1.2 Implemented Behaviour</h3>
 <ul>
-<li><strong>Async flow:</strong> Upload → store <strong>encrypted</strong> raw bytes in Redis (TTL 1h) → enqueue <code>process_pdf_task</code> → worker: load PDF from Redis → decrypt → LlamaParse → chunk → embed → LanceDB → flashcard generation → store <strong>encrypted</strong> deck in Redis (<code>pdf:deck:{file_hash}</code>, TTL 7 days).</li>
-<li><strong>Cache hit L1 (exact hash):</strong> Before parsing, worker calls <code>cache_get(file_hash)</code>. If a deck exists for that hash, state is set to COMPLETED and the cached deck is returned; no LlamaParse nor LLM.</li>
+<li><strong>Async flow:</strong> Upload → store <strong>encrypted</strong> raw bytes in Redis (TTL 1h) → enqueue <code>process_pdf_task</code> → worker: load PDF from Redis → decrypt → LlamaParse → chunk → embed → LanceDB → flashcard generation → store <strong>encrypted</strong> deck in Redis under <code>pdf:deck:{file_hash}:{sig}</code> (TTL 7 days).</li>
+<li><strong>Cache hit L1 (exact hash):</strong> Before parsing, the worker computes the deck key via <code>pdf_deck_redis_key(file_hash)</code> (which appends the runtime config signature) and calls <code>cache_get</code>. If a deck exists for that hash+sig, state is set to COMPLETED and the cached deck is returned; no LlamaParse nor LLM.</li>
 <li><strong>Semantic dedup L2:</strong> Each new chunk embedding is searched in LanceDB; if a highly similar concept already exists (≥95% similarity), LLM generation for that chunk is skipped (FinOps optimisation).</li>
 <li><strong>Idempotency:</strong> Duplicate uploads (same hash) are detected in the router via <code>get_by_file_hash</code>; client gets the same <code>task_id</code> or "already queued".</li>
 </ul>
@@ -4125,18 +4125,19 @@
 <p>"This system is not just a receipt reader. It is a <strong>hybrid AI architecture</strong> for maximum privacy and minimum cost: we process vision locally (CPU) to remove image transfer and cloud vision cost; we use <strong>intelligent LLM orchestration</strong> to structure data, achieving high accuracy at a fraction of traditional cost."</p>
 <h3 id="22-current-implementation-cloud-orchestration">2.2 Current Implementation (Cloud Orchestration)</h3>
 <ul>
-<li><strong>Input:</strong> Raw OCR text (from Edge or external OCR). We do <strong>not</strong> process images in the backend today; the "compute" layer is at the edge.</li>
-<li><strong>FinOps — LLM router:</strong></li>
-<li><strong>Level 1 (cheap):</strong> Groq Llama-3.1-8B. Prompt: extract JSON (items, subtotal, tax, total, currency). Cost ~$0.0001 per receipt.</li>
+<li><strong>Input — Free Tier:</strong> Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on <strong>Groq</strong> (<code>llama-3.3-70b-versatile</code>) via LiteLLM.</li>
+<li><strong>Input — Paid Tiers (Premium / Pro / PAYG):</strong> Image is sent directly to <strong>Google Vertex AI</strong> (<code>gemini-2.5-flash-lite</code> / <code>gemini-2.5-flash</code> / <code>gemini-2.5-pro</code>) for single-pass multimodal extraction. No external OCR is required.</li>
+<li><strong>FinOps — Self-Correction Loop:</strong></li>
 <li><strong>Validation (pure Python):</strong> <code>validate_receipt_math</code>: items sum = subtotal, subtotal + tax = total. No framework.</li>
-<li><strong>Escalation:</strong> If validation fails after retries (e.g. 2× Llama, then 1× GPT-4o), we call <strong>GPT-4o</strong> with an error-correcting prompt. Only ~5–10% of receipts escalate; cost remains low overall.</li>
+<li><strong>Retries:</strong> Up to 3 paid attempts (<code>MAX_RETRIES = 3</code>). If math validation fails, the validator error is fed back into the LLM prompt for a corrective retry, all within the same provider (Groq for Free, Vertex AI for Paid). There is no cross-provider escalation: only Groq and Google Vertex AI are wired into the receipt pipeline.</li>
+<li><strong>HITL Fallback:</strong> If 3 retries cannot balance the math, the API returns <code>HTTP 206 Partial Content</code> so the user can correct the JSON in the UI (see <a href="../../diagrams/VERA/diagram_response_contract/">VERA response contract</a>).</li>
 </ul>
 <h3 id="23-edge-compute-performance-roadmap">2.3 Edge / Compute Performance (Roadmap)</h3>
 <ul>
-<li><strong>Goal:</strong> Remove dependency on GPT-4 Vision; keep images on-prem or on Edge.</li>
+<li><strong>Goal:</strong> Eliminate any dependency on third-party Vision APIs for paid OCR; keep images on-prem or on Edge.</li>
 <li><strong>Techniques (when we add image input):</strong></li>
 <li><strong>Preprocessing (OpenCV/NumPy):</strong> Perspective correction (homography), adaptive thresholding (Otsu), noise reduction (morphological ops). Pure math on CPU; improves OCR accuracy.</li>
-<li><strong>Local OCR:</strong> PaddleOCR or Tesseract exported to <strong>ONNX</strong>, optionally <strong>quantized (int8)</strong> for 3–4× speed and lower RAM.</li>
+<li><strong>Local OCR:</strong> PaddleOCR exported to <strong>ONNX</strong>, optionally <strong>quantized (int8)</strong> for 3–4× speed and lower RAM.</li>
 <li><strong>Singleton model:</strong> Load ONNX model once at FastAPI startup; reuse for every request.</li>
 </ul>
 <h3 id="24-railway-low-memory-rules-when-doing-image-processing">2.4 Railway / Low-Memory Rules (when doing image processing)</h3>
@@ -4170,7 +4171,7 @@
 <tbody>
 <tr>
 <td>Five employees upload the same Zoom recording; you pay 5× for transcription and summary.</td>
-<td><strong>Content hash (SHA-256)</strong> of the audio. Key: <code>audio:{hash}</code>. If cache hit → return stored summary in ~50 ms; cost $0.</td>
+<td><strong>Content hash (SHA-256)</strong> of the audio. Redis key: <code>audio_processed:{hash}</code> (content-addressable; see <a href="../../adr/0013-sha256-idempotency-guard/">ADR-0013</a> and the tenant-isolation caveat in <a href="../CORE_INVARIANTS/">CORE_INVARIANTS §2.2</a>). If cache hit → return stored summary in ~50 ms; cost $0.</td>
 </tr>
 </tbody>
 </table>
@@ -4205,9 +4206,9 @@
 <hr />
 <h2 id="5-references">5. References</h2>
 <ul>
-<li><a href="../SYSTEM_TOPOLOGY/">SYSTEM_TOPOLOGY.md</a> — High-level architecture.
--<a href="../HEXAGONAL_DECOUPLING/">docs/HEXAGONAL_DECOUPLING.md</a> — Layer boundaries.</li>
-<li><a href="../../adr/0008-native-acceleration-strategy/">docs/adr/0008-native-acceleration-strategy.md</a> — When to use ONNX, Rust, CUDA, etc.</li>
+<li><a href="../SYSTEM_TOPOLOGY/">SYSTEM_TOPOLOGY.md</a> — High-level architecture.</li>
+<li><a href="../HEXAGONAL_DECOUPLING/">HEXAGONAL_DECOUPLING.md</a> — Layer boundaries.</li>
+<li><a href="../../adr/0008-native-acceleration-strategy/">ADR-0008: Native Acceleration Strategy</a> — When to use ONNX, Rust, CUDA, etc.</li>
 </ul>
 
 

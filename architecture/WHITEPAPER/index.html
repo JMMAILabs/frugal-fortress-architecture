@@ -3707,7 +3707,7 @@
 2.  <strong>Compliance:</strong> Processing sensitive data (Invoices, Medical PDFs) requires strict adherence to SOC2 and Zero Data Retention policies.</p>
 <h2 id="2-the-architecture-modular-monolith-over-microservices">2. The Architecture: Modular Monolith over Microservices</h2>
 <p>We deliberately chose a <strong>Modular Monolith</strong> (Python/FastAPI) over premature microservices. This eliminates network latency between domains, simplifies deployments, and maximizes resource sharing (Database connection pools, Redis multiplexing).</p>
-<p>We enforce a strict <strong>Hexagonal Architecture</strong>. The core domain (e.g., <code>process_pdf_use_case</code>) is completely agnostic to the underlying infrastructure. Whether the LLM provider is Groq, OpenAI, or Vertex AI, the business logic remains pure and untouched.</p>
+<p>We enforce a strict <strong>Hexagonal Architecture</strong>. The core domain (e.g., <code>process_pdf_use_case</code>) is completely agnostic to the underlying infrastructure. Whether the LLM provider is Groq (free tier) or Google Vertex AI (paid tiers), the business logic remains pure and untouched.</p>
 <h2 id="3-resilience-patterns-sre">3. Resilience Patterns (SRE)</h2>
 <p>In AI, third-party providers <em>will</em> fail. A naive application collapses; a resilient system adapts.
 *   <strong>Distributed Circuit Breakers:</strong> Implemented a Redis-backed circuit breaker. If the primary LLM provider experiences a rate limit (HTTP 429) or outage, the circuit opens, automatically triggering a "Graceful Degradation" fallback to a cheaper/faster secondary model. The user never sees a 500 error.

@@ -3655,8 +3655,8 @@
 
 
 <h1 id="intentional-coverage-exceptions">Intentional Coverage Exceptions</h1>
-<p>This document justifies the lines or branches that are <strong>intentionally excluded</strong> from unit test coverage. This aligns with <strong>ADR-0003</strong>, which explicitly rejects "Vanity Metrics" in favor of system stability and integration testing.</p>
-<p><strong>Current Baseline Target:</strong> 95%</p>
+<p>This document justifies the lines or branches that are <strong>intentionally excluded</strong> from unit test coverage. This aligns with <strong><a href="../../adr/0004-coverage-threshold-acceptance/">ADR-0004</a></strong> (canonical threshold), which explicitly rejects "Vanity Metrics" in favor of system stability and integration testing.</p>
+<p><strong>Gold Standard Target:</strong> 90%+ (current: 91%)</p>
 <h2 id="1-excluded-modules-facades-thin-adapters">1. Excluded Modules (Facades &amp; Thin Adapters)</h2>
 <p>These files are omitted in <code>pyproject.toml</code> (<code>[tool.coverage.run] omit</code>) because they are either thin wrappers around third-party SDKs or simple re-exports. Testing them would require deep, brittle mocking of external services.</p>
 <table>
@@ -3697,7 +3697,7 @@
 <ol>
 <li><strong>Prioritize:</strong> Domain logic, Security (PII Scrubbing, Auth), Resilience (Circuit Breakers), and FinOps (Token counting). These must remain near 100%.</li>
 <li><strong>Accept:</strong> Lower unit coverage on external I/O adapters, provided they are covered by Contract or Integration tests.</li>
-<li><strong>Document:</strong> Any new intentional gap must be recorded in this file. Do not lower the global 95% threshold.</li>
+<li><strong>Document:</strong> Any new intentional gap must be recorded in this file. Do not lower the global 90% threshold (<code>pyproject.toml [tool.coverage.report] fail_under = 90</code>).</li>
 </ol>
 
 

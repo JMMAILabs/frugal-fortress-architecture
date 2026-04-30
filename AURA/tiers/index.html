@@ -1249,52 +1249,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-architectural-implementation-plan-enterprise-tier-b2b-shared-quota" class="md-nav__link">
+  <a href="#5-roadmap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Architectural Implementation Plan: Enterprise Tier (B2B Shared Quota)
+        5. Roadmap
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="5. Architectural Implementation Plan: Enterprise Tier (B2B Shared Quota)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-domain-evolution-self-referential-accounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 1: Domain Evolution (Self-Referential Accounts)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-consumption-routing-finops" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 2: Consumption Routing &amp; FinOps
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-stripe-adapter-dynamic-quoting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 3: Stripe Adapter &amp; Dynamic Quoting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3798,52 +3759,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-architectural-implementation-plan-enterprise-tier-b2b-shared-quota" class="md-nav__link">
+  <a href="#5-roadmap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Architectural Implementation Plan: Enterprise Tier (B2B Shared Quota)
+        5. Roadmap
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="5. Architectural Implementation Plan: Enterprise Tier (B2B Shared Quota)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-domain-evolution-self-referential-accounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 1: Domain Evolution (Self-Referential Accounts)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-consumption-routing-finops" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 2: Consumption Routing &amp; FinOps
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-stripe-adapter-dynamic-quoting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 3: Stripe Adapter &amp; Dynamic Quoting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3868,7 +3790,10 @@
 
 
 <h1 id="business-rules-tiering-enterprise-quotas">Business Rules, Tiering &amp; Enterprise Quotas</h1>
-<p>This document outlines the operational limits, FinOps constraints, and the architectural roadmap for the B2B Enterprise tier within the Audio Notes module.</p>
+<p>This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design lives in a separate roadmap document — see <a href="roadmap_enterprise_b2b.md">AURA Enterprise Roadmap (B2B Shared Quota)</a>.</p>
+<blockquote>
+<p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
+</blockquote>
 <h2 id="1-standard-subscription-tiers">1. Standard Subscription Tiers</h2>
 <h3 id="free-tier-growth-acquisition">Free Tier (Growth &amp; Acquisition)</h3>
 <ul>
@@ -3928,27 +3853,8 @@
 *   <strong>Day 1 to 90 (Grace Period):</strong> The user is downgraded to Free Tier compute limits (150 mins/month, 5 mins/audio). However, their database records (2,000 notes, 300 rules) are preserved. A persistent UI warning alerts the user to export their glossary before Day 90.
 *   <strong>Day 91 (Hard Pruning):</strong> An <code>Arq</code> cron job detects the expired grace period and executes a massive FIFO truncation, reducing the user's glossary to the 200 most recent active rules (Free Tier limit).</p>
 <hr />
-<h2 id="5-architectural-implementation-plan-enterprise-tier-b2b-shared-quota">5. Architectural Implementation Plan: Enterprise Tier (B2B Shared Quota)</h2>
-<p>To support B2B Enterprise clients, we will implement a "Shared Quota" architecture. This allows an Enterprise Admin to share their subscription limits and custom AI models with their employees.</p>
-<h3 id="phase-1-domain-evolution-self-referential-accounts">Phase 1: Domain Evolution (Self-Referential Accounts)</h3>
-<p>Instead of creating complex <code>Team</code> tables, we will utilize a self-referential relationship on the <code>User</code> entity.
-*   <strong>Database Schema:</strong> Add <code>parent_account_id</code> (String, nullable, indexed, ForeignKey to <code>users.telegram_id</code>).
-    *   Admin: <code>parent_account_id</code> is <code>NULL</code>.
-    *   Employee: <code>parent_account_id</code> points to the Admin's <code>telegram_id</code>.
-*   <strong>Domain Logic (<code>User</code> Entity):</strong>
-    *   <code>get_effective_tier()</code>: Returns the parent's tier if linked, otherwise its own.
-    *   <code>get_effective_tenant_id()</code>: Returns <code>parent_account_id</code> if linked, otherwise <code>telegram_id</code>. <strong>Critical for Redis FinOps tracking.</strong></p>
-<h3 id="phase-2-consumption-routing-finops">Phase 2: Consumption Routing &amp; FinOps</h3>
-<ul>
-<li><strong>Token Buckets:</strong> When interacting with the <code>BudgetManager</code> or <code>RateLimitMiddleware</code>, the system MUST use the <code>effective_tenant_id</code>. This mathematically guarantees that all employees draw from the Admin's single Redis token bucket. No race conditions.</li>
-<li><strong>Shared Corporate Memory:</strong> The <code>get_glossary_context</code> use case must fetch rules using the <code>effective_tenant_id</code>. If the Admin corrects a technical term, the AI learns it for all employees instantly.</li>
-</ul>
-<h3 id="phase-3-stripe-adapter-dynamic-quoting">Phase 3: Stripe Adapter &amp; Dynamic Quoting</h3>
-<ul>
-<li><strong>Entity Overrides:</strong> Add <code>custom_model</code>, <code>custom_max_duration_min</code>, and <code>custom_monthly_minutes</code> to the <code>User</code> entity to support negotiated Enterprise contracts without hardcoding <code>if/else</code> logic.</li>
-<li><strong>Payment Gateway Port:</strong> Implement <code>create_dynamic_checkout</code> using the Stripe SDK.</li>
-<li><strong>Stateless Provisioning:</strong> Inject a <code>metadata</code> dictionary into the Stripe Checkout Session containing the custom limits. The <code>POST /stripe/webhook</code> endpoint will extract this metadata upon <code>checkout.session.completed</code> and provision the Enterprise limits transactionally.</li>
-</ul>
+<h2 id="5-roadmap">5. Roadmap</h2>
+<p>The forward-looking B2B Enterprise (Shared Quota) design has been moved to its own document so this file only describes shipped behaviour. See <a href="roadmap_enterprise_b2b.md">AURA Enterprise Roadmap (B2B Shared Quota)</a>.</p>
 
 
 
