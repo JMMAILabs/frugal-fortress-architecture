@@ -3790,7 +3790,7 @@
 
 
 <h1 id="business-rules-tiering-enterprise-quotas">Business Rules, Tiering &amp; Enterprise Quotas</h1>
-<p>This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design lives in a separate roadmap document — see <a href="roadmap_enterprise_b2b.md">AURA Enterprise Roadmap (B2B Shared Quota)</a>.</p>
+<p>This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design will be documented separately — AURA Enterprise Roadmap (B2B Shared Quota), coming soon.</p>
 <blockquote>
 <p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
 </blockquote>
@@ -3854,7 +3854,7 @@
 *   <strong>Day 91 (Hard Pruning):</strong> An <code>Arq</code> cron job detects the expired grace period and executes a massive FIFO truncation, reducing the user's glossary to the 200 most recent active rules (Free Tier limit).</p>
 <hr />
 <h2 id="5-roadmap">5. Roadmap</h2>
-<p>The forward-looking B2B Enterprise (Shared Quota) design has been moved to its own document so this file only describes shipped behaviour. See <a href="roadmap_enterprise_b2b.md">AURA Enterprise Roadmap (B2B Shared Quota)</a>.</p>
+<p>The forward-looking B2B Enterprise (Shared Quota) design will be documented separately. AURA Enterprise Roadmap (B2B Shared Quota) — coming soon.</p>
 
 
 
