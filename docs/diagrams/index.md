@@ -21,6 +21,7 @@ Cross-cutting concerns that apply to the entire monolith and infrastructure stac
 | **[Resilient Learning Loop](core/resilient_learning_loop.md)** | Backend, Architects | Request/Response lifecycle, caching, async persistence. |
 | **[RAG & AI Pipeline](core/rag_pipeline.md)** | AI Engineers | Hybrid search (vector + keyword), reranking, feedback loop. |
 | **[Hexagonal Module Template](core/hexagonal_module_template.md)** | Backend Engineers | Standard Ports & Adapters template used across all modules. |
+| **[Backend Monolith Dependencies](core/backend_monolith_dependencies.md)** | Architects, Backend | Dependency graph between Core, Shared, and all product Modules. |
 
 ---
 

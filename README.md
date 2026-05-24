@@ -7,7 +7,7 @@
 
 Welcome to the documentation repository for **The Frugal Fortress**, an enterprise-grade AI backend architecture designed to serve multiple AI products from a single, secure, and highly optimized Modular Monolith.
 
-🌐 **[Read the Full Documentation (MkDocs) Here](https://tu-usuario.github.io/frugal-fortress-architecture/)**
+🌐 **[Read the Full Documentation (MkDocs) Here](https://jmmailabs.github.io/frugal-fortress-architecture/)**
 
 ---
 
@@ -15,9 +15,9 @@ Welcome to the documentation repository for **The Frugal Fortress**, an enterpri
 
 Watch the technical showcases demonstrating the system's resilience, FinOps controls, and observability in real-time:
 
-*   🎧 **[AURA: Audio Understanding & Retention Architecture](https://link-a-tu-video-aura.com)** - *The Corporate Memory Engine.*
-*   📄 **[KERA: Knowledge Extraction & Retention Architecture](https://link-a-tu-video-kera.com)** - *The Async Knowledge Beast.*
-*   🧾 **[VERA: Verified Expense & Receipt Architecture](https://link-a-tu-video-vera.com)** - *The Cost-Efficient Financial Extraction Engine.*
+*   🎧 **[AURA: Audio Understanding & Retention Architecture](https://t.me/AuraNotesBot)** - *The Corporate Memory Engine.*
+*   📄 **[KERA: Knowledge Extraction & Retention Architecture](https://www.jmmia.com/pdf-anki)** - *The Async Knowledge Beast.*
+*   🧾 **[VERA: Verified Expense & Receipt Architecture](https://www.jmmia.com/receipts)** - *The Cost-Efficient Financial Extraction Engine.*
 
 ---
 
