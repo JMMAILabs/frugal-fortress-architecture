@@ -1,6 +1,6 @@
 # Business Rules, Tiering & Enterprise Quotas
 
-This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design lives in a separate roadmap document — see [AURA Enterprise Roadmap (B2B Shared Quota)](roadmap_enterprise_b2b.md).
+This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design will be documented separately — AURA Enterprise Roadmap (B2B Shared Quota), coming soon.
 
 > 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
 
@@ -64,4 +64,4 @@ Retaining data for 90 days post-cancellation is the SaaS industry "Gold Standard
 
 ## 5. Roadmap
 
-The forward-looking B2B Enterprise (Shared Quota) design has been moved to its own document so this file only describes shipped behaviour. See [AURA Enterprise Roadmap (B2B Shared Quota)](roadmap_enterprise_b2b.md).
+The forward-looking B2B Enterprise (Shared Quota) design will be documented separately. AURA Enterprise Roadmap (B2B Shared Quota) — coming soon.
