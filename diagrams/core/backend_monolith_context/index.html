@@ -1688,6 +1688,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Monolith Context
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1704,6 +1722,58 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-gateway-core-shared-utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Gateway + Core + Shared Utilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-modules-and-external-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Modules and External Providers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-api-route-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. API Route Map
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3539,6 +3609,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-gateway-core-shared-utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Gateway + Core + Shared Utilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-modules-and-external-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Modules and External Providers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-api-route-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. API Route Map
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3559,13 +3670,22 @@
 
 <h1 id="backend-monolith-system-context">Backend Monolith — System Context</h1>
 <p>High-level view of the Backend Monolith (Railway / FastAPI), Core, Shared Utilities, and Modules with API routes and external services. The diagram only references infrastructure that actually exists in <code>src/</code>.</p>
-<pre class="mermaid"><code>graph TD
+<p>Split into three focused diagrams so each is legible on GitHub:</p>
+<ol>
+<li><strong>Gateway + Core + Shared Utilities</strong> — the "spine" of the monolith.</li>
+<li><strong>Modules + External Providers</strong> — which module talks to which SaaS.</li>
+<li><strong>API route map</strong> — <code>/api/v1/...</code> → module routing.</li>
+</ol>
+<hr />
+<h2 id="1-gateway-core-shared-utilities">1. Gateway + Core + Shared Utilities</h2>
+<pre class="mermaid"><code>%%{init: {'theme':'default', 'flowchart':{'nodeSpacing':50, 'rankSpacing':70}}}%%
+flowchart TD
     subgraph Frontend["Frontend (Vercel)"]
         FE[Next.js Apps&lt;br/&gt;genui · pdf-anki · receipts]
     end
 
-    subgraph Backend_Monolith ["Backend Monolith (Railway · FastAPI)"]
-        direction LR
+    subgraph Backend ["Backend Monolith — Railway · FastAPI"]
+        API_GATEWAY([FastAPI App])
 
         subgraph Core ["Core"]
             C_CONFIG[Configuration&lt;br/&gt;pydantic-settings]
@@ -3574,74 +3694,109 @@
             C_LANCE[(LanceDB&lt;br/&gt;S3 / Cloudflare R2)]
         end
 
-        subgraph Shared_Utilities ["Shared Utilities"]
+        subgraph Shared ["Shared Utilities"]
             S_LLM[LiteLLM Client]
             S_AUTH[JWT / OAuth Middleware]
             S_FINOPS[FinOps Callback]
             S_OTEL[OpenTelemetry / structlog]
         end
-
-        subgraph Modules ["Modules"]
-            direction TB
-            M_AUDIO[audio_notes / AURA]
-            M_PDF[pdf_anki / KERA]
-            M_RECEIPTS[receipt_parser / VERA]
-            M_GENUI[genui]
-            M_DLP[dlp_proxy&lt;br/&gt;local SLM PII guard]
-        end
-
-        API_GATEWAY(FastAPI App) --- C_CONFIG
-        API_GATEWAY --- C_DB
-        API_GATEWAY --- C_REDIS
-        API_GATEWAY --- S_LLM
-        API_GATEWAY --- S_AUTH
-        API_GATEWAY --- S_FINOPS
-        API_GATEWAY --- S_OTEL
-
-        API_GATEWAY -- /api/v1/audio · /api/v1/telegram/webhook --&gt; M_AUDIO
-        API_GATEWAY -- /api/v1/pdf --&gt; M_PDF
-        API_GATEWAY -- /api/v1/receipts --&gt; M_RECEIPTS
-        API_GATEWAY -- /api/v1/genui --&gt; M_GENUI
-        API_GATEWAY -- /api/v1/dlp --&gt; M_DLP
-
-        %% Audio Notes (AURA)
-        M_AUDIO -- Free tier: Whisper + Llama-3.3 --&gt; EXT_GROQ(Groq API)
-        M_AUDIO -- Paid tier: Gemini multimodal --&gt; EXT_VERTEX(Google Vertex AI)
-        M_AUDIO -- SHA-256 idempotency --&gt; C_REDIS
-        M_AUDIO -- Glossary, transcripts --&gt; C_DB
-        M_AUDIO -- Telegram delivery --&gt; EXT_TG(Telegram Bot API)
-
-        %% PDF to Anki (KERA)
-        M_PDF -- Free tier: PDF -&gt; markdown --&gt; EXT_LLAMAPARSE(LlamaParse Cloud)
-        M_PDF -- Free tier: flashcard gen --&gt; EXT_GROQ
-        M_PDF -- Paid tier: unified multimodal --&gt; EXT_VERTEX
-        M_PDF -- L2 semantic dedup (chunks) --&gt; C_LANCE
-        M_PDF -- Decks · users · feedback --&gt; C_DB
-        M_PDF -- L1 hash deck cache · queue --&gt; C_REDIS
-
-        %% Receipt Parser (VERA)
-        M_RECEIPTS -- Free tier: PDF/image OCR --&gt; EXT_LLAMAPARSE
-        M_RECEIPTS -- Free tier: JSON extraction --&gt; EXT_GROQ
-        M_RECEIPTS -- Paid tier: multimodal --&gt; EXT_VERTEX
-        M_RECEIPTS -- Encrypted receipts (ALE) --&gt; C_DB
-
-        %% GenUI
-        M_GENUI -- Dynamic proposal LLM --&gt; EXT_GROQ
-        M_GENUI -- Static project metadata --&gt; C_DB
-
-        %% DLP Proxy (local; no external LLM)
-        M_DLP -- Local llama-cpp + Presidio --&gt; M_DLP
-
-        %% Auth and billing
-        API_GATEWAY -- OAuth2 callback --&gt; EXT_GOOGLE(Google OAuth2 / OIDC)
-        API_GATEWAY -- Top-ups, customer portal, webhooks --&gt; EXT_STRIPE(Stripe)
     end
 
     FE --&gt; API_GATEWAY
+    API_GATEWAY --- C_CONFIG
+    API_GATEWAY --- C_DB
+    API_GATEWAY --- C_REDIS
+    API_GATEWAY --- C_LANCE
+    API_GATEWAY --- S_LLM
+    API_GATEWAY --- S_AUTH
+    API_GATEWAY --- S_FINOPS
+    API_GATEWAY --- S_OTEL
 
-    EXT_GROQ -.-&gt; C_REDIS
-    EXT_VERTEX -.-&gt; C_REDIS
-    EXT_LLAMAPARSE -.-&gt; C_REDIS</code></pre>
+    classDef gw fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01323b
+    classDef core fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#0d2818
+    classDef shared fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#3e2723
+    classDef fe fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px,color:#2a063e
+    class API_GATEWAY gw
+    class C_CONFIG,C_DB,C_REDIS,C_LANCE core
+    class S_LLM,S_AUTH,S_FINOPS,S_OTEL shared
+    class FE fe</code></pre>
+<hr />
+<h2 id="2-modules-and-external-providers">2. Modules and External Providers</h2>
+<pre class="mermaid"><code>%%{init: {'theme':'default', 'flowchart':{'nodeSpacing':50, 'rankSpacing':80}}}%%
+flowchart LR
+    subgraph Modules ["Modules (src/app/modules/)"]
+        direction TB
+        M_AUDIO["audio_notes / AURA"]
+        M_PDF["pdf_anki / KERA"]
+        M_RECEIPTS["receipt_parser / VERA"]
+        M_GENUI["genui"]
+        M_DLP["dlp_proxy&lt;br/&gt;local SLM PII guard"]
+    end
+
+    subgraph Providers ["External Providers"]
+        direction TB
+        EXT_GROQ["Groq API&lt;br/&gt;Whisper + Llama-3.3"]
+        EXT_VERTEX["Google Vertex AI&lt;br/&gt;Gemini 2.5"]
+        EXT_LLAMAPARSE["LlamaParse Cloud&lt;br/&gt;PDF / image OCR"]
+        EXT_TG["Telegram Bot API"]
+        EXT_GOOGLE["Google OAuth2 / OIDC"]
+        EXT_STRIPE["Stripe billing"]
+    end
+
+    M_AUDIO --&gt;|Free: Whisper + Llama-3.3| EXT_GROQ
+    M_AUDIO --&gt;|Paid: Gemini multimodal| EXT_VERTEX
+    M_AUDIO --&gt;|Delivery| EXT_TG
+
+    M_PDF --&gt;|Free: PDF to markdown| EXT_LLAMAPARSE
+    M_PDF --&gt;|Free: flashcard gen| EXT_GROQ
+    M_PDF --&gt;|Paid: unified multimodal| EXT_VERTEX
+
+    M_RECEIPTS --&gt;|Free: OCR| EXT_LLAMAPARSE
+    M_RECEIPTS --&gt;|Free: JSON extraction| EXT_GROQ
+    M_RECEIPTS --&gt;|Paid: multimodal| EXT_VERTEX
+
+    M_GENUI --&gt;|Proposal LLM| EXT_GROQ
+
+    %% Auth &amp; billing (gateway-wide, but shown for completeness)
+    M_RECEIPTS -.-&gt;|OAuth2 / billing| EXT_GOOGLE
+    M_RECEIPTS -.-&gt;|Stripe webhooks| EXT_STRIPE
+    M_PDF -.-&gt;|OAuth2 / billing| EXT_GOOGLE
+    M_PDF -.-&gt;|Stripe webhooks| EXT_STRIPE
+    M_AUDIO -.-&gt;|Stripe webhooks| EXT_STRIPE
+
+    classDef module fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01323b
+    classDef llm fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#3a0a4b,stroke-dasharray: 5 5
+    classDef saas fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#3e2723,stroke-dasharray: 5 5
+    class M_AUDIO,M_PDF,M_RECEIPTS,M_GENUI,M_DLP module
+    class EXT_GROQ,EXT_VERTEX,EXT_LLAMAPARSE llm
+    class EXT_TG,EXT_GOOGLE,EXT_STRIPE saas</code></pre>
+<hr />
+<h2 id="3-api-route-map">3. API Route Map</h2>
+<pre class="mermaid"><code>%%{init: {'theme':'default', 'flowchart':{'nodeSpacing':40, 'rankSpacing':60}}}%%
+flowchart LR
+    API([FastAPI App])
+
+    API --&gt;|/api/v1/audio&lt;br/&gt;/api/v1/telegram/webhook| M_AUDIO[audio_notes]
+    API --&gt;|/api/v1/pdf| M_PDF[pdf_anki]
+    API --&gt;|/api/v1/receipts| M_RECEIPTS[receipt_parser]
+    API --&gt;|/api/v1/genui| M_GENUI[genui]
+    API --&gt;|/api/v1/dlp| M_DLP[dlp_proxy]
+
+    %% Per-module stores
+    M_AUDIO -.-&gt;|SHA-256 idempotency| R1[(Redis)]
+    M_AUDIO -.-&gt;|Glossary · transcripts| D1[(Postgres)]
+    M_PDF -.-&gt;|L1 deck cache · queue| R2[(Redis)]
+    M_PDF -.-&gt;|Decks · users · feedback| D2[(Postgres)]
+    M_PDF -.-&gt;|L2 semantic dedup chunks| L1[(LanceDB)]
+    M_RECEIPTS -.-&gt;|Encrypted receipts ALE| D3[(Postgres)]
+    M_GENUI -.-&gt;|Static metadata| D4[(Postgres)]
+
+    classDef gw fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01323b
+    classDef module fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#0d2818
+    classDef store fill:#e0f2f1,stroke:#00695c,stroke-width:1px,color:#0a3531
+    class API gw
+    class M_AUDIO,M_PDF,M_RECEIPTS,M_GENUI,M_DLP module
+    class R1,R2,D1,D2,D3,D4,L1 store</code></pre>
 <blockquote>
 <p><strong>Provider matrix.</strong> Free tier: Groq (<code>whisper-large-v3</code>, <code>llama-3.3-70b-versatile</code>) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>). <strong>No OpenAI, Anthropic, or Cohere models or APIs are used</strong>; all reranking is local ONNX (<code>reranker_adapter.py</code>). All outbound LLM calls flow through a Redis-backed circuit breaker; see <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
 </blockquote>

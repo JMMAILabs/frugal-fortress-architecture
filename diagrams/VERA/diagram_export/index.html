@@ -3559,23 +3559,34 @@
 
 <h1 id="vera-receipt-parser-export-flow-csv-xlsx">VERA (Receipt Parser) — Export Flow (CSV &amp; XLSX)</h1>
 <p>This flowchart demonstrates the data retrieval and export process for the <code>GET /api/v1/receipts/export</code> endpoint. It highlights how Application-Level Encryption (ALE) is decrypted on-the-fly in memory before streaming the file (CSV or Excel) to the client.</p>
-<pre class="mermaid"><code>flowchart TD
-  A([Start]) --&gt; B["GET /api/v1/receipts/export\nQuery: format (csv/xlsx), user_role?"]
-  B --&gt; C["ReceiptRepository.list_by_user(...)"]
-  C --&gt; D["_decrypt_payload(ALE)\nfor each ReceiptRecord"]
-  D --&gt; E{"format == 'xlsx'?"}
+<pre class="mermaid"><code>%%{init: {'theme':'default', 'flowchart':{'nodeSpacing':40, 'rankSpacing':60}}}%%
+flowchart TD
+    A([Start]) --&gt; B["GET /api/v1/receipts/export&lt;br/&gt;Query: format csv or xlsx, user_role?"]
+    B --&gt; C["ReceiptRepository.list_by_user(...)"]
+    C --&gt; D["_decrypt_payload ALE&lt;br/&gt;for each ReceiptRecord"]
+    D --&gt; E{"format equals xlsx?"}
 
-  E --&gt;|Yes| F1["Build XLSX in memory (openpyxl)\nws.append(row)"]
-  E --&gt;|No (csv)| F2["Build CSV in memory (csv.writer)\nwriter.writerow(row)"]
+    E --&gt;|Yes| F1["Build XLSX in memory openpyxl&lt;br/&gt;ws.append row"]
+    E --&gt;|No| F2["Build CSV in memory csv.writer&lt;br/&gt;writer.writerow row"]
 
-  F1 --&gt; G1["StreamingResponse\nmedia_type='application/vnd.openxmlformats...'"]
-  F2 --&gt; G2["StreamingResponse\nmedia_type='text/csv'"]
+    F1 --&gt; G1["StreamingResponse&lt;br/&gt;media_type: application/vnd.openxmlformats..."]
+    F2 --&gt; G2["StreamingResponse&lt;br/&gt;media_type: text/csv"]
 
-  G1 --&gt; H([Download in frontend])
-  G2 --&gt; H
+    G1 --&gt; H([Download in frontend])
+    G2 --&gt; H
 
-  %% Domain Context
-  C -.-&gt; I["Data decrypted on-the-fly\nvia backend AES/ALE.\nZero plaintext on disk."]</code></pre>
+    %% Domain Context
+    C -.-&gt; I["Data decrypted on-the-fly&lt;br/&gt;via backend AES/ALE.&lt;br/&gt;Zero plaintext on disk."]
+
+    %% Styling
+    classDef start fill:#c8e6c9,stroke:#1b5e20,stroke-width:2px,color:#0d2818
+    classDef decision fill:#ffe0b2,stroke:#e65100,stroke-width:2px,color:#3e2723
+    classDef action fill:#bbdefb,stroke:#0d47a1,stroke-width:1px,color:#0d1b4b
+    classDef note fill:#fff9c4,stroke:#f57f17,stroke-width:1px,color:#3e2723,stroke-dasharray: 5 5
+    class A,H start
+    class E decision
+    class B,C,D,F1,F2,G1,G2 action
+    class I note</code></pre>
 
 
 
