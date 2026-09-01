@@ -41,7 +41,7 @@ sequenceDiagram
                 VectorDB-->>Worker: Similarity Score
                 
                 alt Concept is New
-                    Worker->>LLM: Generate Flashcards (Groq Llama-3)
+                    Worker->>LLM: Generate Flashcards (Groq GPT-OSS 120B)
                     LLM-->>Worker: JSON: Front, Back, Tags
                     Worker->>VectorDB: Save Vectors
                 else Concept Exists

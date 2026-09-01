@@ -27,7 +27,7 @@ flowchart TD
         Rerank --> Context["📝 Context Window Builder<br/>Token Trimming"]
     end
 
-    Context --> LLM["🤖 LLM Inference<br/>Vertex AI Gemini / Groq Llama-3.3"]
+    Context --> LLM["🤖 LLM Inference<br/>Vertex AI Gemini / Groq GPT-OSS 120B"]
     LLM --> Stream(["⚡ Stream Response"])
 
     %% Subgraph styling

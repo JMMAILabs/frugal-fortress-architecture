@@ -2,13 +2,13 @@
 
 This document outlines the SaaS tiering strategy, operational limits, and Pay-As-You-Go (PAYG) FinOps calculations across all modules of the Frugal Fortress.
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The figures below are mirrors of that registry; whenever the two diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The figures below are mirrors of that registry; whenever the two diverge, the registry wins.
 
 ## 1. Global Tiering Philosophy
  
 The system enforces a strict separation between Free and Paid compute stacks to protect profit margins and ensure enterprise-grade privacy.
 
-*   **Free Tier:** Utilizes third-party APIs (e.g., LlamaParse, Groq Llama-3.3). Data may be subject to standard API retention policies. Strictly rate-limited.
+*   **Free Tier:** Utilizes third-party APIs (e.g., LlamaParse, Groq GPT-OSS 120B; see [ADR-0015](../adr/0015-groq-gpt-oss-migration.md)). Data may be subject to standard API retention policies. Strictly rate-limited.
 *   **Paid Tiers (Premium, Pro, PAYG):** Exclusively utilizes Google Vertex AI (Gemini 2.5 Flash/Pro). Guarantees **Zero Data Retention** (SOC2/GDPR compliant).
 
 ## 2. Module-Specific Limits & Margins
@@ -28,7 +28,7 @@ The system enforces a strict separation between Free and Paid compute stacks to 
     *   *FinOps:* Max cost per 500-page PDF = $0.36. Max monthly cost (4 PDFs) = $1.47. **Margin: 70%**.
 
 ### C. AURA (Audio Notes)
-*   **Free:** 150 mins/month. Max 5 mins/audio. (Stack: Groq Whisper + Llama-3.3).
+*   **Free:** 150 mins/month. Max 5 mins/audio. (Stack: Groq Whisper + GPT-OSS 120B).
 *   **Premium ($4.99/mo):** 3,000 mins/month. Max 20 mins/audio. (Stack: Vertex Flash-Lite Multimodal).
 *   **Pro ($9.99/mo):** 9,000 mins/month. Max 45 mins/audio. (Stack: Vertex Flash-Lite Multimodal).
 

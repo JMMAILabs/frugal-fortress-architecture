@@ -2,7 +2,7 @@
 
 This document defines the operational limits, model routing, and break-even pricing analysis for the Receipt Parser (VERA) module.
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Stripe Metadata Contract
 Payment links must inject the following custom fields into the Stripe Checkout Session:
@@ -11,7 +11,7 @@ Payment links must inject the following custom fields into the Stripe Checkout S
 *   `tier`
 
 ## 2. Free Tier (Third-Party Stack)
-*   **Pipeline Flow:** Image/PDF -> LlamaParse -> Markdown -> PII Tokenization (Presidio) -> Groq `llama-3.3-70b-versatile` -> JSON -> ALE Encryption -> Supabase.
+*   **Pipeline Flow:** Image/PDF -> LlamaParse -> Markdown -> PII Tokenization (Presidio) -> Groq `openai/gpt-oss-120b` -> JSON -> ALE Encryption -> Supabase.
 *   **Limits:**
     *   30 receipts / month.
     *   5 receipts / day.

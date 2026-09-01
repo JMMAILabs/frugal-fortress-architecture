@@ -67,7 +67,7 @@ flowchart LR
 
     subgraph SaaS ["External SaaS"]
         direction TB
-        Groq["🤖 Groq API<br/>Whisper + Llama-3.3<br/>Free tier"]
+        Groq["🤖 Groq API<br/>Whisper + GPT-OSS 120B<br/>Free tier"]
         Vertex["🤖 Google Vertex AI<br/>Gemini 2.5<br/>Paid tiers"]
         LlamaParse["📄 LlamaParse<br/>PDF · image OCR<br/>Free tier"]
         Google["🛡️ Google OAuth2<br/>OpenID Connect"]

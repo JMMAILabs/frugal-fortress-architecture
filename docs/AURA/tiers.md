@@ -2,12 +2,12 @@
 
 This document outlines the operational limits and FinOps constraints currently shipped for the Audio Notes (AURA) module. The forward-looking B2B Enterprise (Shared Quota) design will be documented separately — AURA Enterprise Roadmap (B2B Shared Quota), coming soon.
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Standard Subscription Tiers
 
 ### Free Tier (Growth & Acquisition)
-*   **Compute Stack:** Groq Whisper-v3 + Llama 3.3 70B.
+*   **Compute Stack:** Groq Whisper-v3 + GPT-OSS 120B.
 *   **Max Audio Duration:** 5 minutes per file.
 *   **Monthly Quota:** 150 minutes.
 *   **History Retention:** Last 20 notes (FIFO eviction).

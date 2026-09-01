@@ -12,7 +12,7 @@ C4Context
     System(audio_notes, "Audio Notes System", "Transcribes, summarizes, and learns from user corrections.")
      
     System_Ext(telegram, "Telegram API", "Receives webhooks and sends markdown messages.")
-    System_Ext(groq, "Groq API", "Fast Whisper transcription and Llama-3 summarization (Free Tier).")
+    System_Ext(groq, "Groq API", "Fast Whisper transcription and GPT-OSS summarization (Free Tier).")
     System_Ext(vertex_ai, "Google Vertex AI", "Multimodal audio processing (Premium/Pro/PAYG).")
 
     Rel(user, telegram, "Sends Audio/Text", "Mobile/Desktop App")

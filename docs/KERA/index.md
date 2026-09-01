@@ -8,7 +8,7 @@ Built for high concurrency, KERA ensures the FastAPI Event Loop is never blocked
 
 *   **Async Burst Ingestion:** Uploads return an HTTP 202 Accepted instantly. Heavy parsing is offloaded to isolated `Arq` process pools (`CpuBoundExecutor`), preventing database connection starvation.
 *   **Dual-Pipeline Processing:** 
-    *   *Free/Admin Tiers:* LlamaParse extraction -> Semantic Chunking -> LanceDB Vector Search -> Groq (Llama-3.3).
+    *   *Free/Admin Tiers:* LlamaParse extraction -> Semantic Chunking -> LanceDB Vector Search -> Groq (GPT-OSS 120B).
     *   *Paid Tiers:* Direct multimodal ingest via Google Vertex AI (Gemini 2.5 Flash) ensuring Zero Data Retention.
 *   **Multi-Tier Caching:** 
     *   **L1 (Exact Hash):** Bypasses processing entirely for duplicate PDFs.
