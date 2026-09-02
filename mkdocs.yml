@@ -138,3 +138,5 @@ nav:
     - ADR-0012 (Two-Phase Commit): adr/0012-two-phase-commit-payg-wallet.md
     - ADR-0013 (Idempotency Guard): adr/0013-sha256-idempotency-guard.md
     - ADR-0014 (Nested Learning Loop): adr/0014-dynamic-rag-injection-nested-learning.md
+    - ADR-0015 (Groq gpt-oss Migration): adr/0015-groq-gpt-oss-migration.md
+    - ADR-0016 (Arq Queue Head-of-Line Blocking): adr/0016-arq-queue-head-of-line-blocking.md

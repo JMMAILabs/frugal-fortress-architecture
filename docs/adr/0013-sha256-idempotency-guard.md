@@ -25,3 +25,6 @@ Any future feature that needs to mix tenant-specific context into the cached out
 * **Positive:** Saves 100% of the LLM API costs for viral media across the entire platform.
 * **Negative:** Requires holding the audio bytes in memory briefly to compute the hash, which is acceptable given our 25MB file size limit.
 * **Operational:** Code reviews of changes to `process_audio` / `process_pdf_task` MUST verify the two preconditions above before approving any modification to the cache write path.
+
+## Update (2026-08-16)
+Groq decommissioned `llama-3.3-70b-versatile`; the free-tier summarization step now runs on `openai/gpt-oss-120b`. The decision recorded above is unaffected — it concerns the pipeline shape, not the model. See [ADR-0015](0015-groq-gpt-oss-migration.md).

@@ -2,7 +2,7 @@
 
 This document defines the operational limits, model routing, and break-even pricing analysis for the PDF to Anki (KERA) module.
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Stripe Metadata Contract
 Payment links must inject the following custom fields into the Stripe Checkout Session:
@@ -13,7 +13,7 @@ Payment links must inject the following custom fields into the Stripe Checkout S
 ## 2. Model Routing per Tier
 
 *   **Free & Admin Tiers:**
-    *   **Pipeline:** Legacy Chunked Flow (LlamaParse -> Semantic Chunking -> LanceDB -> Groq `llama-3.3-70b-versatile`).
+    *   **Pipeline:** Legacy Chunked Flow (LlamaParse -> Semantic Chunking -> LanceDB -> Groq `openai/gpt-oss-120b`).
     *   *Note:* Admin tier shares Pro operational limits but utilizes the Free infrastructure stack.
 *   **Premium Tier:**
     *   **Model:** `gemini-2.5-flash-lite` (via Google Vertex AI).

@@ -24,7 +24,7 @@ sequenceDiagram
     loop Until Math is Valid or Max Retries Reached
         alt Free Tier
             API->>PII: Scrub PII from OCR Text
-            API->>LLM: Extract JSON (Groq Llama-3)
+            API->>LLM: Extract JSON (Groq GPT-OSS 120B)
         else Paid Tier
             API->>LLM: Extract JSON from Image (Vertex Gemini VLM)
         end

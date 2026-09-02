@@ -1,6 +1,6 @@
 # FinOps & Capacity Planning: Audio Notes (AURA)
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 This document projects the infrastructure and LLM costs for the `audio_notes` module, demonstrating the economic viability of the "Frugal Fortress" architecture.
 
@@ -14,7 +14,7 @@ We utilize dynamic routing based on the user's subscription tier.
 
 | Provider / Model | Tier | Audio/Whisper Cost | Text Output Cost | Total Cost (per min) | Total Cost (10k mins) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Groq** (`whisper-large-v3` + `llama-3.3`) | Free | $0.0018 | $0.0004 | **$0.0022** | **$22.00** |
+| **Groq** (`whisper-large-v3` + `gpt-oss-120b`) | Free | $0.0018 | $0.0003 | **$0.0021** | **$21.00** |
 | **Vertex AI** (`gemini-2.5-flash-lite`) | Premium | $0.0000 (Included in multimodal) | $0.0002 | **$0.0002** | **$2.00** |
 | **Vertex AI** (`gemini-2.5-flash`) | Pro | $0.0000 (Included in multimodal) | $0.0012 | **$0.0012** | **$12.00** |
 

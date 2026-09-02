@@ -2,7 +2,7 @@
 
 This document projects the infrastructure and LLM costs for the `receipt_parser` module.
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.
  
 ## 1. Baseline Assumptions
 *   **1 Receipt Image** ≈ 1,120 tokens (Standard VLM image encoding).
@@ -14,7 +14,7 @@ This document projects the infrastructure and LLM costs for the `receipt_parser`
 
 | Provider / Model | Tier | Input Cost (Image) | Output Cost (JSON) | Total Cost (per receipt) | Total Cost (10k receipts) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **LlamaParse + Groq** (`llama-3.3`) | Free | $0.0000 (Free Tier) | $0.0004 | **$0.0004** | **$4.00** |
+| **LlamaParse + Groq** (`gpt-oss-120b`) | Free | $0.0000 (Free Tier) | $0.0003 | **$0.0003** | **$3.00** |
 | **Vertex AI** (`gemini-2.5-flash-lite`) | Premium | $0.00011 | $0.00020 | **$0.00031** | **$3.10** |
 | **Vertex AI** (`gemini-2.5-flash`) | Pro | $0.00033 | $0.00125 | **$0.00158** | **$15.80** |
 

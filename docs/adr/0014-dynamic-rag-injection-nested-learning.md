@@ -18,3 +18,6 @@ We implemented a "Nested Learning Loop" using Retrieval-Augmented Generation (RA
 * **Positive:** Massive token savings on the Free Tier by avoiding over-injection of irrelevant rules.
 * **Positive:** Protects Paid Tier profit margins by capping the maximum glossary size, avoiding the "Denial of Wallet" trap of unbounded RAG, while keeping the architecture simple (no complex LRU eviction logic needed).
 * **Positive:** For PAYG users, the cost of injecting the 300 rules is calculated *before* inference and billed directly to their wallet, ensuring 100% margin protection.
+
+## Update (2026-08-16)
+Groq decommissioned `llama-3.3-70b-versatile`; the free-tier summarization step now runs on `openai/gpt-oss-120b`. The decision recorded above is unaffected — it concerns the pipeline shape, not the model. See [ADR-0015](0015-groq-gpt-oss-migration.md).

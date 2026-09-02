@@ -2,7 +2,7 @@
 
 This document projects the infrastructure and LLM costs for the `pdf_anki` module, demonstrating the economic viability of the "Frugal Fortress" architecture.
 
-> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.
+> 💲 **Pricing source-of-truth:** [`src/app/core/pricing_registry.py`](https://github.com/JMMAILabs/frugal-fortress-architecture) — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.
 
 ## 1. Baseline Assumptions
 *   **1 Page** ≈ 500 words ≈ 666 tokens.
@@ -16,11 +16,11 @@ We utilize dynamic routing based on the user's subscription tier. The table belo
 
 | Provider / Model | Tier | Input Cost (per 1M) | Output Cost (per 1M) | Total Cost (10k Pages) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Groq** (`llama-3.3-70b`) | Free / Admin | $0.59 | $0.79 | **$5.90** |
+| **Groq** (`openai/gpt-oss-120b`) | Free / Admin | $0.15 | $0.60 | **$2.50** |
 | **Vertex AI** (`gemini-2.5-flash-lite`) | Premium / PAYG | $0.10 | $0.40 | **$1.66** |
 | **Vertex AI** (`gemini-2.5-flash`) | Pro / PAYG | $0.30 | $2.50 | **$8.25** |
 
-*Note: Prices based on official provider pricing as of April 2026, reflected in `src/app/core/pricing_registry.py`.*
+*Note: Prices based on official provider pricing as of August 2026, reflected in `src/app/core/pricing_registry.py`. Groq figures moved to `openai/gpt-oss-120b` when `llama-3.3-70b-versatile` was decommissioned on 2026-08-16; gpt-oss is a reasoning model, so billed output tokens include reasoning tokens (bounded via `GROQ_REASONING_EFFORT=low`).*
 
 ## 3. Architectural Savings (The "Frugal" Impact)
 Our architecture implements several layers of optimization that drastically reduce the theoretical costs above:

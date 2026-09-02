@@ -61,6 +61,14 @@ jobs:
         # since those services are not part of the system. Allowed contexts
         # (e.g. "no Anthropic models are used") explicitly state the absence
         # and use the lowercase phrasing "no <vendor>".
+        #
+        # Since 2026-08-16 Groq serves OpenAI's open-weight gpt-oss models,
+        # whose ids carry a lowercase `openai/` prefix (openai/gpt-oss-120b,
+        # openai/gpt-oss-20b). Those ids are expected in the docs and are the
+        # reason this scan MUST stay case-sensitive: `OpenAI` as a vendor
+        # claim is still forbidden, `openai/` as a model-id prefix is not.
+        # Do NOT add -i to the grep below — it would fail the build on every
+        # correct model id. See docs/adr/0015-groq-gpt-oss-migration.md.
         shell: bash
         run: |
           set -euo pipefail

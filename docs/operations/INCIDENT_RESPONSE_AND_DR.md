@@ -28,7 +28,18 @@ Redis is used for Caching, Rate Limiting, Idempotency, and the Arq Job Queue.
     *   The `ResilientInteractionLogger` attempts to publish logs to Redis Streams first. If the DB is down, logs queue up in Redis.
     *   Read-heavy endpoints rely on Redis L1/L2 caching to serve stale data (Stale-While-Revalidate) until the DB connection is restored.
 
+### D. Arq Queue Wedged (jobs queued, none running)
+*   **Symptom:** Queue depth climbs while `jobs_ongoing` stays at 0, and cron jobs stop firing too. Asynchronous work (KERA PDFs) sits "processing" forever. The worker is alive and recording health — it just starts nothing.
+*   **Cause:** An `arq:in-progress:{job_id}` lock orphaned by a hard restart. Arq skips any job whose lock still exists, so an orphan at the head of the queue blocks everything behind it. See [ADR-0016](../adr/0016-arq-queue-head-of-line-blocking.md).
+*   **Diagnosis:**
+    ```bash
+    docker compose exec redis redis-cli --scan --pattern 'arq:in-progress:*'
+    docker compose exec redis redis-cli ZCARD arq:queue
+    ```
+    A lock with thousands of seconds of TTL next to a queue that never drains confirms it.
+*   **Mitigation:** Restarting the worker is enough — it reconciles orphaned locks on startup. Deleting the offending key by hand unwedges the queue within one poll (<=10s) without a restart. Set `WORKER_CLEAR_STALE_ARQ_LOCKS=false` first if more than one worker consumes the queue.
+
 ## 3. Incident Severity Levels
 *   **SEV-1 (Critical):** API Gateway down, DB unreachable, or PII Scrubber failing (Fail-Secure triggers total block). *Action: Immediate page to on-call engineer.*
-*   **SEV-2 (High):** Primary LLM down (running on fallbacks), Arq queue backing up. *Action: Investigate within 1 hour.*
+*   **SEV-2 (High):** Primary LLM down (running on fallbacks), Arq queue backing up (see scenario D). *Action: Investigate within 1 hour.*
 *   **SEV-3 (Low):** Non-critical background tasks failing (e.g., PDF data lifecycle pruning). *Action: Next business day.* 

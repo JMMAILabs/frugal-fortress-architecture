@@ -9,7 +9,7 @@ Unlike naive LLM wrappers, AURA processes audio asynchronously while maintaining
 1. **Ingestion:** Telegram Webhook receives the audio file.
 2. **Idempotency Guard:** The system calculates the `SHA-256` hash of the audio bytes. If a viral/forwarded audio is detected, it serves the summary directly from Redis (<50ms), bypassing all LLM compute.
 3. **Dynamic Routing:**
-   * *Free Tier:* Audio is transcribed via Groq (`whisper-large-v3`) and summarized via Groq (`llama-3.3-70b-versatile`).
+   * *Free Tier:* Audio is transcribed via Groq (`whisper-large-v3`) and summarized via Groq (`openai/gpt-oss-120b`).
    * *Paid Tiers (Premium/Pro/PAYG):* Audio is sent directly to Google Vertex AI (`gemini-2.5-flash-lite` / `gemini-2.5-flash`/ `gemini-2.5-pro`) for single-pass multimodal extraction.
 4. **Delivery:** The structured Markdown summary is sent back to the user via the Telegram API.
 

@@ -58,7 +58,7 @@ This document describes the **performance strategies** implemented and planned f
 
 ### 2.2 Current Implementation (Cloud Orchestration)
 
-- **Input — Free Tier:** Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on **Groq** (`llama-3.3-70b-versatile`) via LiteLLM.
+- **Input — Free Tier:** Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on **Groq** (`openai/gpt-oss-120b`) via LiteLLM — see [ADR-0015](../adr/0015-groq-gpt-oss-migration.md) for why this replaced `llama-3.3-70b-versatile` and how the reasoning parameters are pinned.
 - **Input — Paid Tiers (Premium / Pro / PAYG):** Image is sent directly to **Google Vertex AI** (`gemini-2.5-flash-lite` / `gemini-2.5-flash` / `gemini-2.5-pro`) for single-pass multimodal extraction. No external OCR is required.
 - **FinOps — Self-Correction Loop:**
   - **Validation (pure Python):** `validate_receipt_math`: items sum = subtotal, subtotal + tax = total. No framework.
