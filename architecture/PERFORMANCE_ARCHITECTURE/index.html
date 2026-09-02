@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3787,6 +3787,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0015-groq-gpt-oss-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0015 (Groq gpt-oss Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0016 (Arq Queue Head-of-Line Blocking)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4139,7 +4195,7 @@
 <p>"This system is not just a receipt reader. It is a <strong>hybrid AI architecture</strong> for maximum privacy and minimum cost: we process vision locally (CPU) to remove image transfer and cloud vision cost; we use <strong>intelligent LLM orchestration</strong> to structure data, achieving high accuracy at a fraction of traditional cost."</p>
 <h3 id="22-current-implementation-cloud-orchestration">2.2 Current Implementation (Cloud Orchestration)</h3>
 <ul>
-<li><strong>Input — Free Tier:</strong> Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on <strong>Groq</strong> (<code>llama-3.3-70b-versatile</code>) via LiteLLM.</li>
+<li><strong>Input — Free Tier:</strong> Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on <strong>Groq</strong> (<code>openai/gpt-oss-120b</code>) via LiteLLM — see <a href="../../adr/0015-groq-gpt-oss-migration/">ADR-0015</a> for why this replaced <code>llama-3.3-70b-versatile</code> and how the reasoning parameters are pinned.</li>
 <li><strong>Input — Paid Tiers (Premium / Pro / PAYG):</strong> Image is sent directly to <strong>Google Vertex AI</strong> (<code>gemini-2.5-flash-lite</code> / <code>gemini-2.5-flash</code> / <code>gemini-2.5-pro</code>) for single-pass multimodal extraction. No external OCR is required.</li>
 <li><strong>FinOps — Self-Correction Loop:</strong></li>
 <li><strong>Validation (pure Python):</strong> <code>validate_receipt_math</code>: items sum = subtotal, subtotal + tax = total. No framework.</li>
@@ -4282,7 +4338,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

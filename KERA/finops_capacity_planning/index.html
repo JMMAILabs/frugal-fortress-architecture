@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3606,6 +3606,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0015-groq-gpt-oss-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0015 (Groq gpt-oss Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0016 (Arq Queue Head-of-Line Blocking)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3706,7 +3762,7 @@
 <h1 id="finops-capacity-planning-pdf-to-anki-kera">FinOps &amp; Capacity Planning: PDF to Anki (KERA)</h1>
 <p>This document projects the infrastructure and LLM costs for the <code>pdf_anki</code> module, demonstrating the economic viability of the "Frugal Fortress" architecture.</p>
 <blockquote>
-<p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-04. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
+<p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
 </blockquote>
 <h2 id="1-baseline-assumptions">1. Baseline Assumptions</h2>
 <ul>
@@ -3730,11 +3786,11 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Groq</strong> (<code>llama-3.3-70b</code>)</td>
+<td style="text-align: left;"><strong>Groq</strong> (<code>openai/gpt-oss-120b</code>)</td>
 <td style="text-align: left;">Free / Admin</td>
-<td style="text-align: left;">$0.59</td>
-<td style="text-align: left;">$0.79</td>
-<td style="text-align: left;"><strong>$5.90</strong></td>
+<td style="text-align: left;">$0.15</td>
+<td style="text-align: left;">$0.60</td>
+<td style="text-align: left;"><strong>$2.50</strong></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-2.5-flash-lite</code>)</td>
@@ -3752,7 +3808,7 @@
 </tr>
 </tbody>
 </table>
-<p><em>Note: Prices based on official provider pricing as of April 2026, reflected in <code>src/app/core/pricing_registry.py</code>.</em></p>
+<p><em>Note: Prices based on official provider pricing as of August 2026, reflected in <code>src/app/core/pricing_registry.py</code>. Groq figures moved to <code>openai/gpt-oss-120b</code> when <code>llama-3.3-70b-versatile</code> was decommissioned on 2026-08-16; gpt-oss is a reasoning model, so billed output tokens include reasoning tokens (bounded via <code>GROQ_REASONING_EFFORT=low</code>).</em></p>
 <h2 id="3-architectural-savings-the-frugal-impact">3. Architectural Savings (The "Frugal" Impact)</h2>
 <p>Our architecture implements several layers of optimization that drastically reduce the theoretical costs above:</p>
 <ol>
@@ -3832,7 +3888,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

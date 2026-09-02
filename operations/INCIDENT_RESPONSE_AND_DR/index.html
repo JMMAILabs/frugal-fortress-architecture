@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2890,6 +2890,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#d-arq-queue-wedged-jobs-queued-none-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Arq Queue Wedged (jobs queued, none running)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3621,6 +3632,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0015-groq-gpt-oss-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0015 (Groq gpt-oss Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0016 (Arq Queue Head-of-Line Blocking)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3710,6 +3777,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#d-arq-queue-wedged-jobs-queued-none-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Arq Queue Wedged (jobs queued, none running)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3779,10 +3857,21 @@
 </ul>
 </li>
 </ul>
+<h3 id="d-arq-queue-wedged-jobs-queued-none-running">D. Arq Queue Wedged (jobs queued, none running)</h3>
+<ul>
+<li><strong>Symptom:</strong> Queue depth climbs while <code>jobs_ongoing</code> stays at 0, and cron jobs stop firing too. Asynchronous work (KERA PDFs) sits "processing" forever. The worker is alive and recording health — it just starts nothing.</li>
+<li><strong>Cause:</strong> An <code>arq:in-progress:{job_id}</code> lock orphaned by a hard restart. Arq skips any job whose lock still exists, so an orphan at the head of the queue blocks everything behind it. See <a href="../../adr/0016-arq-queue-head-of-line-blocking/">ADR-0016</a>.</li>
+<li><strong>Diagnosis:</strong>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>redis<span class="w"> </span>redis-cli<span class="w"> </span>--scan<span class="w"> </span>--pattern<span class="w"> </span><span class="s1">'arq:in-progress:*'</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>redis<span class="w"> </span>redis-cli<span class="w"> </span>ZCARD<span class="w"> </span>arq:queue
+</code></pre></div>
+    A lock with thousands of seconds of TTL next to a queue that never drains confirms it.</li>
+<li><strong>Mitigation:</strong> Restarting the worker is enough — it reconciles orphaned locks on startup. Deleting the offending key by hand unwedges the queue within one poll (&lt;=10s) without a restart. Set <code>WORKER_CLEAR_STALE_ARQ_LOCKS=false</code> first if more than one worker consumes the queue.</li>
+</ul>
 <h2 id="3-incident-severity-levels">3. Incident Severity Levels</h2>
 <ul>
 <li><strong>SEV-1 (Critical):</strong> API Gateway down, DB unreachable, or PII Scrubber failing (Fail-Secure triggers total block). <em>Action: Immediate page to on-call engineer.</em></li>
-<li><strong>SEV-2 (High):</strong> Primary LLM down (running on fallbacks), Arq queue backing up. <em>Action: Investigate within 1 hour.</em></li>
+<li><strong>SEV-2 (High):</strong> Primary LLM down (running on fallbacks), Arq queue backing up (see scenario D). <em>Action: Investigate within 1 hour.</em></li>
 <li><strong>SEV-3 (Low):</strong> Non-critical background tasks failing (e.g., PDF data lifecycle pruning). <em>Action: Next business day.</em> </li>
 </ul>
 
@@ -3843,7 +3932,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

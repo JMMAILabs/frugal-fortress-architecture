@@ -12,13 +12,13 @@
         <meta name="author" content="Javier Martinez">
       
       
-        <link rel="canonical" href="https://JMMAILabs.github.io/frugal-fortress-architecture/testing/VERIFICATION_GUIDE/">
+        <link rel="canonical" href="https://JMMAILabs.github.io/frugal-fortress-architecture/adr/0015-groq-gpt-oss-migration/">
       
       
-        <link rel="prev" href="../MUTATION_PRAGMAS/">
+        <link rel="prev" href="../0014-dynamic-rag-injection-nested-learning/">
       
       
-        <link rel="next" href="../FUTURE_COVERAGE_FIX/">
+        <link rel="next" href="../0016-arq-queue-head-of-line-blocking/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Verification Guide - Frugal Fortress Architecture</title>
+        <title>ADR-0015 (Groq gpt-oss Migration) - Frugal Fortress Architecture</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#system-verification-observability-guide" class="md-skip">
+        <a href="#adr-0015-migrating-free-tiers-to-groq-gpt-oss" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Verification Guide
+              ADR-0015 (Groq gpt-oss Migration)
             
           </span>
         </div>
@@ -353,13 +353,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../COVERAGE_DECISIONS/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../testing/COVERAGE_DECISIONS/" class="md-tabs__link">
           
   
   
@@ -375,11 +373,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../adr/0001-record-architecture-decisions/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../0001-record-architecture-decisions/" class="md-tabs__link">
           
   
   
@@ -2858,31 +2858,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -2900,7 +2895,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2918,7 +2913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../COVERAGE_DECISIONS/" class="md-nav__link">
+      <a href="../../testing/COVERAGE_DECISIONS/" class="md-nav__link">
         
   
   
@@ -2946,7 +2941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../COVERAGE_UNCOVERED/" class="md-nav__link">
+      <a href="../../testing/COVERAGE_UNCOVERED/" class="md-nav__link">
         
   
   
@@ -2974,7 +2969,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../MUTATION_PRAGMAS/" class="md-nav__link">
+      <a href="../../testing/MUTATION_PRAGMAS/" class="md-nav__link">
         
   
   
@@ -2982,6 +2977,518 @@
     
   
     Mutation Pragmas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/VERIFICATION_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verification Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/FUTURE_COVERAGE_FIX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Future Coverage Fix (PEP 669)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture Decision Records
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture Decision Records
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0001-record-architecture-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0001 (Record Decisions)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0002-use-pgvector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0002 (Use pgvector)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0003-coverage-strategy-asyncio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0003 (Coverage Strategy)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0004-coverage-threshold-acceptance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0004 (Coverage Threshold)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0005-async-test-scope-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0005 (Async Test Scope)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0006-python-312-pinning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0006 (Python 3.12 Pinning)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0007-prompt-manager-refactor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0007 (Prompt Manager)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0008-native-acceleration-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0008 (Native Acceleration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0009-postgres-pgvector-vs-pinecone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0009 (Postgres vs Pinecone)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0010-local-slm-dlp-proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0010 (Local SLM DLP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0011-redis-media-group-debouncing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0011 (Redis Debouncing)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0012-two-phase-commit-payg-wallet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0012 (Two-Phase Commit)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0013-sha256-idempotency-guard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0013 (Idempotency Guard)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0014-dynamic-rag-injection-nested-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0014 (Nested Learning Loop)
   
 
     
@@ -3018,7 +3525,7 @@
   <span class="md-ellipsis">
     
   
-    Verification Guide
+    ADR-0015 (Groq gpt-oss Migration)
   
 
     
@@ -3036,7 +3543,7 @@
   <span class="md-ellipsis">
     
   
-    Verification Guide
+    ADR-0015 (Groq gpt-oss Migration)
   
 
     
@@ -3062,33 +3569,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-prerequisites" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Prerequisites
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-full-docker-recommended-for-observability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Option A: Full Docker (Recommended for Observability)
+        Context
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-hybrid-dev-manual-process" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Option B: Hybrid Dev (Manual Process)
+        Decision
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#free-tier-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Free-tier envelope
       
     </span>
   </a>
@@ -3101,152 +3608,35 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-smoke-tests-cli" class="md-nav__link">
+  <a href="#reasoning-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Smoke Tests (CLI)
+        Reasoning Parameters
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Smoke Tests (CLI)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-health-check" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Health Check
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-ai-inference-the-smart-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. AI Inference (The "Smart" Path)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-semantic-cache-the-fast-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Semantic Cache (The "Fast" Path)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-persistence-verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        D. Persistence Verification
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-observability-grafana-stack" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Observability (Grafana Stack)
+        Consequences
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Observability (Grafana Stack)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-distributed-tracing-tempo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Distributed Tracing (Tempo)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-metrics-prometheus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Metrics (Prometheus)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-logs-loki" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Logs (Loki)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-troubleshooting" class="md-nav__link">
+  <a href="#lesson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Troubleshooting
+        Lesson
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tempo-i-only-see-flat-lines-no-waterfall" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tempo: I only see flat lines (No Waterfall)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#prometheus-the-query-editor-is-confusing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Prometheus: The query editor is confusing
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3266,514 +3656,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../FUTURE_COVERAGE_FIX/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Future Coverage Fix (PEP 669)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture Decision Records
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Architecture Decision Records
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0001-record-architecture-decisions/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0001 (Record Decisions)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0002-use-pgvector/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0002 (Use pgvector)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0003-coverage-strategy-asyncio/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0003 (Coverage Strategy)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0004-coverage-threshold-acceptance/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0004 (Coverage Threshold)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0005-async-test-scope-strategy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0005 (Async Test Scope)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0006-python-312-pinning/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0006 (Python 3.12 Pinning)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0007-prompt-manager-refactor/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0007 (Prompt Manager)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0008-native-acceleration-strategy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0008 (Native Acceleration)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0009-postgres-pgvector-vs-pinecone/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0009 (Postgres vs Pinecone)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0010-local-slm-dlp-proxy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0010 (Local SLM DLP)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0011-redis-media-group-debouncing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0011 (Redis Debouncing)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0012-two-phase-commit-payg-wallet/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0012 (Two-Phase Commit)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0013-sha256-idempotency-guard/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0013 (Idempotency Guard)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0014-dynamic-rag-injection-nested-learning/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0014 (Nested Learning Loop)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0015-groq-gpt-oss-migration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ADR-0015 (Groq gpt-oss Migration)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../adr/0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
+      <a href="../0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
         
   
   
@@ -3828,33 +3711,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-prerequisites" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Prerequisites
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-full-docker-recommended-for-observability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Option A: Full Docker (Recommended for Observability)
+        Context
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-hybrid-dev-manual-process" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Option B: Hybrid Dev (Manual Process)
+        Decision
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#free-tier-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Free-tier envelope
       
     </span>
   </a>
@@ -3867,152 +3750,35 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-smoke-tests-cli" class="md-nav__link">
+  <a href="#reasoning-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Smoke Tests (CLI)
+        Reasoning Parameters
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Smoke Tests (CLI)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-health-check" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Health Check
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-ai-inference-the-smart-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. AI Inference (The "Smart" Path)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-semantic-cache-the-fast-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Semantic Cache (The "Fast" Path)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-persistence-verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        D. Persistence Verification
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-observability-grafana-stack" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Observability (Grafana Stack)
+        Consequences
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Observability (Grafana Stack)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-distributed-tracing-tempo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Distributed Tracing (Tempo)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-metrics-prometheus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Metrics (Prometheus)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-logs-loki" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Logs (Loki)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-troubleshooting" class="md-nav__link">
+  <a href="#lesson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Troubleshooting
+        Lesson
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tempo-i-only-see-flat-lines-no-waterfall" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tempo: I only see flat lines (No Waterfall)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#prometheus-the-query-editor-is-confusing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Prometheus: The query editor is confusing
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -4036,140 +3802,71 @@
   
 
 
-<h1 id="system-verification-observability-guide">System Verification &amp; Observability Guide</h1>
-<p>This guide outlines the standard procedure to verify the integrity, performance, and observability of the AI Backend.</p>
-<h2 id="1-prerequisites">1. Prerequisites</h2>
-<p>Ensure the full stack is running.</p>
-<h3 id="option-a-full-docker-recommended-for-observability">Option A: Full Docker (Recommended for Observability)</h3>
-<p>This mode ensures Loki (Logs) works correctly.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
-</code></pre></div></p>
-<h3 id="option-b-hybrid-dev-manual-process">Option B: Hybrid Dev (Manual Process)</h3>
-<p>Useful for debugging code changes.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Terminal 1 (API)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">TESTING</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="nv">SECRET_KEY</span><span class="o">=</span>dev-secret<span class="w"> </span>uvicorn<span class="w"> </span>src.app.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--reload
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Terminal 2 (Worker)</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nv">TESTING</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="nv">SECRET_KEY</span><span class="o">=</span>dev-secret<span class="w"> </span>arq<span class="w"> </span>src.app.worker.WorkerSettings
-</code></pre></div></p>
-<hr />
-<h2 id="2-smoke-tests-cli">2. Smoke Tests (CLI)</h2>
-<h3 id="a-health-check">A. Health Check</h3>
-<p>Verify API and Database connectivity.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>http://localhost:8000/api/v1/
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Expected: {"status":"ok", "database":"connected", ...}</span>
-</code></pre></div></p>
-<h3 id="b-ai-inference-the-smart-path">B. AI Inference (The "Smart" Path)</h3>
-<p>Forces the system to use the LLM (Groq for Free, Vertex AI for Paid).</p>
-<blockquote>
-<p><strong>Staging / development only.</strong> <code>/api/v1/test-router</code> is a diagnostic endpoint. Do not expose it on production hostnames; restrict it via gateway ACLs / network policy in any non-dev environment.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"http://localhost:8000/api/v1/test-router"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">'{"prompt": "Explain the theory of relativity to a 5 year old"}'</span>
-</code></pre></div>
-*   <strong>Check:</strong> Response should take &gt;1s. <code>model_used</code> should be an LLM (not cache).</p>
-</blockquote>
-<h3 id="c-semantic-cache-the-fast-path">C. Semantic Cache (The "Fast" Path)</h3>
-<p>Repeat the <strong>exact same request</strong> from step B.
-*   <strong>Check:</strong> Response should take &lt;10ms. <code>model_used</code> should be <code>cache-semantic</code> or <code>cache-exact</code>.</p>
-<h3 id="d-persistence-verification">D. Persistence Verification</h3>
-<p>Check if the background worker saved the interaction.</p>
-<p>Create a script <code>check_db.py</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.app.infrastructure.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">sessionmanager</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.app.domain.feedback</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeedbackLog</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">():</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">sessionmanager</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">sessionmanager</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>            <span class="n">select</span><span class="p">(</span><span class="n">FeedbackLog</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">FeedbackLog</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="p">)</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">log</span><span class="o">.</span><span class="n">created_at</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">log</span><span class="o">.</span><span class="n">model_used</span><span class="si">}</span><span class="s2"> | Cost: $</span><span class="si">{</span><span class="n">log</span><span class="o">.</span><span class="n">cost_usd</span><span class="si">}</span><span class="s2"> | Prompt: </span><span class="si">{</span><span class="n">log</span><span class="o">.</span><span class="n">user_prompt</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">check</span><span class="p">())</span>
-</code></pre></div>
-Run it: <code>python check_db.py</code></p>
-<hr />
-<h2 id="3-observability-grafana-stack">3. Observability (Grafana Stack)</h2>
-<p>Access Grafana at: <a href="http://localhost:3000">http://localhost:3000</a> (admin/admin)</p>
-<h3 id="a-distributed-tracing-tempo">A. Distributed Tracing (Tempo)</h3>
-<p><strong>Goal:</strong> Visualize the request lifecycle and latency bottlenecks.
-1.  Go to <strong>Explore</strong> -&gt; Select <strong>Tempo</strong>.
-2.  Query Type: <strong>Search</strong>.
-3.  Filter by <code>http.method = POST</code>.
-4.  Click on a trace ID.
-5.  <strong>Analyze:</strong>
-    *   Look for <code>router.route_request</code> span.
-    *   Identify <code>litellm.completion</code> (External API call).
-    *   Identify <code>db.execute</code> (Database latency).</p>
-<h3 id="b-metrics-prometheus">B. Metrics (Prometheus)</h3>
-<p><strong>Goal:</strong> Monitor system throughput and error rates.
-1.  Go to <strong>Explore</strong> -&gt; Select <strong>Prometheus</strong>.
-2.  Click <strong>"Code"</strong> (top right of query bar).
-3.  Try these queries:
-    *   <strong>Throughput:</strong> <code>rate(http_server_duration_milliseconds_count[1m])</code>
-    *   <strong>Latency:</strong> <code>histogram_quantile(0.95, sum(rate(http_server_duration_milliseconds_bucket[5m]) by (le)))</code>
-    *   <strong>Errors:</strong> <code>rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m])</code></p>
-<h3 id="c-logs-loki">C. Logs (Loki)</h3>
-<p><strong>Goal:</strong> Deep dive into application logs.
-<em>Note: Only works fully when running via <code>docker-compose</code>.</em>
-1.  Go to <strong>Explore</strong> -&gt; Select <strong>Loki</strong>.
-2.  Select Label: <code>container_name</code> = <code>...api...</code> or <code>...worker...</code>.
-3.  Filter for errors: <code>{container_name=~".+"} |= "error"</code></p>
-<hr />
-<h2 id="4-troubleshooting">4. Troubleshooting</h2>
+<h1 id="adr-0015-migrating-free-tiers-to-groq-gpt-oss">ADR 0015: Migrating Free Tiers to Groq GPT-OSS</h1>
+<p><strong>Date:</strong> 2026-08-31
+<strong>Status:</strong> Accepted</p>
+<h2 id="context">Context</h2>
+<p>Groq decommissioned <code>llama-3.3-70b-versatile</code> on <strong>2026-08-16</strong> (announced 2026-06-17). It was the free-tier model for every module: AURA summaries, VERA receipt extraction, KERA flashcard generation and GenUI proposals. The vendor's notice named only that model; <code>llama-3.1-8b-instant</code>, our smaller fallback, was retired the same day and would have failed silently behind the primary.</p>
+<p>This was not a migration we chose. After the shutdown date every free-tier generation returns <code>400 model_decommissioned</code>, so the only decision available was which replacement to adopt.</p>
+<p>Groq recommended two: <code>openai/gpt-oss-120b</code> and <code>qwen/qwen3.6-27b</code>.</p>
+<h2 id="decision">Decision</h2>
+<p><strong><code>groq/openai/gpt-oss-120b</code> as the primary across all four modules, with <code>groq/openai/gpt-oss-20b</code> as the fallback</strong> (Groq's own recommended replacement for the retired 8B).</p>
+<p><code>qwen/qwen3.6-27b</code> was rejected on three grounds:
+1. It is a <strong>preview</strong> model, removable without notice — precisely the risk that had just materialised, and unacceptable for a path that four modules depend on.
+2. It caps completions at 16K versus 65K.
+3. Its output costs $3.00/1M versus $0.60 — five times more.</p>
+<h3 id="free-tier-envelope">Free-tier envelope</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Symptom</th>
-<th style="text-align: left;">Probable Cause</th>
-<th style="text-align: left;">Fix</th>
+<th></th>
+<th>llama-3.3-70b (retired)</th>
+<th>openai/gpt-oss-120b</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>404 on /metrics</strong></td>
-<td style="text-align: left;">Endpoint not defined in <code>main.py</code>.</td>
-<td style="text-align: left;">Add the Prometheus route manually.</td>
+<td>RPM / RPD</td>
+<td>30 / 1,000</td>
+<td>30 / 1,000</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Loki is empty</strong></td>
-<td style="text-align: left;">Running <code>uvicorn</code> manually.</td>
-<td style="text-align: left;">Logs are in your terminal, not Docker. Run via <code>docker-compose up</code>.</td>
+<td>TPM / TPD</td>
+<td>12,000 / 100,000</td>
+<td><strong>8,000 / 200,000</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>DB Check shows old data</strong></td>
-<td style="text-align: left;">Worker hasn't run yet.</td>
-<td style="text-align: left;">Wait 60s (cron) or restart worker to flush queue.</td>
+<td>Context / max output</td>
+<td>131,072 / 32,768</td>
+<td>131,072 / <strong>65,536</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>ONNX Error in logs</strong></td>
-<td style="text-align: left;">No GPU detected.</td>
-<td style="text-align: left;">Normal behavior. System falls back to CPU.</td>
+<td>Price in/out per 1M</td>
+<td>$0.59 / $0.79</td>
+<td><strong>$0.15 / $0.60</strong></td>
 </tr>
 </tbody>
 </table>
-<h3 id="tempo-i-only-see-flat-lines-no-waterfall">Tempo: I only see flat lines (No Waterfall)</h3>
+<p>Daily throughput doubles; per-minute burst drops by a third, absorbed by the key rotation and TPD backoff already in place.</p>
+<h2 id="reasoning-parameters">Reasoning Parameters</h2>
+<p>gpt-oss reasons by default, which the retired model did not. <code>LiteLLMAdapter</code> injects two parameters for the family on all three completion paths:</p>
 <ul>
-<li><strong>Cause:</strong> You are looking at <code>GET /metrics</code> or <code>GET /health</code> traces. These are too simple.</li>
-<li><strong>Fix:</strong> You need the Trace ID of a complex request (e.g., a POST to the router).<ol>
-<li>Check your terminal logs where <code>uvicorn</code> is running.</li>
-<li>Find a log entry with <code>"path": "/api/v1/test-router"</code>.</li>
-<li>Copy the <code>trace_id</code> from that JSON log.</li>
-<li>Paste it into Tempo search bar.</li>
-</ol>
-</li>
+<li><strong><code>reasoning_effort</code></strong> (new setting <code>GROQ_REASONING_EFFORT</code>, default <code>low</code>). Reasoning tokens bill as output tokens and count against the free-tier TPD, so the depth is capped rather than left to the provider default.</li>
+<li><strong><code>reasoning_format: hidden</code></strong>. Groq rejects <code>raw</code> alongside JSON mode — which AURA summaries and VERA extraction both use — and <code>raw</code> would leak <code>&lt;think&gt;</code> blocks into GenUI's <code>|||COMPONENT:|||</code> marker stream, breaking the parser.</li>
 </ul>
-<h3 id="prometheus-the-query-editor-is-confusing">Prometheus: The query editor is confusing</h3>
+<p>Callers may override either value explicitly; the injection uses <code>setdefault</code>.</p>
+<h2 id="consequences">Consequences</h2>
 <ul>
-<li><strong>Cause:</strong> Grafana defaults to "Builder" mode.</li>
-<li><strong>Fix:</strong> Click the <strong>"Code"</strong> button (top right of the query bar) to write raw PromQL.</li>
+<li><strong>Positive:</strong> Unit cost falls in all three metered modules. KERA drops from $5.90 to $2.50 per 10k pages, VERA from $4.00 to $3.00 per 10k receipts, AURA from $22.00 to $21.00 per 10k minutes.</li>
+<li><strong>Positive:</strong> Daily free-tier capacity doubles, halving the likelihood of hitting the TPD wall.</li>
+<li><strong>Negative:</strong> Per-minute burst capacity drops 33%. The KERA chunk loop goes from roughly five to three requests per minute.</li>
+<li><strong>Verified:</strong> The free-tier chunked pipeline was exercised end to end — 7 flashcards from a single-chunk document in 34s, 618 prompt and 458 completion tokens. With <code>reasoning_effort=low</code> the reasoning overhead stayed bounded and JSON mode was unaffected. This mattered because KERA's free path was the only one of the four with no prior evidence under a reasoning model.</li>
+<li><strong>Operational:</strong> The pricing override key derives from the model id, so it becomes <code>PRICE_GROQ_OPENAI_GPT_OSS_120B_*</code>. Any <code>PRICE_GROQ_LLAMA_3_3_70B_VERSATILE_*</code> set in a deploy environment must be renamed or it stops applying <strong>silently</strong>.</li>
+<li><strong>Unaffected:</strong> <code>whisper-large-v3</code> was not part of the deprecation, so AURA transcription is unchanged.</li>
 </ul>
+<h2 id="lesson">Lesson</h2>
+<p>A specific hosted model is a dependency with an expiry date, and the vendor sets it. What kept this migration bounded was that model ids live in constants and in <code>runtime_tunable*.json</code> rather than scattered through use cases — the blast radius was 12 source files, not a search across the codebase. The same discipline should apply to any future provider-pinned identifier.</p>
+<p>The related queue failure uncovered while verifying this migration is recorded separately in <a href="../0016-arq-queue-head-of-line-blocking/">ADR 0016</a>.</p>
 
 
 

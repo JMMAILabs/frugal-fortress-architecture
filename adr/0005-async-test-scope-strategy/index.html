@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3582,6 +3582,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0015-groq-gpt-oss-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0015 (Groq gpt-oss Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0016 (Arq Queue Head-of-Line Blocking)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3681,8 +3737,8 @@
 <p>We enforce <strong>Function Scope</strong> for all async fixtures and run tests <strong>Sequentially</strong>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># pyproject.toml</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">[tool.pytest.ini_options]</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">asyncio_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;auto&quot;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">asyncio_default_fixture_loop_scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;function&quot;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">asyncio_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"auto"</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">asyncio_default_fixture_loop_scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"function"</span>
 </code></pre></div>
 <p>Rationale (Empirical Evidence)</p>
 <div class="highlight"><pre><span></span><code>Stability: 100% Pass rate. Each test gets a pristine, isolated environment.
@@ -3702,7 +3758,7 @@ Mitigation: We use pytest-xdist (parallel execution) only for unit tests that do
 <p>Re-attempt the "Session Scope" optimization when ONE of the following criteria is met:</p>
 <div class="highlight"><pre><span></span><code>Python 3.13+ Adoption: Python 3.13 introduces significant changes to the Global Interpreter Lock (GIL) and asyncio loop management which may resolve the underlying loop binding friction.
 
-pytest-asyncio v1.0+: The plugin maintainers are actively reworking the loop scoping logic. A major release may fix the loop_scope=&quot;session&quot; flakiness.
+pytest-asyncio v1.0+: The plugin maintainers are actively reworking the loop scoping logic. A major release may fix the loop_scope="session" flakiness.
 
 Migration to Psycopg3 (Async): Unlike asyncpg, psycopg (v3) is often more forgiving about Event Loop binding. If we migrate drivers, we should re-test session scoping.
 </code></pre></div>
@@ -3764,7 +3820,7 @@ Migration to Psycopg3 (Async): Unlike asyncpg, psycopg (v3) is often more forgiv
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

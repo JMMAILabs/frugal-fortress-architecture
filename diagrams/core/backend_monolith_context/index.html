@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3596,6 +3596,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0015-groq-gpt-oss-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0015 (Groq gpt-oss Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0016-arq-queue-head-of-line-blocking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0016 (Arq Queue Head-of-Line Blocking)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3749,7 +3805,7 @@ flowchart LR
 
     subgraph Providers ["External Providers"]
         direction TB
-        EXT_GROQ["Groq API&lt;br/&gt;Whisper + Llama-3.3"]
+        EXT_GROQ["Groq API&lt;br/&gt;Whisper + GPT-OSS 120B"]
         EXT_VERTEX["Google Vertex AI&lt;br/&gt;Gemini 2.5"]
         EXT_LLAMAPARSE["LlamaParse Cloud&lt;br/&gt;PDF / image OCR"]
         EXT_TG["Telegram Bot API"]
@@ -3757,7 +3813,7 @@ flowchart LR
         EXT_STRIPE["Stripe billing"]
     end
 
-    M_AUDIO --&gt;|Free: Whisper + Llama-3.3| EXT_GROQ
+    M_AUDIO --&gt;|Free: Whisper + GPT-OSS 120B| EXT_GROQ
     M_AUDIO --&gt;|Paid: Gemini multimodal| EXT_VERTEX
     M_AUDIO --&gt;|Delivery| EXT_TG
 
@@ -3812,7 +3868,7 @@ flowchart LR
     class M_AUDIO,M_PDF,M_RECEIPTS,M_GENUI,M_DLP module
     class R1,R2,D1,D2,D3,D4,L1 store</code></pre>
 <blockquote>
-<p><strong>Provider matrix.</strong> Free tier: Groq (<code>whisper-large-v3</code>, <code>llama-3.3-70b-versatile</code>) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>). <strong>No OpenAI, Anthropic, or Cohere models or APIs are used</strong>; all reranking is local ONNX (<code>reranker_adapter.py</code>). All outbound LLM calls flow through a Redis-backed circuit breaker; see <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
+<p><strong>Provider matrix.</strong> Free tier: Groq (<code>whisper-large-v3</code>, <code>openai/gpt-oss-120b</code>) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>). <strong>No OpenAI, Anthropic, or Cohere models or APIs are used</strong>; all reranking is local ONNX (<code>reranker_adapter.py</code>). All outbound LLM calls flow through a Redis-backed circuit breaker; see <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
 </blockquote>
 
 
@@ -3872,7 +3928,7 @@ flowchart LR
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
