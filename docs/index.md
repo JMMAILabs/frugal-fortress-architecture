@@ -1,6 +1,6 @@
 # Welcome to The Frugal Fortress
 
-**The Frugal Fortress** is an enterprise-grade AI backend architecture designed to serve multiple AI products from a single, secure, and highly optimized Modular Monolith.
+[**The Frugal Fortress**](https://www.jmmia.com/genui) is an enterprise-grade AI backend architecture designed to serve multiple AI products from a single, secure, and highly optimized Modular Monolith.
 
 This documentation repository serves as the single source of truth for our engineering standards, architectural decisions, and operational playbooks.
 
@@ -21,9 +21,9 @@ Whether you are a CTO evaluating our security posture, or an SRE investigating o
 
 ### 📦 Bounded Contexts (The Modules)
 Deep dives into the specific business logic and flows for each independent product:
-*   🎧 **[AURA (Audio Notes)](AURA/index.md):** The Corporate Memory Engine.
-*   📄 **[KERA (PDF to Anki)](KERA/index.md):** The Async Knowledge Beast.
-*   🧾 **[VERA (Receipt Parser)](VERA/index.md):** The Cost-Efficient Financial Extraction Engine.
+*   🎧 **[AURA (Audio Notes)](AURA/index.md)** ([Open AURA](https://t.me/AuraNotesBot)): The Corporate Memory Engine.
+*   📄 **[KERA (PDF to Anki)](KERA/index.md)** ([Open KERA](https://www.jmmia.com/pdf-anki)): The Async Knowledge Beast.
+*   🧾 **[VERA (Receipt Parser)](VERA/index.md)** ([Open VERA](https://www.jmmia.com/receipts)): The Cost-Efficient Financial Extraction Engine.
 
 ### ⚙️ Operations & SRE
 *   **[CI/CD Strategy](operations/CI_CD_DEPLOYMENT_STRATEGY.md):** Zero-downtime deployments and GitHub Actions.
