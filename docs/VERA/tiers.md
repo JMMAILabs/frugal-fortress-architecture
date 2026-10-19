@@ -23,9 +23,9 @@ Payment links must inject the following custom fields into the Stripe Checkout S
 ## 3. Paid Tiers (Vertex AI Exclusive)
 To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI under enterprise terms. The platform does not route any traffic through other LLM vendors.
 
-*   **Premium:** `gemini-2.5-flash-lite`.
-*   **Pro:** `gemini-2.5-flash`.
-*   **PAYG:** Selectable models (`gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-pro`).
+*   **Premium:** `gemini-3.1-flash-lite`.
+*   **Pro:** `gemini-3.5-flash-lite`.
+*   **PAYG:** Selectable models (`gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`, `gemini-3.8-flash`).
 
 ### Operational Limits
 
@@ -43,28 +43,31 @@ To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex A
 
 *Source of Truth: [Google Cloud Vertex AI Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)*
 
+The model mapping and per-million text-token reference rates are documented in [ADR-0017](../adr/0017-gemini-models-25-migration.md). These rates do not confirm image-modality billing or project-specific Vertex invoices. Validate current prices by modality, routes, and behavior in Vertex staging before production.
+
 **Conservative Baseline Assumptions:**
 *   1 Input Image ≈ `1,120` tokens (Standard Gemini Flash Image proxy).
 *   JSON Output ≈ `500` tokens.
 *   **Self-Correction Loop:** Up to `3` paid attempts per receipt (`MAX_RETRIES = 3`).
 
 ### Premium Tier Analysis
-*   **Cost per Receipt (Single Attempt):**
-    *   `(1,120 * $0.10 / 1M) + (500 * $0.40 / 1M) = $0.000312`
-*   **Worst-Case Scenario (3 Retries):** `$0.000936`
-*   **Worst-Case Monthly Cost:** `500 * $0.000936 = $0.468`
-*   **Recommended Break-Even Price:** `$0.99 / month`
+*   **Cost per Receipt (Gemini 3.1 Flash-Lite text-rate reference projection, single attempt):**
+    *   `(1,120 * $0.25 / 1M) + (500 * $1.50 / 1M) = $0.00103`
+*   **Worst-Case Scenario (3 attempts):** `$0.00309`
+*   **Worst-Case Monthly Cost:** `500 * $0.00309 = $1.545`
+*   **Break-Even Price:** Not reassessed until image-modality pricing is validated; the current retail price remains unchanged.
 *   **Final Retail Price:** **$2.99 / month**
 
 ### Pro Tier Analysis
 
-*   **Cost (Gemini 2.5 Flash):**
+*   **Cost (Gemini 3.5 Flash-Lite text-rate reference projection):**
     *   Single Attempt: `(1,120 * $0.30 / 1M) + (500 * $2.50 / 1M) = $0.001586`
     *   Worst-Case (3 Retries): **$0.004758**
 *   **Worst-Case Monthly Cost:** `2,000 * $0.004758 = $9.516`
-*   **Recommended Break-Even Price:** `$9.99 / month`
+*   **Break-Even Price:** Not reassessed until image-modality pricing is validated; the current retail price remains unchanged.
 *   **Final Retail Price:** **$9.99 / month**
-*   **Rationale:** Gemini 2.5 Flash provides multimodal accuracy at a price that lets us hold `$9.99 / month` retail with comfortable margins, even when the worst-case 2,000-receipt monthly ceiling is hit and every receipt exhausts the 3-retry self-correction loop.
+*   **PAYG Gemini 3.8 Flash reference:** Single attempt `(1,120 * $0.75 / 1M) + (500 * $3.75 / 1M) = $0.002715`; three attempts = `$0.008145`. This is a text-rate reference projection, not a confirmed image-modality cost.
+*   **Rationale:** The text-rate projections do not confirm multimodal costs or subscription margins. The Pro subscription price remains `$9.99 / month`; validate costs and behavior in Vertex staging before production.
 
 ## 5. Data Lifecycle
 Upon subscription cancellation, the standard 90-day grace period applies. The user is downgraded to Free tier compute limits but retains full access to export their historical data. On Day 91, a FIFO pruning job truncates their storage to the Free tier limit (100 receipts).

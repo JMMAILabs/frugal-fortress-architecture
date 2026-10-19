@@ -10,7 +10,7 @@ Unlike naive LLM wrappers, AURA processes audio asynchronously while maintaining
 2. **Idempotency Guard:** The system calculates the `SHA-256` hash of the audio bytes. If a viral/forwarded audio is detected, it serves the summary directly from Redis (<50ms), bypassing all LLM compute.
 3. **Dynamic Routing:**
    * *Free Tier:* Audio is transcribed via Groq (`whisper-large-v3`) and summarized via Groq (`openai/gpt-oss-120b`).
-   * *Paid Tiers (Premium/Pro/PAYG):* Audio is sent directly to Google Vertex AI (`gemini-2.5-flash-lite` / `gemini-2.5-flash`/ `gemini-2.5-pro`) for single-pass multimodal extraction.
+   * *Paid Tiers (Premium/Pro/PAYG):* Audio is sent directly to Google Vertex AI for single-pass multimodal extraction. The included tier model is Gemini 3.1 Flash-Lite; PAYG selectable models are Gemini 3.1 Flash-Lite, Gemini 3.5 Flash-Lite, and Gemini 3.8 Flash ([ADR-0017](../adr/0017-gemini-models-25-migration.md)).
 4. **Delivery:** The structured Markdown summary is sent back to the user via the Telegram API.
 
 ## 2. Key Architectural Patterns

@@ -1,7 +1,7 @@
 # Pay-As-You-Go (PAYG) Wallet & Dynamic Billing
 
 ## 1. FinOps Philosophy
-Processing massive corporate documents (e.g., 500-page PDFs) can easily trigger "Denial of Wallet" scenarios if users select expensive models like `gemini-2.5-pro`. 
+Processing massive corporate documents (e.g., 500-page PDFs) can easily trigger "Denial of Wallet" scenarios if users select higher-cost models like Gemini 3.8 Flash. See the current model mapping in [ADR-0017](../adr/0017-gemini-models-25-migration.md).
 To support high-volume Enterprise users safely, the `pdf_anki` module implements a prepaid **PAYG Wallet** with a strict Two-Phase Commit billing architecture.
 
 ## 2. Dynamic Model Selection & Fallback

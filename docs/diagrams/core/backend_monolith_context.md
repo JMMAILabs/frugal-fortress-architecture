@@ -76,7 +76,7 @@ flowchart LR
     subgraph Providers ["External Providers"]
         direction TB
         EXT_GROQ["Groq API<br/>Whisper + GPT-OSS 120B"]
-        EXT_VERTEX["Google Vertex AI<br/>Gemini 2.5"]
+        EXT_VERTEX["Google Vertex AI<br/>Gemini 3.1 Flash-Lite / 3.5 Flash-Lite / 3.8 Flash"]
         EXT_LLAMAPARSE["LlamaParse Cloud<br/>PDF / image OCR"]
         EXT_TG["Telegram Bot API"]
         EXT_GOOGLE["Google OAuth2 / OIDC"]
@@ -144,4 +144,4 @@ flowchart LR
     class R1,R2,D1,D2,D3,D4,L1 store
 ```
 
-> **Provider matrix.** Free tier: Groq (`whisper-large-v3`, `openai/gpt-oss-120b`) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (`gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-pro`). **No OpenAI, Anthropic, or Cohere models or APIs are used**; all reranking is local ONNX (`reranker_adapter.py`). All outbound LLM calls flow through a Redis-backed circuit breaker; see [Circuit Breaker State Machine](circuit_breaker_state.md).
+> **Provider matrix.** Free tier: Groq (`whisper-large-v3`, `openai/gpt-oss-120b`) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (`gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`, `gemini-3.8-flash`); see [ADR-0017](../../adr/0017-gemini-models-25-migration.md). **No OpenAI, Anthropic, or Cohere models or APIs are used**; all reranking is local ONNX (`reranker_adapter.py`). All outbound LLM calls flow through a Redis-backed circuit breaker; see [Circuit Breaker State Machine](circuit_breaker_state.md).

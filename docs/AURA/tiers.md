@@ -17,7 +17,7 @@ This document outlines the operational limits and FinOps constraints currently s
 *   **Price:** $0.00
 
 ### Premium Tier
-*   **Compute Stack:** Google Vertex AI (Gemini 2.5 Flash Lite) - Single-pass multimodal.
+*   **Compute Stack:** Google Vertex AI (Gemini 3.1 Flash-Lite) - Single-pass multimodal. See [ADR-0017](../adr/0017-gemini-models-25-migration.md).
 *   **Max Audio Duration:** 20 minutes per file.
 *   **Monthly Quota:** 3,000 minutes (50 hours).
 *   **History Retention:** Up to 2,000 notes (FIFO eviction).
@@ -27,7 +27,7 @@ This document outlines the operational limits and FinOps constraints currently s
 *   **Price:** $4.99 / month
 
 ### Pro Tier
-*   **Compute Stack:** Google Vertex AI (Gemini 2.5 Flash Lite) - Single-pass multimodal.
+*   **Compute Stack:** Google Vertex AI (Gemini 3.1 Flash-Lite) - Single-pass multimodal. See [ADR-0017](../adr/0017-gemini-models-25-migration.md).
 *   **Max Audio Duration:** 45 minutes per file.
 *   **Monthly Quota:** 9,000 minutes (150 hours).
 *   **History Retention:** Up to 2,000 notes (FIFO eviction).
@@ -43,6 +43,7 @@ This document outlines the operational limits and FinOps constraints currently s
     1. The selected LLM model.
     2. The user's current USD balance.
     3. The FinOps pricing declared in the `PricingRegistry`.
+*   **Selectable models:** Gemini 3.1 Flash-Lite, Gemini 3.5 Flash-Lite, and Gemini 3.8 Flash.
 *   **FinOps Formula:** `(Total LLM Provider Cost) * 1.40` (40% Markup).
 *   **UX Requirement:** The available balance must be appended to the footer of every bot response, ensuring the user has real-time visibility without leaving Telegram.
 

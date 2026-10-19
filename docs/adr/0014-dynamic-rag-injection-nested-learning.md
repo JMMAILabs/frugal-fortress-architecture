@@ -21,3 +21,5 @@ We implemented a "Nested Learning Loop" using Retrieval-Augmented Generation (RA
 
 ## Update (2026-08-16)
 Groq decommissioned `llama-3.3-70b-versatile`; the free-tier summarization step now runs on `openai/gpt-oss-120b`. The decision recorded above is unaffected — it concerns the pipeline shape, not the model. See [ADR-0015](0015-groq-gpt-oss-migration.md).
+
+The Gemini 2.5 model named in this historical decision reflects the provider and implementation at the time; current model IDs and their replacements are recorded in [ADR-0017](0017-gemini-models-25-migration.md).

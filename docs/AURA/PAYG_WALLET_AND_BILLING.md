@@ -8,7 +8,7 @@ Instead of hardcoded limits, the system dynamically calculates the maximum allow
 ## 2. Dynamic Model Selection (`/llms`)
 PAYG users can dynamically switch their summarization model directly from Telegram using the `/llms` command.
 * The backend fetches the available models and their costs from the `PricingRegistry` and `DynamicConfigService`.
-* When a user selects a model (e.g., `gemini-2.5-pro`), the system calculates: `Max Minutes = Wallet Balance / (Cost Per Minute * 1.40 Markup)`.
+* When a user selects a model (Gemini 3.1 Flash-Lite, Gemini 3.5 Flash-Lite, or Gemini 3.8 Flash; see [ADR-0017](../adr/0017-gemini-models-25-migration.md)), the system calculates: `Max Minutes = Wallet Balance / (Cost Per Minute * 1.40 Markup)`.
 * This empowers the user to trade off between cost and intelligence on the fly.
 
 ## 3. The Two-Phase Deduction Lifecycle
