@@ -28,8 +28,8 @@ stateDiagram-v2
     Note right of OPEN
         Fast-fails requests.
         Triggers Fallback Models
-        (e.g., gemini-2.5-pro
-        -> gemini-2.5-flash-lite,
+        (e.g., gemini-3.8-flash
+        -> gemini-3.1-flash-lite,
         or Vertex AI -> Groq)
     end note
 ```

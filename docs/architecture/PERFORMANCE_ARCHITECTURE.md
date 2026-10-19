@@ -59,7 +59,7 @@ This document describes the **performance strategies** implemented and planned f
 ### 2.2 Current Implementation (Cloud Orchestration)
 
 - **Input — Free Tier:** Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on **Groq** (`openai/gpt-oss-120b`) via LiteLLM — see [ADR-0015](../adr/0015-groq-gpt-oss-migration.md) for why this replaced `llama-3.3-70b-versatile` and how the reasoning parameters are pinned.
-- **Input — Paid Tiers (Premium / Pro / PAYG):** Image is sent directly to **Google Vertex AI** (`gemini-2.5-flash-lite` / `gemini-2.5-flash` / `gemini-2.5-pro`) for single-pass multimodal extraction. No external OCR is required.
+- **Input — Paid Tiers (Premium / Pro / PAYG):** Image is sent directly to **Google Vertex AI** for single-pass multimodal extraction. Current model mapping is Gemini 3.1 Flash-Lite / Gemini 3.5 Flash-Lite / Gemini 3.8 Flash; see [ADR-0017](../adr/0017-gemini-models-25-migration.md). No external OCR is required.
 - **FinOps — Self-Correction Loop:**
   - **Validation (pure Python):** `validate_receipt_math`: items sum = subtotal, subtotal + tax = total. No framework.
   - **Retries:** Up to 3 paid attempts (`MAX_RETRIES = 3`). If math validation fails, the validator error is fed back into the LLM prompt for a corrective retry, all within the same provider (Groq for Free, Vertex AI for Paid). There is no cross-provider escalation: only Groq and Google Vertex AI are wired into the receipt pipeline.

@@ -9,7 +9,7 @@ sequenceDiagram
     participant User as Telegram User
     participant API as FastAPI
     participant Budget as BudgetManager (Redis Lua)
-    participant LLM as Vertex AI (Gemini 2.5 Pro)
+    participant LLM as Vertex AI (selected Gemini model)
     participant DB as PostgreSQL (Wallet)
 
     Note over User, DB: Phase 1: Pre-flight Reservation (Reserve)
@@ -19,7 +19,7 @@ sequenceDiagram
     
     alt Insufficient Funds
         Budget-->>API: Return -1 (Rejected)
-        API-->>User: "Insufficient balance for Gemini 2.5 Pro. Falling back to base tier."
+        API-->>User: "Insufficient balance for selected Gemini model. Falling back to base tier."
     else Funds Available
         Budget-->>API: Return 1 (Reserved)
         

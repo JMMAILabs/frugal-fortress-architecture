@@ -19,7 +19,7 @@ Redis is used for Caching, Rate Limiting, Idempotency, and the Arq Job Queue.
 *   **Impact:** AI inference fails or times out.
 *   **Mitigation:** 
     *   The `CircuitBreakerFactory` detects consecutive timeouts/5xx errors and transitions to the `OPEN` state.
-    *   Traffic is instantly routed to the configured fallback model (e.g., from `gemini-2.5-pro` to `gemini-2.5-flash-lite`).
+    *   Traffic is instantly routed to the configured fallback model (e.g., from `gemini-3.8-flash` to `gemini-3.1-flash-lite`; see [ADR-0017](../adr/0017-gemini-models-25-migration.md)).
     *   If all cloud providers fail, the system returns a localized HTTP 503/206 gracefully, preventing cascading thread-pool exhaustion.
 
 ### C. PostgreSQL / Supabase Outage

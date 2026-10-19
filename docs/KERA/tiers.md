@@ -16,11 +16,11 @@ Payment links must inject the following custom fields into the Stripe Checkout S
     *   **Pipeline:** Legacy Chunked Flow (LlamaParse -> Semantic Chunking -> LanceDB -> Groq `openai/gpt-oss-120b`).
     *   *Note:* Admin tier shares Pro operational limits but utilizes the Free infrastructure stack.
 *   **Premium Tier:**
-    *   **Model:** `gemini-2.5-flash-lite` (via Google Vertex AI).
+    *   **Model:** `gemini-3.1-flash-lite` (via Google Vertex AI).
 *   **Pro Tier:**
-    *   **Model:** `gemini-2.5-flash` (via Google Vertex AI).
+    *   **Model:** `gemini-3.5-flash-lite` (via Google Vertex AI).
 *   **PAYG (Pay-As-You-Go):**
-    *   **Allowed Models:** Restricted exclusively to Vertex AI (`gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-pro`).
+    *   **Allowed Models:** Restricted exclusively to Vertex AI (`gemini-3.1-flash-lite`, `gemini-3.5-flash-lite`, `gemini-3.8-flash`).
 
 ## 3. Operational Limits
 
@@ -35,9 +35,12 @@ Payment links must inject the following custom fields into the Stripe Checkout S
 
 *Source of Truth: [Google Cloud Vertex AI Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)*
 
-**Current Provider Costs (per 1M tokens):**
-*   **Gemini 2.5 Flash Lite:** Input `$0.10`, Output `$0.40`.
-*   **Gemini 2.5 Flash:** Input `$0.30`, Output `$2.50`.
+**ADR-0017 text-token reference rates (per 1M tokens; not confirmed project-specific Vertex invoice rates):**
+*   **Gemini 3.1 Flash-Lite:** Input `$0.25`, Output `$1.50`.
+*   **Gemini 3.5 Flash-Lite:** Input `$0.30`, Output `$2.50`.
+*   **Gemini 3.8 Flash:** Input `$0.75`, Output `$3.75`.
+
+These text-rate projections do not establish image/PDF modality billing. Validate current per-modality prices, model routes, and behavior in Vertex staging before production. See [ADR-0017](../adr/0017-gemini-models-25-migration.md).
 
 **Conservative Baseline Assumptions:**
 Calculations utilize the hard limits enforced by `estimate_unified_pdf_token_budget()`:
@@ -47,26 +50,26 @@ Calculations utilize the hard limits enforced by `estimate_unified_pdf_token_bud
 
 ### Premium Tier Analysis
 *   **Max Cost per PDF:**
-    *   Input: `602,000 * ($0.10 / 1M) = $0.0602`
-    *   Output: `25,500 * ($0.40 / 1M) = $0.0102`
-    *   Total: **$0.0704**
+    *   Input: `602,000 * ($0.25 / 1M) = $0.1505`
+    *   Output: `25,500 * ($1.50 / 1M) = $0.03825`
+    *   Total (text-rate reference projection): **$0.18875**
 *   **Worst-Case Monthly Cost:** (1,000 pages / 100 pages per PDF = 10 PDFs max)
-    *   `10 * $0.0704 = $0.704`
+    *   `10 * $0.18875 = $1.8875`
 *   **Recommended Break-Even Price:** `$0.99 / month`
 *   **Final Retail Price:** **$2.99 / month**
-*   **Rationale:** Flash-Lite provides exceptional multimodal capabilities at a fraction of the cost, making Premium the tier with the highest relative profit margin.
+*   **Rationale:** The Premium provider-cost projection uses the ADR-0017 text-token reference rates; its actual multimodal costs and margin require Vertex staging and invoice validation. The subscription price remains `$2.99 / month`.
 
 ### Pro Tier Analysis
 
-*   **Cost (Gemini 2.5 Flash):**
+*   **Cost (Gemini 3.5 Flash-Lite):**
     *   Input: `602,000 * ($0.30 / 1M) = $0.1806`
     *   Output: `75,500 * ($2.50 / 1M) = $0.18875`
-    *   Total per PDF: **$0.36935**
+    *   Total per PDF (text-rate reference projection): **$0.36935**
 *   **Worst-Case Monthly Cost:** (2,000 pages / 500 pages per PDF = 4 PDFs max)
     *   `4 * $0.36935 = $1.4774`
 *   **Recommended Break-Even Price:** `$1.99 / month`
 *   **Final Retail Price:** **$4.99 / month**
-*   **Rationale:** Gemini 2.5 Flash delivers strong multimodal accuracy at a price point that lets us hold `$4.99 / month` retail with healthy margins, even at the worst-case 4-PDF monthly ceiling.
+*   **Rationale:** The Pro provider-cost projection uses the ADR-0017 text-token reference rates; its actual multimodal costs and margin require Vertex staging and invoice validation. The subscription price remains `$4.99 / month`.
 
 ## 5. PAYG Formula & Privacy
 *   **Formula:** `(Exact LLM Provider Cost) * 1.40` (40% Markup).

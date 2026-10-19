@@ -68,7 +68,7 @@ flowchart LR
     subgraph SaaS ["External SaaS"]
         direction TB
         Groq["🤖 Groq API<br/>Whisper + GPT-OSS 120B<br/>Free tier"]
-        Vertex["🤖 Google Vertex AI<br/>Gemini 2.5<br/>Paid tiers"]
+        Vertex["🤖 Google Vertex AI<br/>Gemini 3.1 Flash-Lite / 3.5 Flash-Lite / 3.8 Flash<br/>Paid tiers"]
         LlamaParse["📄 LlamaParse<br/>PDF · image OCR<br/>Free tier"]
         Google["🛡️ Google OAuth2<br/>OpenID Connect"]
         Stripe["💳 Stripe<br/>billing & PAYG"]
@@ -98,4 +98,4 @@ flowchart LR
     class Grafana obs
 ```
 
-> **Note (CB = Circuit Breaker):** All outbound LLM calls flow through a Redis-backed circuit breaker. On consecutive failures the breaker opens and traffic is routed to the configured fallback model (e.g., `gemini-2.5-pro` → `gemini-2.5-flash-lite`). See [Circuit Breaker State Machine](circuit_breaker_state.md).
+> **Note (CB = Circuit Breaker):** All outbound LLM calls flow through a Redis-backed circuit breaker. On consecutive failures the breaker opens and traffic is routed to the configured fallback model (e.g., `gemini-3.8-flash` → `gemini-3.1-flash-lite`). Current model mapping: [ADR-0017](../../adr/0017-gemini-models-25-migration.md). See [Circuit Breaker State Machine](circuit_breaker_state.md).
