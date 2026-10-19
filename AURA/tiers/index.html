@@ -3712,6 +3712,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3878,7 +3906,7 @@
 </ul>
 <h3 id="premium-tier">Premium Tier</h3>
 <ul>
-<li><strong>Compute Stack:</strong> Google Vertex AI (Gemini 2.5 Flash Lite) - Single-pass multimodal.</li>
+<li><strong>Compute Stack:</strong> Google Vertex AI (Gemini 3.1 Flash-Lite) - Single-pass multimodal. See <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>.</li>
 <li><strong>Max Audio Duration:</strong> 20 minutes per file.</li>
 <li><strong>Monthly Quota:</strong> 3,000 minutes (50 hours).</li>
 <li><strong>History Retention:</strong> Up to 2,000 notes (FIFO eviction).</li>
@@ -3889,7 +3917,7 @@
 </ul>
 <h3 id="pro-tier">Pro Tier</h3>
 <ul>
-<li><strong>Compute Stack:</strong> Google Vertex AI (Gemini 2.5 Flash Lite) - Single-pass multimodal.</li>
+<li><strong>Compute Stack:</strong> Google Vertex AI (Gemini 3.1 Flash-Lite) - Single-pass multimodal. See <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>.</li>
 <li><strong>Max Audio Duration:</strong> 45 minutes per file.</li>
 <li><strong>Monthly Quota:</strong> 9,000 minutes (150 hours).</li>
 <li><strong>History Retention:</strong> Up to 2,000 notes (FIFO eviction).</li>
@@ -3908,6 +3936,7 @@
 <li>The FinOps pricing declared in the <code>PricingRegistry</code>.</li>
 </ol>
 </li>
+<li><strong>Selectable models:</strong> Gemini 3.1 Flash-Lite, Gemini 3.5 Flash-Lite, and Gemini 3.8 Flash.</li>
 <li><strong>FinOps Formula:</strong> <code>(Total LLM Provider Cost) * 1.40</code> (40% Markup).</li>
 <li><strong>UX Requirement:</strong> The available balance must be appended to the footer of every bot response, ensuring the user has real-time visibility without leaving Telegram.</li>
 </ul>

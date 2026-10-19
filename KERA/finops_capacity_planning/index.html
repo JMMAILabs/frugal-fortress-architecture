@@ -3662,6 +3662,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3760,7 +3788,7 @@
 
 
 <h1 id="finops-capacity-planning-pdf-to-anki-kera">FinOps &amp; Capacity Planning: PDF to Anki (KERA)</h1>
-<p>This document projects the infrastructure and LLM costs for the <code>pdf_anki</code> module, demonstrating the economic viability of the "Frugal Fortress" architecture.</p>
+<p>This document projects the infrastructure and LLM costs for the <code>pdf_anki</code> module. Gemini projections below use ADR-0017 text-token reference rates; they are not confirmed multimodal or Vertex invoice costs.</p>
 <blockquote>
 <p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
 </blockquote>
@@ -3781,7 +3809,7 @@
 <th style="text-align: left;">Tier</th>
 <th style="text-align: left;">Input Cost (per 1M)</th>
 <th style="text-align: left;">Output Cost (per 1M)</th>
-<th style="text-align: left;">Total Cost (10k Pages)</th>
+<th style="text-align: left;">Text-rate reference projection (10k Pages)</th>
 </tr>
 </thead>
 <tbody>
@@ -3793,22 +3821,29 @@
 <td style="text-align: left;"><strong>$2.50</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-2.5-flash-lite</code>)</td>
+<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-3.1-flash-lite</code>)</td>
 <td style="text-align: left;">Premium / PAYG</td>
-<td style="text-align: left;">$0.10</td>
-<td style="text-align: left;">$0.40</td>
-<td style="text-align: left;"><strong>$1.66</strong></td>
+<td style="text-align: left;">$0.25</td>
+<td style="text-align: left;">$1.50</td>
+<td style="text-align: left;"><strong>$5.415</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-2.5-flash</code>)</td>
+<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-3.5-flash-lite</code>)</td>
 <td style="text-align: left;">Pro / PAYG</td>
 <td style="text-align: left;">$0.30</td>
 <td style="text-align: left;">$2.50</td>
-<td style="text-align: left;"><strong>$8.25</strong></td>
+<td style="text-align: left;"><strong>$8.248</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-3.8-flash</code>)</td>
+<td style="text-align: left;">PAYG</td>
+<td style="text-align: left;">$0.75</td>
+<td style="text-align: left;">$3.75</td>
+<td style="text-align: left;"><strong>$14.37</strong></td>
 </tr>
 </tbody>
 </table>
-<p><em>Note: Prices based on official provider pricing as of August 2026, reflected in <code>src/app/core/pricing_registry.py</code>. Groq figures moved to <code>openai/gpt-oss-120b</code> when <code>llama-3.3-70b-versatile</code> was decommissioned on 2026-08-16; gpt-oss is a reasoning model, so billed output tokens include reasoning tokens (bounded via <code>GROQ_REASONING_EFFORT=low</code>).</em></p>
+<p><em>Gemini calculations use the stated 6.66M input and 2.50M output token baseline. The ADR-0017 rates are text-token references and do not confirm PDF/image modality billing or project-specific Vertex invoices. Validate current modality pricing, routes, and behavior in Vertex staging before production. See <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>. Groq figures moved to <code>openai/gpt-oss-120b</code> when <code>llama-3.3-70b-versatile</code> was decommissioned on 2026-08-16; gpt-oss is a reasoning model, so billed output tokens include reasoning tokens (bounded via <code>GROQ_REASONING_EFFORT=low</code>).</em></p>
 <h2 id="3-architectural-savings-the-frugal-impact">3. Architectural Savings (The "Frugal" Impact)</h2>
 <p>Our architecture implements several layers of optimization that drastically reduce the theoretical costs above:</p>
 <ol>
@@ -3826,10 +3861,10 @@
 <ul>
 <li><strong>Premium Plan Price:</strong> $2.99 / month.</li>
 <li><strong>Limit:</strong> 1,000 pages / month.</li>
-<li><strong>Max LLM Cost (Gemini Flash-Lite):</strong> $0.16 (Input) + $0.10 (Output) = <strong>$0.26</strong>.</li>
-<li><strong>Gross Margin (Compute only):</strong> <strong>91.3%</strong>.</li>
+<li><strong>Max LLM Cost (Gemini 3.1 Flash-Lite text-rate reference projection):</strong> $0.25 (Input) + $0.38 (Output) = <strong>$0.63</strong>.</li>
+<li><strong>Gross margin (compute-only text-rate reference projection):</strong> <strong>78.9%</strong>.</li>
 </ul>
-<p>By leveraging Vertex AI's Flash-Lite model for the Premium tier, we maintain multimodal capabilities (processing images/tables in PDFs) while preserving SaaS-level profit margins.</p>
+<p>The subscription price remains <code>$2.99 / month</code>. The text-rate projection does not confirm PDF/image modality costs or actual gross margin; verify provider pricing and behavior in Vertex staging before production.</p>
 
 
 

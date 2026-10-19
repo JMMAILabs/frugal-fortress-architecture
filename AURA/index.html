@@ -3673,6 +3673,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3790,7 +3818,7 @@
 2. <strong>Idempotency Guard:</strong> The system calculates the <code>SHA-256</code> hash of the audio bytes. If a viral/forwarded audio is detected, it serves the summary directly from Redis (&lt;50ms), bypassing all LLM compute.
 3. <strong>Dynamic Routing:</strong>
    * <em>Free Tier:</em> Audio is transcribed via Groq (<code>whisper-large-v3</code>) and summarized via Groq (<code>openai/gpt-oss-120b</code>).
-   * <em>Paid Tiers (Premium/Pro/PAYG):</em> Audio is sent directly to Google Vertex AI (<code>gemini-2.5-flash-lite</code> / <code>gemini-2.5-flash</code>/ <code>gemini-2.5-pro</code>) for single-pass multimodal extraction.
+   * <em>Paid Tiers (Premium/Pro/PAYG):</em> Audio is sent directly to Google Vertex AI for single-pass multimodal extraction. The included tier model is Gemini 3.1 Flash-Lite; PAYG selectable models are Gemini 3.1 Flash-Lite, Gemini 3.5 Flash-Lite, and Gemini 3.8 Flash (<a href="../adr/0017-gemini-models-25-migration/">ADR-0017</a>).
 4. <strong>Delivery:</strong> The structured Markdown summary is sent back to the user via the Telegram API.</p>
 <h2 id="2-key-architectural-patterns">2. Key Architectural Patterns</h2>
 <p>This module heavily leverages the Frugal Fortress core patterns. For detailed technical decisions, refer to the following Architecture Decision Records (ADRs):</p>

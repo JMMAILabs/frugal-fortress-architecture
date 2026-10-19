@@ -3843,6 +3843,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4196,7 +4224,7 @@
 <h3 id="22-current-implementation-cloud-orchestration">2.2 Current Implementation (Cloud Orchestration)</h3>
 <ul>
 <li><strong>Input — Free Tier:</strong> Image/PDF → LlamaParse Cloud → markdown. Free-tier text reasoning runs on <strong>Groq</strong> (<code>openai/gpt-oss-120b</code>) via LiteLLM — see <a href="../../adr/0015-groq-gpt-oss-migration/">ADR-0015</a> for why this replaced <code>llama-3.3-70b-versatile</code> and how the reasoning parameters are pinned.</li>
-<li><strong>Input — Paid Tiers (Premium / Pro / PAYG):</strong> Image is sent directly to <strong>Google Vertex AI</strong> (<code>gemini-2.5-flash-lite</code> / <code>gemini-2.5-flash</code> / <code>gemini-2.5-pro</code>) for single-pass multimodal extraction. No external OCR is required.</li>
+<li><strong>Input — Paid Tiers (Premium / Pro / PAYG):</strong> Image is sent directly to <strong>Google Vertex AI</strong> for single-pass multimodal extraction. Current model mapping is Gemini 3.1 Flash-Lite / Gemini 3.5 Flash-Lite / Gemini 3.8 Flash; see <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>. No external OCR is required.</li>
 <li><strong>FinOps — Self-Correction Loop:</strong></li>
 <li><strong>Validation (pure Python):</strong> <code>validate_receipt_math</code>: items sum = subtotal, subtotal + tax = total. No framework.</li>
 <li><strong>Retries:</strong> Up to 3 paid attempts (<code>MAX_RETRIES = 3</code>). If math validation fails, the validator error is fed back into the LLM prompt for a corrective retry, all within the same provider (Groq for Free, Vertex AI for Paid). There is no cross-provider escalation: only Groq and Google Vertex AI are wired into the receipt pipeline.</li>

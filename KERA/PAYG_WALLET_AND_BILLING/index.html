@@ -3662,6 +3662,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3761,7 +3789,7 @@
 
 <h1 id="pay-as-you-go-payg-wallet-dynamic-billing">Pay-As-You-Go (PAYG) Wallet &amp; Dynamic Billing</h1>
 <h2 id="1-finops-philosophy">1. FinOps Philosophy</h2>
-<p>Processing massive corporate documents (e.g., 500-page PDFs) can easily trigger "Denial of Wallet" scenarios if users select expensive models like <code>gemini-2.5-pro</code>. 
+<p>Processing massive corporate documents (e.g., 500-page PDFs) can easily trigger "Denial of Wallet" scenarios if users select higher-cost models like Gemini 3.8 Flash. See the current model mapping in <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>.
 To support high-volume Enterprise users safely, the <code>pdf_anki</code> module implements a prepaid <strong>PAYG Wallet</strong> with a strict Two-Phase Commit billing architecture.</p>
 <h2 id="2-dynamic-model-selection-fallback">2. Dynamic Model Selection &amp; Fallback</h2>
 <p>PAYG users can dynamically switch their unified multimodal model directly from the Next.js frontend.

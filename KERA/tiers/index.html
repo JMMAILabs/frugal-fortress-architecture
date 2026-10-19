@@ -3701,6 +3701,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3855,15 +3883,15 @@
 </ul>
 </li>
 <li><strong>Premium Tier:</strong><ul>
-<li><strong>Model:</strong> <code>gemini-2.5-flash-lite</code> (via Google Vertex AI).</li>
+<li><strong>Model:</strong> <code>gemini-3.1-flash-lite</code> (via Google Vertex AI).</li>
 </ul>
 </li>
 <li><strong>Pro Tier:</strong><ul>
-<li><strong>Model:</strong> <code>gemini-2.5-flash</code> (via Google Vertex AI).</li>
+<li><strong>Model:</strong> <code>gemini-3.5-flash-lite</code> (via Google Vertex AI).</li>
 </ul>
 </li>
 <li><strong>PAYG (Pay-As-You-Go):</strong><ul>
-<li><strong>Allowed Models:</strong> Restricted exclusively to Vertex AI (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>).</li>
+<li><strong>Allowed Models:</strong> Restricted exclusively to Vertex AI (<code>gemini-3.1-flash-lite</code>, <code>gemini-3.5-flash-lite</code>, <code>gemini-3.8-flash</code>).</li>
 </ul>
 </li>
 </ul>
@@ -3911,9 +3939,11 @@
 </table>
 <h2 id="4-finops-break-even-pricing-analysis">4. FinOps &amp; Break-Even Pricing Analysis</h2>
 <p><em>Source of Truth: <a href="https://cloud.google.com/vertex-ai/generative-ai/pricing">Google Cloud Vertex AI Pricing</a></em></p>
-<p><strong>Current Provider Costs (per 1M tokens):</strong>
-*   <strong>Gemini 2.5 Flash Lite:</strong> Input <code>$0.10</code>, Output <code>$0.40</code>.
-*   <strong>Gemini 2.5 Flash:</strong> Input <code>$0.30</code>, Output <code>$2.50</code>.</p>
+<p><strong>ADR-0017 text-token reference rates (per 1M tokens; not confirmed project-specific Vertex invoice rates):</strong>
+*   <strong>Gemini 3.1 Flash-Lite:</strong> Input <code>$0.25</code>, Output <code>$1.50</code>.
+*   <strong>Gemini 3.5 Flash-Lite:</strong> Input <code>$0.30</code>, Output <code>$2.50</code>.
+*   <strong>Gemini 3.8 Flash:</strong> Input <code>$0.75</code>, Output <code>$3.75</code>.</p>
+<p>These text-rate projections do not establish image/PDF modality billing. Validate current per-modality prices, model routes, and behavior in Vertex staging before production. See <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>.</p>
 <p><strong>Conservative Baseline Assumptions:</strong>
 Calculations utilize the hard limits enforced by <code>estimate_unified_pdf_token_budget()</code>:
 *   Max input per request: <code>602,000</code> tokens.
@@ -3922,25 +3952,25 @@ Calculations utilize the hard limits enforced by <code>estimate_unified_pdf_toke
 <h3 id="premium-tier-analysis">Premium Tier Analysis</h3>
 <ul>
 <li><strong>Max Cost per PDF:</strong><ul>
-<li>Input: <code>602,000 * ($0.10 / 1M) = $0.0602</code></li>
-<li>Output: <code>25,500 * ($0.40 / 1M) = $0.0102</code></li>
-<li>Total: <strong>$0.0704</strong></li>
+<li>Input: <code>602,000 * ($0.25 / 1M) = $0.1505</code></li>
+<li>Output: <code>25,500 * ($1.50 / 1M) = $0.03825</code></li>
+<li>Total (text-rate reference projection): <strong>$0.18875</strong></li>
 </ul>
 </li>
 <li><strong>Worst-Case Monthly Cost:</strong> (1,000 pages / 100 pages per PDF = 10 PDFs max)<ul>
-<li><code>10 * $0.0704 = $0.704</code></li>
+<li><code>10 * $0.18875 = $1.8875</code></li>
 </ul>
 </li>
 <li><strong>Recommended Break-Even Price:</strong> <code>$0.99 / month</code></li>
 <li><strong>Final Retail Price:</strong> <strong>$2.99 / month</strong></li>
-<li><strong>Rationale:</strong> Flash-Lite provides exceptional multimodal capabilities at a fraction of the cost, making Premium the tier with the highest relative profit margin.</li>
+<li><strong>Rationale:</strong> The Premium provider-cost projection uses the ADR-0017 text-token reference rates; its actual multimodal costs and margin require Vertex staging and invoice validation. The subscription price remains <code>$2.99 / month</code>.</li>
 </ul>
 <h3 id="pro-tier-analysis">Pro Tier Analysis</h3>
 <ul>
-<li><strong>Cost (Gemini 2.5 Flash):</strong><ul>
+<li><strong>Cost (Gemini 3.5 Flash-Lite):</strong><ul>
 <li>Input: <code>602,000 * ($0.30 / 1M) = $0.1806</code></li>
 <li>Output: <code>75,500 * ($2.50 / 1M) = $0.18875</code></li>
-<li>Total per PDF: <strong>$0.36935</strong></li>
+<li>Total per PDF (text-rate reference projection): <strong>$0.36935</strong></li>
 </ul>
 </li>
 <li><strong>Worst-Case Monthly Cost:</strong> (2,000 pages / 500 pages per PDF = 4 PDFs max)<ul>
@@ -3949,7 +3979,7 @@ Calculations utilize the hard limits enforced by <code>estimate_unified_pdf_toke
 </li>
 <li><strong>Recommended Break-Even Price:</strong> <code>$1.99 / month</code></li>
 <li><strong>Final Retail Price:</strong> <strong>$4.99 / month</strong></li>
-<li><strong>Rationale:</strong> Gemini 2.5 Flash delivers strong multimodal accuracy at a price point that lets us hold <code>$4.99 / month</code> retail with healthy margins, even at the worst-case 4-PDF monthly ceiling.</li>
+<li><strong>Rationale:</strong> The Pro provider-cost projection uses the ADR-0017 text-token reference rates; its actual multimodal costs and margin require Vertex staging and invoice validation. The subscription price remains <code>$4.99 / month</code>.</li>
 </ul>
 <h2 id="5-payg-formula-privacy">5. PAYG Formula &amp; Privacy</h2>
 <ul>

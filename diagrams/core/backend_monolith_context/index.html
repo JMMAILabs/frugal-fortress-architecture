@@ -3652,6 +3652,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3806,7 +3834,7 @@ flowchart LR
     subgraph Providers ["External Providers"]
         direction TB
         EXT_GROQ["Groq API&lt;br/&gt;Whisper + GPT-OSS 120B"]
-        EXT_VERTEX["Google Vertex AI&lt;br/&gt;Gemini 2.5"]
+        EXT_VERTEX["Google Vertex AI&lt;br/&gt;Gemini 3.1 Flash-Lite / 3.5 Flash-Lite / 3.8 Flash"]
         EXT_LLAMAPARSE["LlamaParse Cloud&lt;br/&gt;PDF / image OCR"]
         EXT_TG["Telegram Bot API"]
         EXT_GOOGLE["Google OAuth2 / OIDC"]
@@ -3868,7 +3896,7 @@ flowchart LR
     class M_AUDIO,M_PDF,M_RECEIPTS,M_GENUI,M_DLP module
     class R1,R2,D1,D2,D3,D4,L1 store</code></pre>
 <blockquote>
-<p><strong>Provider matrix.</strong> Free tier: Groq (<code>whisper-large-v3</code>, <code>openai/gpt-oss-120b</code>) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>). <strong>No OpenAI, Anthropic, or Cohere models or APIs are used</strong>; all reranking is local ONNX (<code>reranker_adapter.py</code>). All outbound LLM calls flow through a Redis-backed circuit breaker; see <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
+<p><strong>Provider matrix.</strong> Free tier: Groq (<code>whisper-large-v3</code>, <code>openai/gpt-oss-120b</code>) + LlamaParse (PDFs / images). Paid tiers (Premium / Pro / PAYG): Google Vertex AI (<code>gemini-3.1-flash-lite</code>, <code>gemini-3.5-flash-lite</code>, <code>gemini-3.8-flash</code>); see <a href="../../../adr/0017-gemini-models-25-migration/">ADR-0017</a>. <strong>No OpenAI, Anthropic, or Cohere models or APIs are used</strong>; all reranking is local ONNX (<code>reranker_adapter.py</code>). All outbound LLM calls flow through a Redis-backed circuit breaker; see <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
 </blockquote>
 
 

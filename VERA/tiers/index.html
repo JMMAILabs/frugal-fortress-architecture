@@ -3718,6 +3718,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3897,9 +3925,9 @@
 <h2 id="3-paid-tiers-vertex-ai-exclusive">3. Paid Tiers (Vertex AI Exclusive)</h2>
 <p>To guarantee Zero Data Retention, paid tiers exclusively utilize Google Vertex AI under enterprise terms. The platform does not route any traffic through other LLM vendors.</p>
 <ul>
-<li><strong>Premium:</strong> <code>gemini-2.5-flash-lite</code>.</li>
-<li><strong>Pro:</strong> <code>gemini-2.5-flash</code>.</li>
-<li><strong>PAYG:</strong> Selectable models (<code>gemini-2.5-flash-lite</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-pro</code>).</li>
+<li><strong>Premium:</strong> <code>gemini-3.1-flash-lite</code>.</li>
+<li><strong>Pro:</strong> <code>gemini-3.5-flash-lite</code>.</li>
+<li><strong>PAYG:</strong> Selectable models (<code>gemini-3.1-flash-lite</code>, <code>gemini-3.5-flash-lite</code>, <code>gemini-3.8-flash</code>).</li>
 </ul>
 <h3 id="operational-limits">Operational Limits</h3>
 <table>
@@ -3947,32 +3975,34 @@
 <p><em>Note on Versioning:</em> Each persistence event counts as a row (the initial parse, and every human correction saved via <code>POST /receipts/history</code>). The internal LLM self-correction loop does <em>not</em> create new database rows.</p>
 <h2 id="4-finops-break-even-pricing-analysis">4. FinOps &amp; Break-Even Pricing Analysis</h2>
 <p><em>Source of Truth: <a href="https://cloud.google.com/vertex-ai/generative-ai/pricing">Google Cloud Vertex AI Pricing</a></em></p>
+<p>The model mapping and per-million text-token reference rates are documented in <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>. These rates do not confirm image-modality billing or project-specific Vertex invoices. Validate current prices by modality, routes, and behavior in Vertex staging before production.</p>
 <p><strong>Conservative Baseline Assumptions:</strong>
 *   1 Input Image ≈ <code>1,120</code> tokens (Standard Gemini Flash Image proxy).
 *   JSON Output ≈ <code>500</code> tokens.
 *   <strong>Self-Correction Loop:</strong> Up to <code>3</code> paid attempts per receipt (<code>MAX_RETRIES = 3</code>).</p>
 <h3 id="premium-tier-analysis">Premium Tier Analysis</h3>
 <ul>
-<li><strong>Cost per Receipt (Single Attempt):</strong><ul>
-<li><code>(1,120 * $0.10 / 1M) + (500 * $0.40 / 1M) = $0.000312</code></li>
+<li><strong>Cost per Receipt (Gemini 3.1 Flash-Lite text-rate reference projection, single attempt):</strong><ul>
+<li><code>(1,120 * $0.25 / 1M) + (500 * $1.50 / 1M) = $0.00103</code></li>
 </ul>
 </li>
-<li><strong>Worst-Case Scenario (3 Retries):</strong> <code>$0.000936</code></li>
-<li><strong>Worst-Case Monthly Cost:</strong> <code>500 * $0.000936 = $0.468</code></li>
-<li><strong>Recommended Break-Even Price:</strong> <code>$0.99 / month</code></li>
+<li><strong>Worst-Case Scenario (3 attempts):</strong> <code>$0.00309</code></li>
+<li><strong>Worst-Case Monthly Cost:</strong> <code>500 * $0.00309 = $1.545</code></li>
+<li><strong>Break-Even Price:</strong> Not reassessed until image-modality pricing is validated; the current retail price remains unchanged.</li>
 <li><strong>Final Retail Price:</strong> <strong>$2.99 / month</strong></li>
 </ul>
 <h3 id="pro-tier-analysis">Pro Tier Analysis</h3>
 <ul>
-<li><strong>Cost (Gemini 2.5 Flash):</strong><ul>
+<li><strong>Cost (Gemini 3.5 Flash-Lite text-rate reference projection):</strong><ul>
 <li>Single Attempt: <code>(1,120 * $0.30 / 1M) + (500 * $2.50 / 1M) = $0.001586</code></li>
 <li>Worst-Case (3 Retries): <strong>$0.004758</strong></li>
 </ul>
 </li>
 <li><strong>Worst-Case Monthly Cost:</strong> <code>2,000 * $0.004758 = $9.516</code></li>
-<li><strong>Recommended Break-Even Price:</strong> <code>$9.99 / month</code></li>
+<li><strong>Break-Even Price:</strong> Not reassessed until image-modality pricing is validated; the current retail price remains unchanged.</li>
 <li><strong>Final Retail Price:</strong> <strong>$9.99 / month</strong></li>
-<li><strong>Rationale:</strong> Gemini 2.5 Flash provides multimodal accuracy at a price that lets us hold <code>$9.99 / month</code> retail with comfortable margins, even when the worst-case 2,000-receipt monthly ceiling is hit and every receipt exhausts the 3-retry self-correction loop.</li>
+<li><strong>PAYG Gemini 3.8 Flash reference:</strong> Single attempt <code>(1,120 * $0.75 / 1M) + (500 * $3.75 / 1M) = $0.002715</code>; three attempts = <code>$0.008145</code>. This is a text-rate reference projection, not a confirmed image-modality cost.</li>
+<li><strong>Rationale:</strong> The text-rate projections do not confirm multimodal costs or subscription margins. The Pro subscription price remains <code>$9.99 / month</code>; validate costs and behavior in Vertex staging before production.</li>
 </ul>
 <h2 id="5-data-lifecycle">5. Data Lifecycle</h2>
 <p>Upon subscription cancellation, the standard 90-day grace period applies. The user is downgraded to Free tier compute limits but retains full access to export their historical data. On Day 91, a FIFO pruning job truncates their storage to the Free tier limit (100 receipts).</p>

@@ -3688,6 +3688,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3843,7 +3871,7 @@
 <li><strong>Impact:</strong> AI inference fails or times out.</li>
 <li><strong>Mitigation:</strong> <ul>
 <li>The <code>CircuitBreakerFactory</code> detects consecutive timeouts/5xx errors and transitions to the <code>OPEN</code> state.</li>
-<li>Traffic is instantly routed to the configured fallback model (e.g., from <code>gemini-2.5-pro</code> to <code>gemini-2.5-flash-lite</code>).</li>
+<li>Traffic is instantly routed to the configured fallback model (e.g., from <code>gemini-3.8-flash</code> to <code>gemini-3.1-flash-lite</code>; see <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>).</li>
 <li>If all cloud providers fail, the system returns a localized HTTP 503/206 gracefully, preventing cascading thread-pool exhaustion.</li>
 </ul>
 </li>

@@ -3640,6 +3640,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3723,7 +3751,7 @@
 <li><strong>Async Burst Ingestion:</strong> Uploads return an HTTP 202 Accepted instantly. Heavy parsing is offloaded to isolated <code>Arq</code> process pools (<code>CpuBoundExecutor</code>), preventing database connection starvation.</li>
 <li><strong>Dual-Pipeline Processing:</strong> <ul>
 <li><em>Free/Admin Tiers:</em> LlamaParse extraction -&gt; Semantic Chunking -&gt; LanceDB Vector Search -&gt; Groq (GPT-OSS 120B).</li>
-<li><em>Paid Tiers:</em> Direct multimodal ingest via Google Vertex AI (Gemini 2.5 Flash) ensuring Zero Data Retention.</li>
+<li><em>Paid Tiers:</em> Direct multimodal ingest via Google Vertex AI (Premium: Gemini 3.1 Flash-Lite; Pro: Gemini 3.5 Flash-Lite) ensuring Zero Data Retention. PAYG also offers Gemini 3.8 Flash; see <a href="../adr/0017-gemini-models-25-migration/">ADR-0017</a>.</li>
 </ul>
 </li>
 <li><strong>Multi-Tier Caching:</strong> <ul>

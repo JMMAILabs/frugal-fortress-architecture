@@ -3688,6 +3688,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3833,18 +3861,18 @@
 <p>The system enforces a strict separation between Free and Paid compute stacks to protect profit margins and ensure enterprise-grade privacy.</p>
 <ul>
 <li><strong>Free Tier:</strong> Utilizes third-party APIs (e.g., LlamaParse, Groq GPT-OSS 120B; see <a href="../../adr/0015-groq-gpt-oss-migration/">ADR-0015</a>). Data may be subject to standard API retention policies. Strictly rate-limited.</li>
-<li><strong>Paid Tiers (Premium, Pro, PAYG):</strong> Exclusively utilizes Google Vertex AI (Gemini 2.5 Flash/Pro). Guarantees <strong>Zero Data Retention</strong> (SOC2/GDPR compliant).</li>
+<li><strong>Paid Tiers (Premium, Pro, PAYG):</strong> Exclusively utilize Google Vertex AI. Current model mapping: Gemini 3.1 Flash-Lite, Gemini 3.5 Flash-Lite, and Gemini 3.8 Flash; see <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>. Guarantees <strong>Zero Data Retention</strong> (SOC2/GDPR compliant).</li>
 </ul>
 <h2 id="2-module-specific-limits-margins">2. Module-Specific Limits &amp; Margins</h2>
 <h3 id="a-vera-receipt-parser">A. VERA (Receipt Parser)</h3>
 <ul>
 <li><strong>Free:</strong> 30 receipts/month. Max 100 stored. (Stack: LlamaParse + Groq).</li>
 <li><strong>Premium ($2.99/mo):</strong> 500 receipts/month. Max 2,000 stored. (Stack: Vertex Flash-Lite).<ul>
-<li><em>FinOps:</em> Max cost per receipt (with 3 retries) = $0.0009. Max monthly cost = $0.46. <strong>Margin: 84%</strong>.</li>
+<li><em>FinOps reference projection:</em> Using ADR-0017 text-token rates and the existing 1,120-input/500-output token budget, one attempt is $0.00103; three attempts are $0.00309 and 500 worst-case receipts project to $1.55. <strong>This is not a confirmed image-modality or Vertex invoice cost.</strong></li>
 </ul>
 </li>
 <li><strong>Pro ($9.99/mo):</strong> 2,000 receipts/month. Max 5,000 stored. (Stack: Vertex Flash).<ul>
-<li><em>FinOps:</em> Max cost per receipt (with 3 retries) = $0.0047. Max monthly cost = $9.51. <strong>Margin: ~5%</strong> (Loss-leader / High-volume tier).</li>
+<li><em>FinOps reference projection:</em> Using ADR-0017 text-token rates and the existing 1,120-input/500-output token budget, one attempt is $0.001586; three attempts are $0.004758 and 2,000 worst-case receipts project to $9.52. <strong>This is not a confirmed image-modality or Vertex invoice cost.</strong></li>
 </ul>
 </li>
 </ul>
@@ -3852,11 +3880,11 @@
 <ul>
 <li><strong>Free:</strong> 50 pages/month. Max 10 pages/PDF. Max 100 flashcards.</li>
 <li><strong>Premium ($2.99/mo):</strong> 1,000 pages/month. Max 100 pages/PDF. Max 5,000 flashcards.<ul>
-<li><em>FinOps:</em> Max cost per 100-page PDF = $0.07. Max monthly cost (10 PDFs) = $0.70. <strong>Margin: 76%</strong>.</li>
+<li><em>FinOps reference projection:</em> Using ADR-0017 text-token rates and the existing PDF token budgets, max cost per 100-page PDF = $0.18875; max monthly cost (10 PDFs) = $1.89. <strong>This is not a confirmed multimodal or Vertex invoice cost.</strong></li>
 </ul>
 </li>
 <li><strong>Pro ($4.99/mo):</strong> 2,000 pages/month. Max 500 pages/PDF. Max 20,000 flashcards.<ul>
-<li><em>FinOps:</em> Max cost per 500-page PDF = $0.36. Max monthly cost (4 PDFs) = $1.47. <strong>Margin: 70%</strong>.</li>
+<li><em>FinOps reference projection:</em> Using ADR-0017 text-token rates and the existing PDF token budgets, max cost per 500-page PDF = $0.36935; max monthly cost (4 PDFs) = $1.48. <strong>This is not a confirmed multimodal or Vertex invoice cost.</strong></li>
 </ul>
 </li>
 </ul>
@@ -3871,6 +3899,9 @@
 *   <strong>Formula:</strong> <code>(Raw LLM Provider Cost) * 1.40</code> (40% Markup).
 *   <strong>Mechanism:</strong> The <code>BudgetManager</code> uses atomic Lua scripts in Redis to reserve funds before inference and commit the exact cost post-inference.
 *   <strong>Model Selection:</strong> PAYG users can dynamically select their preferred Vertex AI model (e.g., upgrading from Flash to Pro for complex PDFs). The system dynamically calculates the maximum allowed context window based on their current USD balance.</p>
+<blockquote>
+<p><strong>Production validation:</strong> ADR-0017 reference rates are not confirmed project-specific Vertex invoice rates, and its audio rates are estimates. Validate current per-modality pricing, model routes, and behavior in Vertex staging before production; do not treat these provider references as customer prices.</p>
+</blockquote>
 <h2 id="4-data-lifecycle-churn-right-to-be-forgotten">4. Data Lifecycle &amp; Churn (Right to be Forgotten)</h2>
 <p>When a user cancels their subscription via Stripe:
 1.  <strong>Grace Period (Days 1-90):</strong> The user is downgraded to Free Tier compute limits, but their historical data (flashcards, receipts, glossary rules) remains intact and exportable.

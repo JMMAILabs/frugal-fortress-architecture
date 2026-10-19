@@ -3641,6 +3641,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3775,7 +3803,7 @@ flowchart LR
     subgraph SaaS ["External SaaS"]
         direction TB
         Groq["🤖 Groq API&lt;br/&gt;Whisper + GPT-OSS 120B&lt;br/&gt;Free tier"]
-        Vertex["🤖 Google Vertex AI&lt;br/&gt;Gemini 2.5&lt;br/&gt;Paid tiers"]
+        Vertex["🤖 Google Vertex AI&lt;br/&gt;Gemini 3.1 Flash-Lite / 3.5 Flash-Lite / 3.8 Flash&lt;br/&gt;Paid tiers"]
         LlamaParse["📄 LlamaParse&lt;br/&gt;PDF · image OCR&lt;br/&gt;Free tier"]
         Google["🛡️ Google OAuth2&lt;br/&gt;OpenID Connect"]
         Stripe["💳 Stripe&lt;br/&gt;billing &amp; PAYG"]
@@ -3804,7 +3832,7 @@ flowchart LR
     class Google,Stripe auth
     class Grafana obs</code></pre>
 <blockquote>
-<p><strong>Note (CB = Circuit Breaker):</strong> All outbound LLM calls flow through a Redis-backed circuit breaker. On consecutive failures the breaker opens and traffic is routed to the configured fallback model (e.g., <code>gemini-2.5-pro</code> → <code>gemini-2.5-flash-lite</code>). See <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
+<p><strong>Note (CB = Circuit Breaker):</strong> All outbound LLM calls flow through a Redis-backed circuit breaker. On consecutive failures the breaker opens and traffic is routed to the configured fallback model (e.g., <code>gemini-3.8-flash</code> → <code>gemini-3.1-flash-lite</code>). Current model mapping: <a href="../../../adr/0017-gemini-models-25-migration/">ADR-0017</a>. See <a href="../circuit_breaker_state/">Circuit Breaker State Machine</a>.</p>
 </blockquote>
 
 

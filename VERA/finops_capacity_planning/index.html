@@ -3651,6 +3651,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0017-gemini-models-25-migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 (Gemini 2.5 Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3738,7 +3766,7 @@
 
 
 <h1 id="finops-capacity-planning-receipt-parser-vera">FinOps &amp; Capacity Planning: Receipt Parser (VERA)</h1>
-<p>This document projects the infrastructure and LLM costs for the <code>receipt_parser</code> module.</p>
+<p>This document projects the infrastructure and LLM costs for the <code>receipt_parser</code> module. Gemini calculations use ADR-0017 text-token reference rates and are not confirmed image-modality or Vertex invoice costs.</p>
 <blockquote>
 <p>💲 <strong>Pricing source-of-truth:</strong> <a href="https://github.com/JMMAILabs/frugal-fortress-architecture"><code>src/app/core/pricing_registry.py</code></a> — last verified 2026-08. The values below are mirrors of that registry; if they diverge, the registry wins.</p>
 </blockquote>
@@ -3755,10 +3783,11 @@
 <tr>
 <th style="text-align: left;">Provider / Model</th>
 <th style="text-align: left;">Tier</th>
-<th style="text-align: left;">Input Cost (Image)</th>
-<th style="text-align: left;">Output Cost (JSON)</th>
-<th style="text-align: left;">Total Cost (per receipt)</th>
-<th style="text-align: left;">Total Cost (10k receipts)</th>
+<th style="text-align: left;">Input-token reference (1,120 tokens)</th>
+<th style="text-align: left;">Output-token reference (500 tokens)</th>
+<th style="text-align: left;">Text-rate projection (per receipt)</th>
+<th style="text-align: left;">10k receipts, one attempt each</th>
+<th style="text-align: left;">10k receipts, incl. 10% one-retry allowance</th>
 </tr>
 </thead>
 <tbody>
@@ -3769,25 +3798,38 @@
 <td style="text-align: left;">$0.0003</td>
 <td style="text-align: left;"><strong>$0.0003</strong></td>
 <td style="text-align: left;"><strong>$3.00</strong></td>
+<td style="text-align: left;"><strong>$3.30</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-2.5-flash-lite</code>)</td>
+<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-3.1-flash-lite</code>)</td>
 <td style="text-align: left;">Premium</td>
-<td style="text-align: left;">$0.00011</td>
-<td style="text-align: left;">$0.00020</td>
-<td style="text-align: left;"><strong>$0.00031</strong></td>
-<td style="text-align: left;"><strong>$3.10</strong></td>
+<td style="text-align: left;">$0.00028</td>
+<td style="text-align: left;">$0.00075</td>
+<td style="text-align: left;"><strong>$0.00103</strong></td>
+<td style="text-align: left;"><strong>$10.30</strong></td>
+<td style="text-align: left;"><strong>$11.33</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-2.5-flash</code>)</td>
+<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-3.5-flash-lite</code>)</td>
 <td style="text-align: left;">Pro</td>
-<td style="text-align: left;">$0.00033</td>
+<td style="text-align: left;">$0.000336</td>
 <td style="text-align: left;">$0.00125</td>
-<td style="text-align: left;"><strong>$0.00158</strong></td>
-<td style="text-align: left;"><strong>$15.80</strong></td>
+<td style="text-align: left;"><strong>$0.001586</strong></td>
+<td style="text-align: left;"><strong>$15.86</strong></td>
+<td style="text-align: left;"><strong>$17.45</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Vertex AI</strong> (<code>gemini-3.8-flash</code>)</td>
+<td style="text-align: left;">PAYG</td>
+<td style="text-align: left;">$0.00084</td>
+<td style="text-align: left;">$0.001875</td>
+<td style="text-align: left;"><strong>$0.002715</strong></td>
+<td style="text-align: left;"><strong>$27.15</strong></td>
+<td style="text-align: left;"><strong>$29.87</strong></td>
 </tr>
 </tbody>
 </table>
+<p>The retry column applies the documented assumption that 10% of receipts require one additional attempt. These are text-token reference projections, not established image-token prices. Validate modality pricing, routing, and behavior in Vertex staging before production. See <a href="../../adr/0017-gemini-models-25-migration/">ADR-0017</a>.</p>
 <h2 id="3-architectural-savings-the-frugal-impact">3. Architectural Savings (The "Frugal" Impact)</h2>
 <ol>
 <li><strong>Edge Image Compression:</strong> By using the HTML5 Canvas API on the Next.js PWA, we resize images to a max of 1024px before uploading. This reduces payload size from ~5MB to ~150KB, saving massive bandwidth costs and preventing VLM token explosion.</li>
